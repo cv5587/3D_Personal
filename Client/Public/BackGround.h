@@ -39,11 +39,11 @@ private:
 
 	_float							m_fX, m_fY, m_fSizeX, m_fSizeY;
 	_float4x4						m_ViewMatrix, m_ProjMatrix;
-	_float							m_fSpeedPerSec,m_fRotatePerSec;
+
 private:
 	HRESULT Add_Components();
 	HRESULT Bind_ShaderResources();
-	void	Key_Input(_float fTimeDelta);
+
 public:
 	static CBackGround* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;

@@ -1,6 +1,8 @@
 #include "..\Public\GameInstance.h"
 
 #include "Graphic_Device.h"
+#include "Input_Device.h"
+
 #include "Timer_Manager.h"
 #include "Level_Manager.h"
 #include "Object_Manager.h"
@@ -13,7 +15,7 @@ CGameInstance::CGameInstance()
 }
 
 
-HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const ENGINE_DESC & EngineDesc, ID3D11Device ** ppDevice, ID3D11DeviceContext ** ppContext)
+HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, const ENGINE_DESC & EngineDesc, ID3D11Device ** ppDevice, ID3D11DeviceContext ** ppContext)
 {
 	/* 엔진 프로젝트르 ㄹ클라이언트에서 사용하기 위해 필수적으로 해야할 여러 초기화작업을 수행한다. */
 
@@ -27,6 +29,9 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const ENGINE_DESC & E
 		return E_FAIL;
 
 	/* 인풋 디바이스를 초기화하낟. */
+	m_pInput_Device = CInput_Device::Create(hInst, EngineDesc.hWnd);
+	if (nullptr == m_pInput_Device)
+		return E_FAIL;
 
 	/* 사운드  디바이스를 초기화하낟. */
 	
@@ -50,6 +55,11 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const ENGINE_DESC & E
 	if (nullptr == m_pRenderer)
 		return E_FAIL;
 
+	/* 파이프라인 생성. */
+	m_pPipeLine = CPipeLine::Create();
+	if (nullptr == m_pPipeLine)
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -58,9 +68,13 @@ void CGameInstance::Tick_Engine(_float fTimeDelta)
 	if (nullptr == m_pLevel_Manager)
 		return;
 
+	m_pInput_Device->Update_InputDev();
+
 	m_pObject_Manager->Priority_Tick(fTimeDelta);
 
 	m_pObject_Manager->Tick(fTimeDelta);	
+
+	m_pPipeLine->Tick();
 
 	m_pObject_Manager->Late_Tick(fTimeDelta);
 
@@ -101,6 +115,21 @@ HRESULT CGameInstance::Clear_DepthStencil_View()
 HRESULT CGameInstance::Present()
 {
 	return m_pGraphic_Device->Present();
+}
+
+_byte CGameInstance::Get_DIKeyState(_ubyte byKeyID)
+{
+	return m_pInput_Device->Get_DIKeyState(byKeyID);
+}
+
+_byte CGameInstance::Get_DIMouseState(MOUSEKEYSTATE eMouse)
+{
+	return m_pInput_Device->Get_DIMouseState(eMouse);
+}
+
+_long CGameInstance::Get_DIMouseMove(MOUSEMOVESTATE eMouseState)
+{
+	return m_pInput_Device->Get_DIMouseMove(eMouseState);
 }
 
 _float CGameInstance::Get_TimeDelta(const _tchar * pTimerTag)
@@ -160,6 +189,42 @@ HRESULT CGameInstance::Add_RenderObject(CRenderer::RENDERGROUP eRenderGroup, CGa
 	return m_pRenderer->Add_RenderObject(eRenderGroup, pRenderObject);	
 }
 
+const _float4x4* CGameInstance::Get_Transform_float4x4(CPipeLine::TRANSFORMSTATE eState)
+{
+	return m_pPipeLine->Get_Transform_float4x4(eState);
+
+}
+
+_matrix CGameInstance::Get_Transform_Matrix(CPipeLine::TRANSFORMSTATE eState)
+{
+	return m_pPipeLine->Get_Transform_Matrix(eState);
+}
+
+const _float4x4* CGameInstance::Get_Transform_float4x4_Inverse(CPipeLine::TRANSFORMSTATE eState)
+{
+	return m_pPipeLine->Get_Transform_float4x4_Inverse(eState);
+}
+
+_matrix CGameInstance::Get_Transform_Matrix_Inverse(CPipeLine::TRANSFORMSTATE eState)
+{
+	return m_pPipeLine->Get_Transform_Matrix_Inverse(eState);
+}
+
+const _float4* CGameInstance::Get_CamPosition_float4()
+{
+	return m_pPipeLine->Get_CamPosition_float4();
+}
+
+_vector CGameInstance::Get_CamPosition()
+{
+	return m_pPipeLine->Get_CamPosition();
+}
+
+void CGameInstance::Set_Transform(CPipeLine::TRANSFORMSTATE eState, _fmatrix TransformMatrix)
+{
+	m_pPipeLine->Set_Transform(eState, TransformMatrix);
+}
+
 void CGameInstance::Release_Engine()
 {	
 	CGameInstance::GetInstance()->Free();
@@ -169,10 +234,12 @@ void CGameInstance::Release_Engine()
 
 void CGameInstance::Free()
 {
+	Safe_Release(m_pPipeLine);
 	Safe_Release(m_pComponent_Manager);
 	Safe_Release(m_pTimer_Manager);
 	Safe_Release(m_pRenderer);
 	Safe_Release(m_pObject_Manager);
 	Safe_Release(m_pLevel_Manager);
+	Safe_Release(m_pInput_Device);
 	Safe_Release(m_pGraphic_Device);
 }

@@ -12,8 +12,7 @@ CBackGround::CBackGround(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 
 CBackGround::CBackGround(const CBackGround & rhs)
 	:CGameObject(rhs), m_fX(rhs.m_fX), m_fY(rhs.m_fY), m_fSizeX(rhs.m_fSizeX), m_fSizeY(rhs.m_fSizeY),
-	 m_ViewMatrix(rhs.m_ViewMatrix), m_ProjMatrix(rhs.m_ProjMatrix),
-	m_fSpeedPerSec(rhs.m_fSpeedPerSec), m_fRotatePerSec(rhs.m_fRotatePerSec)
+	 m_ViewMatrix(rhs.m_ViewMatrix), m_ProjMatrix(rhs.m_ProjMatrix)
 {
 }
 
@@ -54,7 +53,7 @@ void CBackGround::Priority_Tick(_float fTimeDelta)
 
 void CBackGround::Tick(_float fTimeDelta)
 {
-	Key_Input(fTimeDelta);
+
 }
 
 void CBackGround::Late_Tick(_float fTimeDelta)
@@ -114,59 +113,6 @@ HRESULT CBackGround::Bind_ShaderResources()
 	return S_OK;
 }
 
-void CBackGround::Key_Input(_float fTimeDelta)
-{
-
-	if (GetAsyncKeyState(VK_UP))
-	{
-		m_pTransformCom->Go_Straight( fTimeDelta);
-	}
-
-	if (GetAsyncKeyState(VK_DOWN))
-	{
-		m_pTransformCom->Go_Backward(fTimeDelta);
-	}
-
-	if (GetAsyncKeyState(VK_RIGHT))
-	{
-		m_pTransformCom->Go_Right(fTimeDelta);
-	}
-
-	if (GetAsyncKeyState(VK_LEFT))
-	{
-		m_pTransformCom->Go_Left(fTimeDelta);
-	}
-	if (GetAsyncKeyState('Q'))
-	{
-		m_pTransformCom->Rotate(2, -fTimeDelta);
-	}
-
-	if (GetAsyncKeyState('E'))
-	{
-		m_pTransformCom->Rotate(2, fTimeDelta);
-	}
-
-	if (GetAsyncKeyState('W'))
-	{
-		m_pTransformCom->Rotate(0, fTimeDelta);
-	}
-
-	if (GetAsyncKeyState('S'))
-	{
-		m_pTransformCom->Rotate(0, -fTimeDelta);
-	}
-
-	if (GetAsyncKeyState('A'))
-	{
-		m_pTransformCom->Rotate(1, -fTimeDelta);
-	}
-
-	if (GetAsyncKeyState('D'))
-	{
-		m_pTransformCom->Rotate(1, fTimeDelta);
-	}
-
-}
 
 CBackGround * CBackGround::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {

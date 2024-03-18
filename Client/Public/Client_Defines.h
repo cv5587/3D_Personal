@@ -10,7 +10,7 @@ namespace Client
 	const unsigned int		g_iWinSizeY = 720;
 }
 
-
+extern HINSTANCE g_hInst;
 extern HWND g_hWnd;
 
 using namespace Client;

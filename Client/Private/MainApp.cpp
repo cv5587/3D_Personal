@@ -7,7 +7,7 @@
 #include "CUIObject.h"
 
 #include "Shader.h"
-#include "Texture.h"
+
 
 CMainApp::CMainApp()
 	: m_pGameInstance{ CGameInstance::GetInstance() }
@@ -25,7 +25,7 @@ HRESULT CMainApp::Initialize()
 	EngineDesc.isWindowed = true;
 
 	/* 엔진 초기화과정을 거친다. ( 그래픽디바이스 초기화과정 + 레벨매니져를 사용할 준비를 한다. ) */
-	if (FAILED(m_pGameInstance->Initialize_Engine(LEVEL_END, EngineDesc, &m_pDevice, &m_pContext)))
+	if (FAILED(m_pGameInstance->Initialize_Engine(g_hInst,LEVEL_END, EngineDesc, &m_pDevice, &m_pContext)))
 		return E_FAIL;	
 
 	if (FAILED(Ready_Prototype_Component()))

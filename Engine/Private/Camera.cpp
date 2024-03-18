@@ -1,4 +1,5 @@
 #include "Camera.h"
+#include "GameInstance.h"
 
 CCamera::CCamera(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     :CGameObject{pDevice,pContext}
@@ -42,6 +43,9 @@ void CCamera::Priority_Tick(_float fTimeDelta)
 
 void CCamera::Tick(_float fTimeDelta)
 {
+	m_pGameInstance->Set_Transform(CPipeLine::TS_VIEW, XMMatrixInverse(nullptr, m_pTransformCom->Get_WorldMatrix()));
+	m_pGameInstance->Set_Transform(CPipeLine::TS_PROJ, XMMatrixPerspectiveFovLH(m_fFovy, m_fAspect, m_fNear, m_fFar));
+
 }
 
 void CCamera::Late_Tick(_float fTimeDelta)

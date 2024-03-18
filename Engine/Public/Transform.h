@@ -34,6 +34,12 @@ public:
 								XMVector3Length(Get_State(STATE_UP)).m128_f32[0],
 								XMVector3Length(Get_State(STATE_LOOK)).m128_f32[0]);
 	}
+	const _float4x4* Get_WorldFloat4x4() {
+		return &m_WorldMatrix;
+	}
+	_matrix Get_WorldMatrix() {
+		return XMLoadFloat4x4(&m_WorldMatrix);
+	}
 
 public:
 	void Set_State(STATE eState, _fvector vState);

@@ -3,7 +3,11 @@
 #pragma warning (disable : 4251)
 
 #include <d3d11.h>
+
+#define DIRECTINPUT_VERSION 0x0800
+#include <dinput.h>
 #include <DirectXMath.h>
+#include <DirectXCollision.h>
 #include <d3dcompiler.h>
 #include "fx11\d3dx11effect.h"
 #include "DirectXTK\DDSTextureLoader.h"
@@ -16,6 +20,12 @@ using namespace DirectX;
 #include <list>
 #include <map>
 #include <algorithm>
+
+namespace Engine
+{
+	enum MOUSEKEYSTATE { DIM_LB, DIM_RB, DIM_MB, DIM_END };
+	enum MOUSEMOVESTATE { DIMS_X, DIMS_Y, DIMS_Z, DIMS_END };
+}
 
 #include "Engine_Typedef.h"
 #include "Engine_Function.h"
