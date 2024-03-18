@@ -21,7 +21,7 @@ public:
 	HRESULT Bind_SRV(const _char* pConstantName, ID3D11ShaderResourceView* pSRV);
 
 private:
-	ID3DX11Effect*				m_pEffect = { nullptr };
+	ID3DX11Effect* m_pEffect = { nullptr };
 	_uint						m_iNumPasses = { 0 };
 
 	vector<ID3D11InputLayout*>	m_InputLayouts;

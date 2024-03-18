@@ -13,7 +13,7 @@ public:
 	typedef struct
 	{
 		_float		fSpeedPerSec;
-		_float		fRotatePerSec;
+		_float		fRotationPerSec;
 	}TRANSFORM_DESC;
 
 public:
@@ -61,7 +61,7 @@ public:
 	HRESULT Rotate(_uint _rot, _float fTimeDelta);
 
 public:
-	HRESULT Bind_ShaderResource(class CShader* pShader);
+	HRESULT Bind_ShaderResource(class CShader* pShader, const _char* pConstantName);
 
 
 private:

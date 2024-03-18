@@ -2,7 +2,9 @@
 
 #include "Client_Defines.h"
 #include "Base.h"
-
+BEGIN(Engine)
+class CGameInstance;
+END
 BEGIN(Client)
 
 class CLoader final : public CBase
@@ -33,6 +35,7 @@ private:
 	LEVEL					m_eNextLevel = { LEVEL_END };
 	_tchar					m_szLoadingText[MAX_PATH] = { TEXT("") };
 	_bool					m_isFinished = { false };
+	CGameInstance* m_pGameInstance = { nullptr };
 
 private:
 	HRESULT Loading_For_LogoLevel();

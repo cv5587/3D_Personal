@@ -37,6 +37,15 @@
     <Filter Include="02.GameObjects\00.UI">
       <UniqueIdentifier>{185a50ba-e3c1-4812-addf-6b56e426376e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\02.Terrain">
+      <UniqueIdentifier>{e95ab7c3-bafd-4b8d-9905-ecc9419e11d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.Cameras">
+      <UniqueIdentifier>{55531ab4-895b-47a2-a317-c9d443f2ebed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.Cameras\Free">
+      <UniqueIdentifier>{2bb92374-c12e-4de2-9212-f9e02648b1b4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -75,6 +84,12 @@
     <ClInclude Include="..\public\CUIObject.h">
       <Filter>02.GameObjects\00.UI</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Terrain.h">
+      <Filter>02.GameObjects\02.Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\FreeCamera.h">
+      <Filter>02.GameObjects\99.Cameras\Free</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -104,6 +119,12 @@
     <ClCompile Include="..\private\CUIObject.cpp">
       <Filter>02.GameObjects\00.UI</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Terrain.cpp">
+      <Filter>02.GameObjects\02.Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\FreeCamera.cpp">
+      <Filter>02.GameObjects\99.Cameras\Free</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -125,6 +146,9 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

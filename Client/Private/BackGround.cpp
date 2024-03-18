@@ -100,7 +100,7 @@ HRESULT CBackGround::Bind_ShaderResources()
 {
 	//if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_WorldMatrix)))
 	//	return E_FAIL;
-	if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom)))
+	if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
 
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))

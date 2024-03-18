@@ -1,9 +1,10 @@
 #pragma once
 
 #include "Shader.h"
-#include "VIBuffer_Rect.h"
 #include "Texture.h"
-#include "Transform.h"
+#include "VIBuffer_Rect.h"
+#include "VIBuffer_Terrain.h"
+
 
 /* 컴포넌트의 원형들을 레벨별로 보관한다. */
 
@@ -19,7 +20,7 @@ public:
 	HRESULT Initialize(_uint iNumLevels);
 	HRESULT Add_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag, CComponent* pPrototype);
 	CComponent* Clone_Component(_uint iLevelIndex, const wstring& strPrototypeTag, void* pArg);
-
+	void Clear(_uint iLevelIndex);
 
 private:
 	map<const wstring, CComponent*>*			m_pPrototypes = { nullptr };

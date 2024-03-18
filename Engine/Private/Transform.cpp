@@ -36,7 +36,7 @@ HRESULT CTransform::Initialize(void * pArg)
 		TRANSFORM_DESC* pTransformDesc = (TRANSFORM_DESC*)pArg;
 
 		m_fSpeedPerSec = pTransformDesc->fSpeedPerSec;
-		m_fRotationPerSec = pTransformDesc->fRotatePerSec;
+		m_fRotationPerSec = pTransformDesc->fRotationPerSec;
 	}
 
 
@@ -223,9 +223,9 @@ HRESULT CTransform::Rotate(_uint _rot, _float fTimeDelta)
 	return S_OK;
 }
 
-HRESULT CTransform::Bind_ShaderResource(CShader* pShader)
+HRESULT CTransform::Bind_ShaderResource(CShader* pShader, const _char* pConstantName)
 {
-	return pShader->Bind_Matrix("g_WorldMatrix", & m_WorldMatrix);
+	return pShader->Bind_Matrix(pConstantName, &m_WorldMatrix);
 }
 
 CTransform * CTransform::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)

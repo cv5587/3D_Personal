@@ -79,6 +79,7 @@ HRESULT CMainApp::Ready_Prototype_GameObject()
 		return E_FAIL;
 	//if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Icon0"), CUIObject::Create(m_pDevice, m_pContext))))
 	//	return E_FAIL;
+
 	return S_OK;
 }
 
@@ -104,10 +105,6 @@ HRESULT CMainApp::Ready_Prototype_Component()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/Icon/hinterlandLogo_texture.dds")))))
 		return E_FAIL;
 
-	/*For.Prototype_Component_Transform*/
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
-		CTransform::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
 
 	return S_OK;
 }

@@ -1,15 +1,19 @@
 #include "stdafx.h"
 #include "..\Public\Level_GamePlay.h"
-
 #include "GameInstance.h"
 
-CLevel_GamePlay::CLevel_GamePlay(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
+#include "FreeCamera.h"
+
+
+CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
 {
 }
 
 HRESULT CLevel_GamePlay::Initialize()
 {
+	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -21,9 +25,37 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 #endif
 }
 
-CLevel_GamePlay * CLevel_GamePlay::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
+HRESULT CLevel_GamePlay::Ready_Layer_Camera(const wstring& strLayerTag)
 {
-	CLevel_GamePlay*		pInstance = new CLevel_GamePlay(pDevice, pContext);
+	CFreeCamera::FREE_CAMERA_DESC		CameraDesc{};
+
+	CameraDesc.fSensor = 1.f;
+	CameraDesc.vEye = _float4(0.0f, 30.f, -25.f, 1.f);
+	CameraDesc.vAt = _float4(0.0f, 0.f, 0.f, 1.f);
+	CameraDesc.fFovy = XMConvertToRadians(60.0f);
+	CameraDesc.fAspect = g_iWinSizeX / (_float)g_iWinSizeY;
+	CameraDesc.fNear = 0.1f;
+	CameraDesc.fFar = 3000.f;
+	CameraDesc.fSpeedPerSec = 10.f;
+	CameraDesc.fRotationPerSec = XMConvertToRadians(90.f);
+
+	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, strLayerTag, TEXT("Prototype_GameObject_FreeCamera"), &CameraDesc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, strLayerTag, TEXT("Prototype_GameObject_Terrain"))))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+CLevel_GamePlay* CLevel_GamePlay::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+{
+	CLevel_GamePlay* pInstance = new CLevel_GamePlay(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize()))
 	{

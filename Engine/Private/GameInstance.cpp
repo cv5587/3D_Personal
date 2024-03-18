@@ -84,6 +84,8 @@ HRESULT CGameInstance::Draw(const _float4 & vClearColor)
 void CGameInstance::Clear_Resources(_uint iLevelIndex)
 {
 	m_pObject_Manager->Clear(iLevelIndex);
+	m_pObject_Manager->Clear(iLevelIndex);
+	m_pComponent_Manager->Clear(iLevelIndex);
 }
 
 HRESULT CGameInstance::Clear_BackBuffer_View(_float4 vClearColor)
