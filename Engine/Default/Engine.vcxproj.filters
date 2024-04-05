@@ -97,9 +97,6 @@
     <Filter Include="01.Utility\03.Components\Model\Animation\Channel">
       <UniqueIdentifier>{ddac1853-1e40-43b1-9ae5-66b0a66a235b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\05.FbxBinaryConverter">
-      <UniqueIdentifier>{690dac7b-0f8b-4844-932c-ed9dcdbc2f70}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utility\97.Calculator">
       <UniqueIdentifier>{72a4b565-66a3-49e9-a0ff-66eaa93a0fe4}</UniqueIdentifier>
     </Filter>
@@ -204,9 +201,6 @@
     <ClInclude Include="..\Public\Channel.h">
       <Filter>01.Utility\03.Components\Model\Animation\Channel</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\FbxBinaryConverter.h">
-      <Filter>01.Utility\05.FbxBinaryConverter</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -295,9 +289,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\Channel.cpp">
       <Filter>01.Utility\03.Components\Model\Animation\Channel</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\FbxBinaryConverter.cpp">
-      <Filter>01.Utility\05.FbxBinaryConverter</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
