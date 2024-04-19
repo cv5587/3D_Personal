@@ -5,6 +5,7 @@
 #include "PartObject.h"
 #include "Weapon.h"
 #include "StateMachine.h"
+#include "Player_Camera.h"
 
 CPlayer::CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLandObject{ pDevice, pContext }
@@ -39,8 +40,10 @@ HRESULT CPlayer::Initialize(void* pArg)
 	m_pStateMachine = CStateMachine::GetInstance();
 	m_pStateMachine->Initialize();
 
-	m_pStateMachine->Set_CurrentState(this, PLAYER_IDLE);
+	m_pStateMachine->Set_CurrentState(this, PLAYERSTATE::PLAYER_IDLE);
 	//Set_Equip(PLAYEREQUIP::EQUIP_NONE);
+
+	m_fSensor = 0.02f;
 
 	if (FAILED(Add_PartObjects()))
 		return E_FAIL;
@@ -58,6 +61,7 @@ void CPlayer::Priority_Tick(_float fTimeDelta)
 
 void CPlayer::Tick(_float fTimeDelta)
 {
+
 	if (m_eEquip != PLAYEREQUIP::EQUIP_STONE)
 	{
 		if (m_pGameInstance->Get_DIKeyState_Once(DIK_I))
@@ -71,6 +75,17 @@ void CPlayer::Tick(_float fTimeDelta)
 	{
 		Set_State(PLAYERSTATE::PLAYER_UNEQUIP);
 	}
+
+	_long		MouseMove = { 0 };
+
+	if (MouseMove = m_pGameInstance->Get_DIMouseMove(DIMS_X))
+	{
+		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * m_fSensor * MouseMove);
+	}
+
+
+
+	Mouse_Fix();
 
 	m_pStateMachine->Update(this, fTimeDelta);
 	
@@ -120,29 +135,55 @@ HRESULT CPlayer::Add_PartObjects()
 		return E_FAIL;
 	m_PartObjects.emplace_back(pBody);
 
+	CPlayer_Camera::PLAYER_CAMERA_DESC		CameraDesc{};
+	CameraDesc.pEyeBoneMatrix = 
+		dynamic_cast<CModel*>(m_PartObjects[PART_BODY]->Get_Component(TEXT("Com_Model")))->Get_ControlBoneMatrix("Camera_Weapon_Offset");
+
+	CameraDesc.pParentMatrix = m_pTransformCom->Get_WorldFloat4x4();
+	CameraDesc.pCamBone =
+		dynamic_cast<CModel*>(m_PartObjects[PART_BODY]->Get_Component(TEXT("Com_Model")))->Get_CameraBone("Camera_Weapon_Offset");
+
+	//CameraDesc.vEye = _float4(0.0f, 30.f, -25.f, 1.f);
+	//CameraDesc.vAt = _float4(0.0f, 0.f, 0.f, 1.f);
+
+	CameraDesc.fAspect = g_iWinSizeX / (_float)g_iWinSizeY;
+	CameraDesc.fFovy = XMConvertToRadians(75.f);
+	CameraDesc.fNear = 0.1f;
+	CameraDesc.fFar = 3000.f;
+	CameraDesc.fSpeedPerSec = 50.f;
+	CameraDesc.fRotationPerSec = XMConvertToRadians(90.f);
+	XMStoreFloat4x4(&CameraDesc.vPrePosition, XMMatrixIdentity());
+	CameraDesc.ProtoTypeTag = TEXT("Prototype_GameObject_PlayerCamera");
+	CameraDesc.ModelTag = TEXT("");
+
+	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, TEXT("Layer_Camera"), TEXT("Prototype_GameObject_PlayerCamera"), &CameraDesc)))
+		return E_FAIL;
+
 
 
 	///* 무기객체를 복제해온다. */
-	//CWeapon::WEAPON_DESC			WeaponDesc{};
-	//WeaponDesc.pParentMatrix = m_pTransformCom->Get_WorldFloat4x4();
-	////WeaponDesc.pState = &m_iState;
-	//WeaponDesc.ProtoTypeTag = TEXT("Prototype_GameObject_Weapon");
-	//WeaponDesc.ModelTag = TEXT("Prototype_Component_Model_Stone");
-	//XMStoreFloat4x4(&WeaponDesc.vPrePosition, XMMatrixIdentity());	
-
-	////몸의 모델컴을 가져옴
-	//CModel* pModelCom = dynamic_cast<CModel*>(pBody->Get_Component(TEXT("Com_Model")));
-	//if (nullptr == pModelCom)
-	//	return E_FAIL;
-	////무기 가 붙어 있을 뼈정보를 가져옴
-	//WeaponDesc.pCombinedTransformationMatrix = pModelCom->Get_BoneCombinedTransformationMatrix("right_prop_point");
-	//if (nullptr == WeaponDesc.pCombinedTransformationMatrix)
-	//	return E_FAIL;
-	////뼈정보를 넣어줘서 제작
-	//CGameObject* pWeapon = m_pGameInstance->Clone_Object(TEXT("Prototype_GameObject_Weapon"), &WeaponDesc);
-	//if (nullptr == pWeapon)
-	//	return E_FAIL;
-	//m_PartObjects.emplace_back(pWeapon);
+	CWeapon::WEAPON_DESC			WeaponDesc{};
+	WeaponDesc.pParentMatrix = m_pTransformCom->Get_WorldFloat4x4();
+	//WeaponDesc.pState = &m_iState;
+	WeaponDesc.ProtoTypeTag = TEXT("Prototype_GameObject_Weapon");
+	WeaponDesc.ModelTag = TEXT("Prototype_Component_Model_Stone");
+	XMStoreFloat4x4(&WeaponDesc.vPrePosition, XMMatrixIdentity());	
+	WeaponDesc.pState = &m_eState;
+	WeaponDesc.pEquip = &m_eEquip;
+	WeaponDesc.pAnimFinished = &m_bAnimFinished;
+	//몸의 모델컴을 가져옴
+	CModel* pModelCom = dynamic_cast<CModel*>(pBody->Get_Component(TEXT("Com_Model")));
+	if (nullptr == pModelCom)
+		return E_FAIL;
+	//무기 가 붙어 있을 뼈정보를 가져옴
+	WeaponDesc.pCombinedTransformationMatrix = pModelCom->Get_BoneCombinedTransformationMatrix("right_prop_point");
+	if (nullptr == WeaponDesc.pCombinedTransformationMatrix)
+		return E_FAIL;
+	//뼈정보를 넣어줘서 제작
+	CGameObject* pWeapon = m_pGameInstance->Clone_Object(TEXT("Prototype_GameObject_Weapon"), &WeaponDesc);
+	if (nullptr == pWeapon)
+		return E_FAIL;
+	m_PartObjects.emplace_back(pWeapon);
 
 	return S_OK;
 }
@@ -198,6 +239,13 @@ void CPlayer::Set_State(PLAYERSTATE eNewState)
 	m_pStateMachine->Set_CurrentState(this, eNewState);
 }
 
+void CPlayer::Mouse_Fix()
+{
+	POINT	pt{ g_iWinSizeX >> 1, g_iWinSizeY >> 1 };
+
+	ClientToScreen(g_hWnd, &pt);
+	SetCursorPos(pt.x, pt.y);
+}
 CPlayer* CPlayer::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 	CPlayer* pInstance = new CPlayer(pDevice, pContext);
@@ -232,6 +280,7 @@ void CPlayer::Free()
 		Safe_Release(pPartObject);
 
 	m_PartObjects.clear();
+
 	Safe_Release(m_pStateMachine);
 	CStateMachine::DestroyInstance();
 

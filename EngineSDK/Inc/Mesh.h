@@ -31,9 +31,9 @@ private:
 	vector<_uint>		m_BoneIndices;
 	vector<_float4x4>	m_OffsetMatrices;
 
-	VTXMESH*	m_SaveVertices;
-	VTXANIMMESH*	m_SaveAnimVertices;
-	_uint*			m_SaveIndices;
+	VTXMESH* m_SaveVertices = { nullptr };
+	VTXANIMMESH*	m_SaveAnimVertices = { nullptr };
+	_uint*			m_SaveIndices = { nullptr };
 
 private:
 	HRESULT Ready_Vertices_For_NonAnimMesh(const aiMesh* pAIMesh, _fmatrix PreTransformMatrix);

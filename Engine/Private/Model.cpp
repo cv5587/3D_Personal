@@ -45,11 +45,24 @@ const _float4x4* CModel::Get_BoneCombinedTransformationMatrix(const _char* pBone
 	{
 		return pBone->Compare_Name(pBoneName);
 	});
-
+    
 	if (iter == m_Bones.end())
 		return nullptr;
 
 	return (*iter)->Get_CombinedTransformationMatrix();	
+}
+
+_float4x4* CModel::Get_ControlBoneMatrix(const _char* pBoneName)
+{
+    auto	iter = find_if(m_Bones.begin(), m_Bones.end(), [&](CBone* pBone)->_bool
+        {
+            return pBone->Compare_Name(pBoneName);
+        });
+
+    if (iter == m_Bones.end())
+        return nullptr;
+
+    return (*iter)->Get_ControlBoneMatrix();
 }
 
 HRESULT CModel::Initialize_Prototype(MODELTYPE eModelType, CAnimation::ANIMTYPE eAnimType, const _char* pModelFilePath, _fmatrix PreTransformMatrix)
@@ -136,9 +149,10 @@ void CModel::Play_Animation(_float fTimeDelta)
 
     /* 전체뼈를 순회하면서 모든 뼈의 CombinedTransformationMatrix를 갱신한다. */
     for (auto& pBone : m_Bones)
-        pBone->Update_CombinedTransformationMatrix(m_Bones, XMLoadFloat4x4(&m_PreTransformMatrix));
+            pBone->Update_CombinedTransformationMatrix(m_Bones, XMLoadFloat4x4(&m_PreTransformMatrix));
 
 }
+
 
 void CModel::Shift_Animation(_float fTimeDelta)
 {
@@ -289,6 +303,26 @@ HRESULT CModel::Read_Binary( char* FilePath)
     fin.close();
 
     return S_OK;
+}
+
+const _float4x4* CModel::Get_CameraOffset(const _char* pName)
+{
+    for (auto& pBone : m_Bones)
+    {
+        if (pBone->Compare_Name(pName))
+            return pBone->Get_CombinedTransformationMatrix();
+    }
+    return nullptr;
+}
+
+CBone* CModel::Get_CameraBone(const char* pBoneName)
+{
+    for (auto& pBone : m_Bones)
+    {
+        if (pBone->Compare_Name(pBoneName))
+            return pBone;
+    }
+    return nullptr;
 }
 
 HRESULT CModel::Ready_Meshes()

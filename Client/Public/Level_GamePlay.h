@@ -23,6 +23,10 @@ private:
 	HRESULT Ready_LandObjects();
 	HRESULT Ready_Layer_Player(const wstring& strLayerTag, CLandObject::LANDOBJ_DESC* pLandObjDesc);
 	HRESULT Ready_Layer_Monster(const wstring& strLayerTag, CLandObject::LANDOBJ_DESC* pLandObjDesc);
+	HRESULT Load_GameData(const wstring& strLayerTag);
+
+private:
+	class CTerrainManager* m_pTerrainMgr = { nullptr };
 
 public:
 	static CLevel_GamePlay* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

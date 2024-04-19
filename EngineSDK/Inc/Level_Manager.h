@@ -23,7 +23,7 @@ public:
 public:
 	/* 새로운 레벨로 교체한다. */
 	HRESULT Open_Level(_uint iLevelIndex, class CLevel* pNewLevel);
-	
+
 private:
 	class CLevel*			m_pCurrentLevel = { nullptr };
 	class CGameInstance*	m_pGameInstance = { nullptr };

@@ -17,6 +17,12 @@ public:
 	const _float4x4* Get_CombinedTransformationMatrix() const {
 		return &m_CombinedTransformationMatrix;
 	}
+	 _float4x4* Get_CombinedControlBoneMatrix()  {
+		return &m_CombinedTransformationMatrix;
+	}
+	 _float4x4* Get_ControlBoneMatrix() {
+		 return &m_TransformationMatrix;
+	 }
 	const _float4x4* Get_TransformationMatrix() const {
 		return &m_TransformationMatrix;
 	}

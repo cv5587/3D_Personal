@@ -32,6 +32,8 @@ public:
 		return m_Animations[m_AnimDesc.iAnimIndex]->Get_Finished();
 	}
 	const _float4x4* Get_BoneCombinedTransformationMatrix(const _char* pBoneName) const;
+	 _float4x4* Get_ControlBoneMatrix(const _char* pBoneName) ;
+
 
 public:
 	virtual HRESULT	Initialize_Prototype(MODELTYPE eModelType, CAnimation::ANIMTYPE eAnimType, const _char* pModelFilePath, _fmatrix PreTransformMatrix);
@@ -57,6 +59,8 @@ public:
 
 	HRESULT Make_Binary(const wstring FilePath);
 	HRESULT Read_Binary( char* FilePath);
+
+	const _float4x4* Get_CameraOffset(const _char* pName);
 private:
 	const aiScene* m_pAIScene = { nullptr };
 	Assimp::Importer			m_Importer;
@@ -78,8 +82,9 @@ private:
 	ANIMATION_DESC				m_PreAnimDesc{ 0, false };//바뀐애니메이션
 	vector<class CAnimation*>	m_Animations;
 
+public:
+	class CBone* Get_CameraBone(const char* pBoneName);
 
-//	vector<KEYFRAME> m_PreAnimationLastKey;
 
 private:
 	HRESULT Ready_Meshes();

@@ -31,11 +31,6 @@ HRESULT CTerrainManager::Clone_Terrain(void* pArg)
 	return S_OK;
 }
 
-CComponent* CTerrainManager::Get_Terrain_Component(const wstring& ComTag)
-{
-	return nullptr;
-}
-
 void CTerrainManager::Terrain_Release()
 {
 	Safe_Release(m_pTerrain);

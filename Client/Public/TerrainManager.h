@@ -18,9 +18,6 @@ public:
     HRESULT Clone_Terrain(void* pArg);
 
 public:
-    class CComponent* Get_Terrain_Component(const wstring& ComTag);
-
-public:
     void Terrain_Release();
 private:
     class CGameInstance* m_pGameInstance = { nullptr };

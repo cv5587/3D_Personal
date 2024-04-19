@@ -134,24 +134,24 @@ HRESULT CData_Manager::Load_Data(_uint iLevelIndex)
 
 	fin.close();
 
-	//툴에서는 카메라를 제작해주지만 인게임으로 넘어가서는 플레이어 생성시 카메라 자동생성으로 제작하기.
-	CFreeCamera::FREE_CAMERA_DESC		CameraDesc{};
+	////툴에서는 카메라를 제작해주지만 인게임으로 넘어가서는 플레이어 생성시 카메라 자동생성으로 제작하기.
+	//CFreeCamera::FREE_CAMERA_DESC		CameraDesc{};
 
-	CameraDesc.fSensor = 0.05f;
-	CameraDesc.vEye = _float4(0.0f, 30.f, -25.f, 1.f);
-	CameraDesc.vAt = _float4(0.0f, 0.f, 0.f, 1.f);
-	CameraDesc.fFovy = XMConvertToRadians(60.0f);
-	CameraDesc.fAspect = g_iWinSizeX / (_float)g_iWinSizeY;
-	CameraDesc.fNear = 0.1f;
-	CameraDesc.fFar = 3000.f;
-	CameraDesc.fSpeedPerSec = 50.f;
-	CameraDesc.fRotationPerSec = XMConvertToRadians(90.f);
-	XMStoreFloat4x4(&CameraDesc.vPrePosition, XMMatrixIdentity());
-	CameraDesc.ProtoTypeTag = TEXT("Prototype_GameObject_FreeCamera");
-	CameraDesc.ModelTag = TEXT("");
+	//CameraDesc.fSensor = 0.05f;
+	//CameraDesc.vEye = _float4(0.0f, 30.f, -25.f, 1.f);
+	//CameraDesc.vAt = _float4(0.0f, 0.f, 0.f, 1.f);
+	//CameraDesc.fFovy = XMConvertToRadians(60.0f);
+	//CameraDesc.fAspect = g_iWinSizeX / (_float)g_iWinSizeY;
+	//CameraDesc.fNear = 0.1f;
+	//CameraDesc.fFar = 3000.f;
+	//CameraDesc.fSpeedPerSec = 50.f;
+	//CameraDesc.fRotationPerSec = XMConvertToRadians(90.f);
+	//XMStoreFloat4x4(&CameraDesc.vPrePosition, XMMatrixIdentity());
+	//CameraDesc.ProtoTypeTag = TEXT("Prototype_GameObject_FreeCamera");
+	//CameraDesc.ModelTag = TEXT("");
 
-	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, TEXT("Layer_Camera"), TEXT("Prototype_GameObject_FreeCamera"), &CameraDesc)))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, TEXT("Layer_Camera"), TEXT("Prototype_GameObject_FreeCamera"), &CameraDesc)))
+	//	return E_FAIL;
 
 
 	return S_OK;

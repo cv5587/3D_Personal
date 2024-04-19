@@ -9,6 +9,7 @@
 #include "Player.h"
 #include "Body_Player.h"
 #include "Weapon.h"
+#include "Player_Camera.h"
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice{ pDevice }
@@ -134,11 +135,11 @@ HRESULT CLoader::Loading_For_GamePlayLevel()
 	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Fiona"),
 	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Fiona/Fiona.fbx", PreTransformMatrix))))
 	//	return E_FAIL;
-	 /*ForkLift*/
-	PreTransformMatrix = XMMatrixScaling(0.1f, 0.1f, 0.1f) * XMMatrixRotationY(XMConvertToRadians(180.f));
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_ForkLift"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM,CAnimation::OBJ_ENVIRONMENT, "../Bin/Resources/Models/ForkLift/ForkLift.fbx", PreTransformMatrix))))
-		return E_FAIL;
+	// /*ForkLift*/
+	//PreTransformMatrix = XMMatrixScaling(0.1f, 0.1f, 0.1f) * XMMatrixRotationY(XMConvertToRadians(180.f));
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_ForkLift"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM,CAnimation::OBJ_ENVIRONMENT, "../Bin/Resources/Models/ForkLift/ForkLift.fbx", PreTransformMatrix))))
+	//	return E_FAIL;
 	///*CliffA*/
 	//PreTransformMatrix = XMMatrixScaling(0.1f, 0.1f, 0.1f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_CliffA"),
@@ -151,7 +152,7 @@ HRESULT CLoader::Loading_For_GamePlayLevel()
 	//	return E_FAIL;
 
 	//	/*플레이어*/
-	//PreTransformMatrix= XMMatrixRotationY(XMConvertToRadians(180.0f));
+	//PreTransformMatrix = XMMatrixIdentity()* XMMatrixRotationY(XMConvertToRadians(180.0f));
 	//	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Player"),
 	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, CAnimation::OBJ_PLAYER, "../Bin/Asset2D/Player/NEW_FPHand_Rig_fix.fbx", PreTransformMatrix))))
 	//	return E_FAIL;
@@ -209,6 +210,11 @@ HRESULT CLoader::Loading_For_GamePlayLevel()
 	/* For.Prototype_GameObject_FreeCamera*/
 	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_FreeCamera"),
 		CFreeCamera::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_PlayerCamera*/
+	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_PlayerCamera"),
+		CPlayer_Camera::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Monster */

@@ -38,6 +38,7 @@ HRESULT CLevel_Manager::Open_Level(_uint iLevelIndex, CLevel * pNewLevel)
 
 
 
+
 CLevel_Manager * CLevel_Manager::Create()
 {
 	CLevel_Manager*		pInstance = new CLevel_Manager();

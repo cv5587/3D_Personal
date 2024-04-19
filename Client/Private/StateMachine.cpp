@@ -1,4 +1,5 @@
 #include "StateMachine.h"
+#include "Player.h"
 #include "State.h"
 #include "State_Idle.h"
 #include "State_Exhausted.h"
@@ -15,9 +16,9 @@ CStateMachine::CStateMachine()
 
 HRESULT CStateMachine::Initialize()
 {
+	CState* pState = nullptr;
 
-
-	CState* pState = CState_Idle::Create();
+	 pState = CState_Idle::Create();
 	m_vecStates.push_back(pState);
 
 	pState = CState_Exhausted::Create();
@@ -35,19 +36,22 @@ HRESULT CStateMachine::Initialize()
 	pState = CState_UnEquip::Create();
 	m_vecStates.push_back(pState);
 
+
+	//m_eCurrentState = m_vecStates[(_uint)PLAYERSTATE::PLAYER_IDLE];
+
 	return S_OK;
 }
 
 void CStateMachine::Set_CurrentState(class CPlayer* Player, PLAYERSTATE eNewState)
 {
-	if (nullptr!=m_eCurrentState)
+	if (nullptr!= m_eCurrentState)
 	{
 		m_eCurrentState->Exit(Player);
 	}
 
-	Safe_Release(m_eCurrentState);
+	//Safe_Release(m_eCurrentState);
 	m_eCurrentState = m_vecStates[(_uint)eNewState];
-	Safe_AddRef(m_eCurrentState);
+	//Safe_AddRef(m_eCurrentState);
 
 	if (nullptr != m_eCurrentState)
 	{

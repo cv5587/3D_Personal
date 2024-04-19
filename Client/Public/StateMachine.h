@@ -18,7 +18,7 @@ public:
     void Update(class CPlayer* Player, _float fTimeDelta);
 
 private:
-    class CState* m_eCurrentState;
+    class CState* m_eCurrentState = { nullptr };
     vector<class CState*> m_vecStates;
 
 public:

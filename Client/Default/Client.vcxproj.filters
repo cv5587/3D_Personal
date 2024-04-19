@@ -43,12 +43,6 @@
     <Filter Include="02.GameObjects\99.Cameras\Free">
       <UniqueIdentifier>{2bb92374-c12e-4de2-9212-f9e02648b1b4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="96.Imgui">
-      <UniqueIdentifier>{18074a33-1acd-4c51-ba47-4df22f01ae74}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="96.Imgui\Sources">
-      <UniqueIdentifier>{fa18dab5-a947-4d71-932a-1708f0ed21bd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\01.Terrain">
       <UniqueIdentifier>{e95ab7c3-bafd-4b8d-9905-ecc9419e11d5}</UniqueIdentifier>
     </Filter>
@@ -57,9 +51,6 @@
     </Filter>
     <Filter Include="02.GameObjects\03. EnvironmentObject">
       <UniqueIdentifier>{9ec30689-c6e7-4329-a8e5-f2a435ecaa63}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="96.Imgui\Gizmo">
-      <UniqueIdentifier>{8869d9dd-6f7c-4cab-bac4-413f1b0722da}</UniqueIdentifier>
     </Filter>
     <Filter Include="95.Data_Manager">
       <UniqueIdentifier>{20d33931-5137-4097-976c-5f45874ffcdc}</UniqueIdentifier>
@@ -78,9 +69,6 @@
     </Filter>
     <Filter Include="02.GameObjects\02.LandObject\Player\PartObject\Body">
       <UniqueIdentifier>{24bce5bf-4f9a-4c71-9e84-8af32c5c7c5e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="96.Imgui\Manager">
-      <UniqueIdentifier>{15a1f240-558c-40c0-baf0-540589bd30b7}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\02.LandObject\Player\PartObject\Weapon">
       <UniqueIdentifier>{f2eeef2a-b14c-4ca5-8fce-41e0d6eed453}</UniqueIdentifier>
@@ -117,6 +105,9 @@
     </Filter>
     <Filter Include="94. StateMachine\State\Player\State_UnEquip">
       <UniqueIdentifier>{1a5c5f12-a26b-450e-9013-b28005c7dc95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.Cameras\PlayerCamera">
+      <UniqueIdentifier>{3ce49c6c-dbb7-4e17-b18d-d006d8ff2c32}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -162,59 +153,14 @@
     <ClInclude Include="..\Public\FreeCamera.h">
       <Filter>02.GameObjects\99.Cameras\Free</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Gui.h">
-      <Filter>96.Imgui</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\TerrainManager.h">
       <Filter>02.GameObjects\01.Terrain\Manager</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Monster.h">
       <Filter>02.GameObjects\02.LandObject\Monster</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Imgui\imstb_truetype.h">
-      <Filter>96.Imgui\Sources</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Imgui\imconfig.h">
-      <Filter>96.Imgui\Sources</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Imgui\imgui.h">
-      <Filter>96.Imgui\Sources</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Imgui\imgui_impl_dx11.h">
-      <Filter>96.Imgui\Sources</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Imgui\imgui_impl_win32.h">
-      <Filter>96.Imgui\Sources</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Imgui\imgui_internal.h">
-      <Filter>96.Imgui\Sources</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Imgui\imstb_rectpack.h">
-      <Filter>96.Imgui\Sources</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Imgui\imstb_textedit.h">
-      <Filter>96.Imgui\Sources</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\EnvironmentObject.h">
       <Filter>02.GameObjects\03. EnvironmentObject</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Imguizmo\GraphEditor.h">
-      <Filter>96.Imgui\Gizmo</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Imguizmo\ImCurveEdit.h">
-      <Filter>96.Imgui\Gizmo</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Imguizmo\ImGradient.h">
-      <Filter>96.Imgui\Gizmo</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Imguizmo\ImGuizmo.h">
-      <Filter>96.Imgui\Gizmo</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Imguizmo\ImSequencer.h">
-      <Filter>96.Imgui\Gizmo</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Imguizmo\ImZoomSlider.h">
-      <Filter>96.Imgui\Gizmo</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Player.h">
       <Filter>02.GameObjects\02.LandObject\Player</Filter>
@@ -233,9 +179,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\Weapon.h">
       <Filter>02.GameObjects\02.LandObject\Player\PartObject\Weapon\Weapon</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\ImGuiManager.h">
-      <Filter>96.Imgui\Manager</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Revolver.h">
       <Filter>02.GameObjects\02.LandObject\Player\PartObject\Weapon\Revolver</Filter>
@@ -263,6 +206,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\State_UnEquip.h">
       <Filter>94. StateMachine\State\Player\State_UnEquip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Player_Camera.h">
+      <Filter>02.GameObjects\99.Cameras\PlayerCamera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -299,53 +245,14 @@
     <ClCompile Include="..\Private\FreeCamera.cpp">
       <Filter>02.GameObjects\99.Cameras\Free</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Gui.cpp">
-      <Filter>96.Imgui</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\TerrainManager.cpp">
       <Filter>02.GameObjects\01.Terrain\Manager</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Monster.cpp">
       <Filter>02.GameObjects\02.LandObject\Monster</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Imgui\imgui.cpp">
-      <Filter>96.Imgui\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Imgui\imgui_demo.cpp">
-      <Filter>96.Imgui\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Imgui\imgui_draw.cpp">
-      <Filter>96.Imgui\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Imgui\imgui_impl_dx11.cpp">
-      <Filter>96.Imgui\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Imgui\imgui_impl_win32.cpp">
-      <Filter>96.Imgui\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Imgui\imgui_tables.cpp">
-      <Filter>96.Imgui\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Imgui\imgui_widgets.cpp">
-      <Filter>96.Imgui\Sources</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\EnvironmentObject.cpp">
       <Filter>02.GameObjects\03. EnvironmentObject</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Public\Imguizmo\GraphEditor.cpp">
-      <Filter>96.Imgui\Gizmo</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Public\Imguizmo\ImCurveEdit.cpp">
-      <Filter>96.Imgui\Gizmo</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Public\Imguizmo\ImGradient.cpp">
-      <Filter>96.Imgui\Gizmo</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Public\Imguizmo\ImGuizmo.cpp">
-      <Filter>96.Imgui\Gizmo</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Public\Imguizmo\ImSequencer.cpp">
-      <Filter>96.Imgui\Gizmo</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Player.cpp">
       <Filter>02.GameObjects\02.LandObject\Player</Filter>
@@ -364,9 +271,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\Weapon.cpp">
       <Filter>02.GameObjects\02.LandObject\Player\PartObject\Weapon\Weapon</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\ImGuiManager.cpp">
-      <Filter>96.Imgui\Manager</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Revolver.cpp">
       <Filter>02.GameObjects\02.LandObject\Player\PartObject\Weapon\Revolver</Filter>
@@ -394,6 +298,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\State_UnEquip.cpp">
       <Filter>94. StateMachine\State\Player\State_UnEquip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player_Camera.cpp">
+      <Filter>02.GameObjects\99.Cameras\PlayerCamera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -60,23 +60,27 @@ void CWeapon::Late_Tick(_float fTimeDelta)
 
 HRESULT CWeapon::Render()
 {
-	if (FAILED(Bind_ShaderResources()))
-		return E_FAIL;
-
-
-
-	_uint	iNumMeshes = m_pModelCom->Get_NumMeshes();
-
-	for (size_t i = 0; i < iNumMeshes; i++)
+	if(PLAYEREQUIP::EQUIP_STONE==*m_pEquip)
 	{
-		if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_Texture", i, aiTextureType_DIFFUSE)))
+
+		if (FAILED(Bind_ShaderResources()))
 			return E_FAIL;
 
-		m_pShaderCom->Begin(0);
 
-		m_pModelCom->Render(i);
+
+		_uint	iNumMeshes = m_pModelCom->Get_NumMeshes();
+
+		for (size_t i = 0; i < iNumMeshes; i++)
+		{
+			if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_Texture", i, aiTextureType_DIFFUSE)))
+				return E_FAIL;
+
+			m_pShaderCom->Begin(0);
+
+			m_pModelCom->Render(i);
+		}
+
 	}
-
 
 	return S_OK;
 }

@@ -8,7 +8,7 @@ BEGIN(Client)
 class CPlayer final : public CLandObject
 {
 public:
-	enum PART { PART_BODY, PART_WEAPON, PART_END };
+	enum PART { PART_BODY, PART_CAMERA, PART_WEAPON,  PART_END };
 	//enum STATE { STATE_IDLE, STATE_WALK, STATE_RUN, STATE_ATTACK, STATE_END };
 
 private:
@@ -64,9 +64,12 @@ private:
 	PLAYEREQUIP								m_eEquip = { PLAYEREQUIP::EQUIP_NONE };
 	_bool											m_bChangeEquip = { false };
 	PLAYERCONDITION						m_eCondition = { PLAYERCONDITION::CON_NORMAL };
-	class CStateMachine* m_pStateMachine = { nullptr };
-	_bool m_bAnimFinished = { true };
+	class CStateMachine*					m_pStateMachine = { nullptr };
+	_bool											m_bAnimFinished = { true };
+	_float											m_fSensor = { 0.0f };
 	
+private:
+	void Mouse_Fix();
 public:
 	static CPlayer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;

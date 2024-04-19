@@ -21,7 +21,7 @@ private:
 	LEVEL				m_eNextLevel = { LEVEL_END };
 
 	class CLoader* m_pLoader = { nullptr };
-
+	
 private:
 	HRESULT Ready_Layer_BackGround(const wstring& strLayerTag);
 
