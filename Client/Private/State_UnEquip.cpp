@@ -65,7 +65,10 @@ void CState_UnEquip::Update(CPlayer* Player, _float fTimeDelta)
 
 void CState_UnEquip::Exit(CPlayer* Player)
 {
-
+	//if (Player->isEquip() != PLAYEREQUIP::EQUIP_NONE)
+	//{
+	//	Player->Set_State(PLAYERSTATE::PLAYER_EQUIP);
+	//}
 }
 
 CState* CState_UnEquip::Create()

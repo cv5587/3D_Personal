@@ -28,7 +28,8 @@ HRESULT CBody_Player::Initialize(void* pArg)
 	if (FAILED(Add_Components()))
 		return E_FAIL;
 
-	//m_pModelCom->Set_FirstAnimationIndex(CModel::ANIMATION_DESC(332, true));
+
+	
 
 	return S_OK;
 }
@@ -129,6 +130,18 @@ void CBody_Player::Set_AnimationState()
 			AnimDesc.iAnimIndex = 336;
 			AnimDesc.isLoop = true;
 			break;
+		case Client::PLAYER_AIM_S:
+			AnimDesc.iAnimIndex = 331;
+			AnimDesc.isLoop = false;
+			break;
+		case Client::PLAYER_AIM:
+			AnimDesc.iAnimIndex = 328;
+			AnimDesc.isLoop = true;
+			break;
+		case Client::PLAYER_AIM_E:
+			AnimDesc.iAnimIndex = 327;
+			AnimDesc.isLoop = false;
+			break;
 		case Client::PLAYER_WALK_S:
 			AnimDesc.iAnimIndex = 341;
 			AnimDesc.isLoop = false;
@@ -137,12 +150,8 @@ void CBody_Player::Set_AnimationState()
 			AnimDesc.iAnimIndex = 344;
 			AnimDesc.isLoop = false;
 			break;
-		case Client::PLAYER_WALK_FB:
+		case Client::PLAYER_WALK_FB:	
 			AnimDesc.iAnimIndex = 339;
-			AnimDesc.isLoop = true;
-			break;
-		case Client::PLAYER_SLOW_WALK_FB:
-			AnimDesc.iAnimIndex = 340;
 			AnimDesc.isLoop = true;
 			break;
 		case Client::PLAYER_WALK_L:
@@ -161,18 +170,7 @@ void CBody_Player::Set_AnimationState()
 			AnimDesc.iAnimIndex = 346;
 			AnimDesc.isLoop = false;
 			break;
-		case Client::PLAYER_AIM_S:
-			AnimDesc.iAnimIndex = 331;
-			AnimDesc.isLoop = false;
-			break;
-		case Client::PLAYER_AIM:
-			AnimDesc.iAnimIndex = 328;
-			AnimDesc.isLoop = true;
-			break;
-		case Client::PLAYER_AIM_E:
-			AnimDesc.iAnimIndex = 327;
-			AnimDesc.isLoop = false;
-			break;
+
 		case Client::PLAYER_THROW:
 			AnimDesc.iAnimIndex = 337;
 			AnimDesc.isLoop = false;
@@ -184,6 +182,79 @@ void CBody_Player::Set_AnimationState()
 		case Client::PLAYER_UNEQUIP:
 			AnimDesc.iAnimIndex = 338;
 			AnimDesc.isLoop = false;
+			break;
+		default:
+			break;
+		}
+		break;
+	case EQUIP_REVOLVER:
+		switch (*m_pState)
+		{
+		case Client::PLAYER_IDLE:
+			AnimDesc.iAnimIndex = 302;
+			AnimDesc.isLoop = true;
+			break;
+		case Client::PLAYER_IDLE_EXHAUSTED:
+			AnimDesc.iAnimIndex = 302;
+			AnimDesc.isLoop = true;
+			break;
+		case Client::PLAYER_JOG:
+			AnimDesc.iAnimIndex = 303;
+			AnimDesc.isLoop = true;
+			break;
+		case Client::PLAYER_RUN:
+			AnimDesc.iAnimIndex = 307;
+			AnimDesc.isLoop = true;
+			break;
+		case Client::PLAYER_EQUIP:
+			AnimDesc.iAnimIndex = 298;
+			AnimDesc.isLoop = false;
+			break;
+		case Client::PLAYER_UNEQUIP:
+			AnimDesc.iAnimIndex = 309;
+			AnimDesc.isLoop = false;
+			break;
+		case Client::PLAYER_AIM_S:
+			AnimDesc.iAnimIndex = 301;
+			AnimDesc.isLoop = false;
+			break;
+		case Client::PLAYER_AIM:
+			AnimDesc.iAnimIndex = 296;
+			AnimDesc.isLoop = true;
+			break;
+		case Client::PLAYER_AIM_E:
+			AnimDesc.iAnimIndex = 297;
+			AnimDesc.isLoop = false;
+			break;
+		case Client::PLAYER_WALK_L:
+			AnimDesc.iAnimIndex = 310;
+			AnimDesc.isLoop = true;
+			break;
+		case Client::PLAYER_WALK_R:
+			AnimDesc.iAnimIndex = 311;
+			AnimDesc.isLoop = true;
+			break;
+		case Client::PLAYER_FIRE:
+			AnimDesc.iAnimIndex = 299;
+			AnimDesc.isLoop = false;
+			break;
+		case Client::PLAYER_HIPFIRE:
+			AnimDesc.iAnimIndex = 300;
+			AnimDesc.isLoop = false;
+			break;
+		case Client::PLAYER_RELOAD_S:
+			AnimDesc.iAnimIndex = 306;
+			AnimDesc.isLoop = false;
+			break;
+		case Client::PLAYER_RELOAD://ÃÑ¾Ë °¹¼ö ¹Þ¾Æ¼­ È½¼ö¸¸Å­ ÁøÇà ¿¹Á¤
+			AnimDesc.iAnimIndex = 305;
+			AnimDesc.isLoop = false;
+			break;
+		case Client::PLAYER_RELOAD_E:
+			AnimDesc.iAnimIndex = 304;
+			AnimDesc.isLoop = false;
+			break;
+		case Client::PLAYER_END:
 			break;
 		default:
 			break;

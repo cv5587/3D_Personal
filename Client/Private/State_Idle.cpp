@@ -43,7 +43,23 @@ void CState_Idle::Update(CPlayer* Player, _float fTimeDelta)
 		}
 	}
 
+	if (m_pGameInstance->Get_DIMouseState(DIM_RB))
+	{
+		if(Player->isEquip()!=PLAYEREQUIP::EQUIP_NONE)
+			Player->Set_State(PLAYERSTATE::PLAYER_AIM_S);
+	}
 
+
+	if (m_pGameInstance->Get_DIKeyState_Once(DIK_R))
+		if (Player->isEquip() == PLAYEREQUIP::EQUIP_REVOLVER)
+			Player->Set_State(PLAYERSTATE::PLAYER_RELOAD_S);
+	if (m_pGameInstance->Get_DIMouseState(DIM_LB))
+	{	
+		if(Player->isEquip()==PLAYEREQUIP::EQUIP_STONE)
+			Player->Set_State(PLAYERSTATE::PLAYER_THROW);
+		else if (Player->isEquip() == PLAYEREQUIP::EQUIP_REVOLVER)
+			Player->Set_State(PLAYERSTATE::PLAYER_HIPFIRE);
+	}
 }
 
 void CState_Idle::Exit(CPlayer* Player)

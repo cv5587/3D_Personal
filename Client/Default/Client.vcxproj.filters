@@ -109,6 +109,57 @@
     <Filter Include="02.GameObjects\99.Cameras\PlayerCamera">
       <UniqueIdentifier>{3ce49c6c-dbb7-4e17-b18d-d006d8ff2c32}</UniqueIdentifier>
     </Filter>
+    <Filter Include="94. StateMachine\State\Player\State_Aim_S">
+      <UniqueIdentifier>{33df44e9-7776-48f4-87e5-183aa3f9e9eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94. StateMachine\State\Player\State_Aim">
+      <UniqueIdentifier>{3c6b2790-138c-438b-a18a-c51e9882dc44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94. StateMachine\State\Player\State_Aim_E">
+      <UniqueIdentifier>{26a78c21-838a-4672-9f45-6acc476e7b31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94. StateMachine\State\Player\State_Walk_S">
+      <UniqueIdentifier>{3d087f81-fbf3-47b6-9bc9-a2a3e4cea602}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94. StateMachine\State\Player\State_Walk_FB">
+      <UniqueIdentifier>{5de33030-1f74-424e-9bd4-a29f8dd60114}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94. StateMachine\State\Player\State_Walk_L">
+      <UniqueIdentifier>{a4e19e66-410f-4323-9235-a446bd39b573}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94. StateMachine\State\Player\State_Walk_R">
+      <UniqueIdentifier>{4534f26e-53a6-4c33-b508-f57bc8eefc85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94. StateMachine\State\Player\State_Walk_LE">
+      <UniqueIdentifier>{6f854ebb-51ed-4fcb-bc98-7203dcaa3525}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94. StateMachine\State\Player\State_Walk_E">
+      <UniqueIdentifier>{781ed8ef-7716-48dd-a9f2-bdb9a4d6e15c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94. StateMachine\State\Player\State_Walk_RE">
+      <UniqueIdentifier>{f9e012fa-9d4d-4400-9642-81a9c11b3c5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94. StateMachine\State\Player\State_Throw">
+      <UniqueIdentifier>{6dd6d7ce-0469-4340-8e22-6582a94b5158}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94. StateMachine\State\Player\State_Attack">
+      <UniqueIdentifier>{b7ccacfd-5d35-402b-87e4-9ea7687b667c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94. StateMachine\State\Player\State_Fire">
+      <UniqueIdentifier>{bd627851-2c18-41b5-b10d-3a29e92575d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94. StateMachine\State\Player\State_Hipfire">
+      <UniqueIdentifier>{f8bea0f5-6254-4ec1-80f6-0c4ed84e7091}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94. StateMachine\State\Player\State_Reload_S">
+      <UniqueIdentifier>{1bcaf5a8-937d-4b13-8948-e6adab458667}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94. StateMachine\State\Player\State_Reload">
+      <UniqueIdentifier>{326c35c2-25d4-4807-b230-b5fdbd71900e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94. StateMachine\State\Player\State_Reload_E">
+      <UniqueIdentifier>{fbefca20-0ef6-483c-aa53-613ce48fcd33}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -210,6 +261,57 @@
     <ClInclude Include="..\Public\Player_Camera.h">
       <Filter>02.GameObjects\99.Cameras\PlayerCamera</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\State_Aim_S.h">
+      <Filter>94. StateMachine\State\Player\State_Aim_S</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Aim.h">
+      <Filter>94. StateMachine\State\Player\State_Aim</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Aim_E.h">
+      <Filter>94. StateMachine\State\Player\State_Aim_E</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Walk_S.h">
+      <Filter>94. StateMachine\State\Player\State_Walk_S</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Walk_FB.h">
+      <Filter>94. StateMachine\State\Player\State_Walk_FB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Walk_L.h">
+      <Filter>94. StateMachine\State\Player\State_Walk_L</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Walk_R.h">
+      <Filter>94. StateMachine\State\Player\State_Walk_R</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Walk_LE.h">
+      <Filter>94. StateMachine\State\Player\State_Walk_LE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Walk_E.h">
+      <Filter>94. StateMachine\State\Player\State_Walk_E</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Walk_RE.h">
+      <Filter>94. StateMachine\State\Player\State_Walk_RE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Throw.h">
+      <Filter>94. StateMachine\State\Player\State_Throw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Attack.h">
+      <Filter>94. StateMachine\State\Player\State_Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Fire.h">
+      <Filter>94. StateMachine\State\Player\State_Fire</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Hipfire.h">
+      <Filter>94. StateMachine\State\Player\State_Hipfire</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Reload_S.h">
+      <Filter>94. StateMachine\State\Player\State_Reload_S</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Reload.h">
+      <Filter>94. StateMachine\State\Player\State_Reload</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Reload_E.h">
+      <Filter>94. StateMachine\State\Player\State_Reload_E</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -301,6 +403,57 @@
     </ClCompile>
     <ClCompile Include="..\Private\Player_Camera.cpp">
       <Filter>02.GameObjects\99.Cameras\PlayerCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Aim_S.cpp">
+      <Filter>94. StateMachine\State\Player\State_Aim_S</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Aim.cpp">
+      <Filter>94. StateMachine\State\Player\State_Aim</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Aim_E.cpp">
+      <Filter>94. StateMachine\State\Player\State_Aim_E</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Walk_S.cpp">
+      <Filter>94. StateMachine\State\Player\State_Walk_S</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Walk_FB.cpp">
+      <Filter>94. StateMachine\State\Player\State_Walk_FB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Walk_L.cpp">
+      <Filter>94. StateMachine\State\Player\State_Walk_L</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Walk_R.cpp">
+      <Filter>94. StateMachine\State\Player\State_Walk_R</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Walk_LE.cpp">
+      <Filter>94. StateMachine\State\Player\State_Walk_LE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Walk_E.cpp">
+      <Filter>94. StateMachine\State\Player\State_Walk_E</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Walk_RE.cpp">
+      <Filter>94. StateMachine\State\Player\State_Walk_RE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Throw.cpp">
+      <Filter>94. StateMachine\State\Player\State_Throw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Attack.cpp">
+      <Filter>94. StateMachine\State\Player\State_Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Fire.cpp">
+      <Filter>94. StateMachine\State\Player\State_Fire</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Hipfire.cpp">
+      <Filter>94. StateMachine\State\Player\State_Hipfire</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Reload_S.cpp">
+      <Filter>94. StateMachine\State\Player\State_Reload_S</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Reload.cpp">
+      <Filter>94. StateMachine\State\Player\State_Reload</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Reload_E.cpp">
+      <Filter>94. StateMachine\State\Player\State_Reload_E</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

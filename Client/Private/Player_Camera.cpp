@@ -44,8 +44,8 @@ void CPlayer_Camera::Priority_Tick(_float fTimeDelta)
 void CPlayer_Camera::Tick(_float fTimeDelta)
 {
 
-	_long		MouseMove = { 0 };
-	if (MouseMove = m_pGameInstance->Get_DIMouseMove(DIMS_Y))
+	_long		MouseMove = m_pGameInstance->Get_DIMouseMove(DIMS_Y);
+	if (0!=MouseMove )
 	{
 		_matrix  Socket = XMLoadFloat4x4(m_pCamBone->Get_ControlBoneMatrix());
 

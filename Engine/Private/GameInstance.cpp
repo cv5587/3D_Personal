@@ -179,6 +179,11 @@ _byte CGameInstance::Get_DIMouseState(MOUSEKEYSTATE eMouse)
 	return m_pInput_Device->Get_DIMouseState(eMouse);
 }
 
+_byte CGameInstance::Get_DIMouseState_Once(MOUSEKEYSTATE eMouse)
+{
+	return m_pInput_Device->Get_DIMouseState_Once(eMouse);
+}
+
 _long CGameInstance::Get_DIMouseMove(MOUSEMOVESTATE eMouseState)
 {
 	return m_pInput_Device->Get_DIMouseMove(eMouseState);

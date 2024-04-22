@@ -38,6 +38,7 @@ HRESULT CWeapon::Initialize(void* pArg)
 
 void CWeapon::Priority_Tick(_float fTimeDelta)
 {
+
 }
 
 void CWeapon::Tick(_float fTimeDelta)
@@ -60,8 +61,7 @@ void CWeapon::Late_Tick(_float fTimeDelta)
 
 HRESULT CWeapon::Render()
 {
-	if(PLAYEREQUIP::EQUIP_STONE==*m_pEquip)
-	{
+
 
 		if (FAILED(Bind_ShaderResources()))
 			return E_FAIL;
@@ -79,12 +79,12 @@ HRESULT CWeapon::Render()
 
 			m_pModelCom->Render(i);
 		}
-
-	}
-
-	return S_OK;
+		return S_OK;
 }
 
+
+
+	
 HRESULT CWeapon::Add_Components()
 {
 	/* For.Com_Model */

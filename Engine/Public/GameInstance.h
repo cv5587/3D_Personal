@@ -37,6 +37,7 @@ public: /* For.Input_Device */
 	_byte	Get_DIKeyState(_ubyte byKeyID);
 	_byte		Get_DIKeyState_Once(_ubyte byKeyID);
 	_byte	Get_DIMouseState(MOUSEKEYSTATE eMouse);
+	_byte		Get_DIMouseState_Once(MOUSEKEYSTATE eMouse);
 	_long	Get_DIMouseMove(MOUSEMOVESTATE eMouseState);
 
 public: /* For.Timer_Manager */

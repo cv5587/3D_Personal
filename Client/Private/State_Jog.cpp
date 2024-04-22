@@ -26,7 +26,7 @@ void CState_Jog::Update(CPlayer* Player, _float fTimeDelta)
 		{
 			Player->Go_RightStraight(fTimeDelta);
 		}
-		else 
+		else
 			Player->Go_Straight(fTimeDelta);
 	}
 	else 	if (m_pGameInstance->Get_DIKeyState(DIK_S))
@@ -59,10 +59,37 @@ void CState_Jog::Update(CPlayer* Player, _float fTimeDelta)
 		Player->Set_State(PLAYERSTATE::PLAYER_IDLE);
 	}
 
+	 if (m_pGameInstance->Get_DIMouseState(DIM_RB))
+		{
+			if (Player->isEquip() != PLAYEREQUIP::EQUIP_NONE)
+				Player->Set_State(PLAYERSTATE::PLAYER_AIM_S);
+		}
+	 if (m_pGameInstance->Get_DIKeyState(DIK_R))
+		{
+			if (Player->isEquip() == PLAYEREQUIP::EQUIP_REVOLVER)
+				Player->Set_State(PLAYERSTATE::PLAYER_RELOAD_S);
+		}
+
 	 if (m_pGameInstance->Get_DIKeyState(DIK_LSHIFT) && m_pGameInstance->Get_DIKeyState(DIK_W))
 	{
 			Player->Set_State(PLAYERSTATE::PLAYER_RUN);
 	}
+
+	 if (m_pGameInstance->Get_DIMouseState(DIM_LB))
+	 {
+		 if (Player->isEquip() == PLAYEREQUIP::EQUIP_STONE)
+			 Player->Set_State(PLAYERSTATE::PLAYER_THROW);
+		 else if (Player->isEquip() == PLAYEREQUIP::EQUIP_REVOLVER)
+			 Player->Set_State(PLAYERSTATE::PLAYER_HIPFIRE);
+	 }
+
+	 if (Player->isEquipChange())
+	 {
+		 if(Player->isEquip() == PLAYEREQUIP::EQUIP_NONE)
+			 Player->Set_State(PLAYERSTATE::PLAYER_EQUIP);
+		 else
+			 Player->Set_State(PLAYERSTATE::PLAYER_UNEQUIP);
+	 }
 }
 
 void CState_Jog::Exit(CPlayer* Player)

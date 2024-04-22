@@ -4,6 +4,7 @@
 #include "GameInstance.h"
 #include "PartObject.h"
 #include "Weapon.h"
+#include "Revolver.h"
 #include "StateMachine.h"
 #include "Player_Camera.h"
 
@@ -55,8 +56,19 @@ HRESULT CPlayer::Initialize(void* pArg)
 
 void CPlayer::Priority_Tick(_float fTimeDelta)
 {
-	for (auto& pPartObject : m_PartObjects)
-		pPartObject->Priority_Tick(fTimeDelta);
+	m_PartObjects[PART_BODY]->Priority_Tick(fTimeDelta);
+	switch (m_eEquip)
+	{
+	case Client::EQUIP_STONE:
+		m_PartObjects[PART_STONE]->Priority_Tick(fTimeDelta);
+		break;
+	case Client::EQUIP_REVOLVER:
+		m_PartObjects[PART_REOVLVER]->Priority_Tick(fTimeDelta);
+		break;
+	case Client::EQUIP_PIPE:
+		m_PartObjects[PART_PIPE]->Priority_Tick(fTimeDelta);
+		break;
+	}
 }
 
 void CPlayer::Tick(_float fTimeDelta)
@@ -64,14 +76,22 @@ void CPlayer::Tick(_float fTimeDelta)
 
 	if (m_eEquip != PLAYEREQUIP::EQUIP_STONE)
 	{
-		if (m_pGameInstance->Get_DIKeyState_Once(DIK_I))
+		if (m_pGameInstance->Get_DIKeyState_Once(DIK_U))
 		{
 			Set_Equip(PLAYEREQUIP::EQUIP_STONE);
 			Set_State(PLAYERSTATE::PLAYER_EQUIP);
 		}
 	}
+	 if (m_eEquip != PLAYEREQUIP::EQUIP_REVOLVER)
+	{
+		if (m_pGameInstance->Get_DIKeyState_Once(DIK_I))
+		{
+			Set_Equip(PLAYEREQUIP::EQUIP_REVOLVER);
+			Set_State(PLAYERSTATE::PLAYER_EQUIP);
+		}
+	}
 
-	if (m_pGameInstance->Get_DIKeyState_Once(DIK_O))
+	if (m_pGameInstance->Get_DIKeyState_Once(DIK_P))
 	{
 		Set_State(PLAYERSTATE::PLAYER_UNEQUIP);
 	}
@@ -93,17 +113,39 @@ void CPlayer::Tick(_float fTimeDelta)
 	if (FAILED(__super::SetUp_OnTerrain(m_pTransformCom)))
 		return;
 
-	for (auto& pPartObject : m_PartObjects)
-		pPartObject->Tick(fTimeDelta);
 
+	m_PartObjects[PART_BODY]->Tick(fTimeDelta);
+	switch (m_eEquip)
+	{
+	case Client::EQUIP_STONE:
+		m_PartObjects[PART_STONE]->Tick(fTimeDelta);
+		break;
+	case Client::EQUIP_REVOLVER:
+		m_PartObjects[PART_REOVLVER]->Tick(fTimeDelta);
+		break;
+	case Client::EQUIP_PIPE:
+		m_PartObjects[PART_PIPE]->Tick(fTimeDelta);
+		break;
+	}
 
 }
 
 void CPlayer::Late_Tick(_float fTimeDelta)
 {
-	for (auto& pPartObject : m_PartObjects)
-		pPartObject->Late_Tick(fTimeDelta);
 
+	m_PartObjects[PART_BODY]->Late_Tick(fTimeDelta);
+	switch (m_eEquip)
+	{
+	case Client::EQUIP_STONE:
+		m_PartObjects[PART_STONE]->Late_Tick(fTimeDelta);
+		break;
+	case Client::EQUIP_REVOLVER:
+		m_PartObjects[PART_REOVLVER]->Late_Tick(fTimeDelta);
+		break;
+	case Client::EQUIP_PIPE:
+		m_PartObjects[PART_PIPE]->Late_Tick(fTimeDelta);
+		break;
+	}
 	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 }
 
@@ -121,6 +163,8 @@ HRESULT CPlayer::Add_Components()
 
 HRESULT CPlayer::Add_PartObjects()
 {
+
+
 	/* 바디객체를 복제해온다. */
 	CPartObject::PARTOBJ_DESC		BodyDesc{};
 	BodyDesc.pParentMatrix = m_pTransformCom->Get_WorldFloat4x4();
@@ -135,19 +179,17 @@ HRESULT CPlayer::Add_PartObjects()
 		return E_FAIL;
 	m_PartObjects.emplace_back(pBody);
 
+
+	/*카메라 생성이지 파트 오브젝트는 아님*/
 	CPlayer_Camera::PLAYER_CAMERA_DESC		CameraDesc{};
-	CameraDesc.pEyeBoneMatrix = 
+	CameraDesc.pEyeBoneMatrix =
 		dynamic_cast<CModel*>(m_PartObjects[PART_BODY]->Get_Component(TEXT("Com_Model")))->Get_ControlBoneMatrix("Camera_Weapon_Offset");
 
 	CameraDesc.pParentMatrix = m_pTransformCom->Get_WorldFloat4x4();
 	CameraDesc.pCamBone =
 		dynamic_cast<CModel*>(m_PartObjects[PART_BODY]->Get_Component(TEXT("Com_Model")))->Get_CameraBone("Camera_Weapon_Offset");
-
-	//CameraDesc.vEye = _float4(0.0f, 30.f, -25.f, 1.f);
-	//CameraDesc.vAt = _float4(0.0f, 0.f, 0.f, 1.f);
-
 	CameraDesc.fAspect = g_iWinSizeX / (_float)g_iWinSizeY;
-	CameraDesc.fFovy = XMConvertToRadians(75.f);
+	CameraDesc.fFovy = XMConvertToRadians(70.f);
 	CameraDesc.fNear = 0.1f;
 	CameraDesc.fFar = 3000.f;
 	CameraDesc.fSpeedPerSec = 50.f;
@@ -160,7 +202,7 @@ HRESULT CPlayer::Add_PartObjects()
 		return E_FAIL;
 
 
-
+	///*돌*/
 	///* 무기객체를 복제해온다. */
 	CWeapon::WEAPON_DESC			WeaponDesc{};
 	WeaponDesc.pParentMatrix = m_pTransformCom->Get_WorldFloat4x4();
@@ -184,6 +226,31 @@ HRESULT CPlayer::Add_PartObjects()
 	if (nullptr == pWeapon)
 		return E_FAIL;
 	m_PartObjects.emplace_back(pWeapon);
+
+	/*리볼버*/
+	///* 무기객체를 복제해온다. */
+	CRevolver::REVOLVER_DESC			RevolverDesc{};
+	RevolverDesc.pParentMatrix = m_pTransformCom->Get_WorldFloat4x4();
+	//WeaponDesc.pState = &m_iState;
+	RevolverDesc.ProtoTypeTag = TEXT("Prototype_GameObject_Revolver");
+	RevolverDesc.ModelTag = TEXT("Prototype_Component_Model_Revolver");
+	XMStoreFloat4x4(&RevolverDesc.vPrePosition, XMMatrixIdentity());
+	RevolverDesc.pState = &m_eState;
+	RevolverDesc.pEquip = &m_eEquip;
+	RevolverDesc.pAnimFinished = &m_bRevolver_AnimFin;
+	//몸의 모델컴을 가져옴
+	pModelCom = dynamic_cast<CModel*>(pBody->Get_Component(TEXT("Com_Model")));
+	if (nullptr == pModelCom)
+		return E_FAIL;
+	//무기 가 붙어 있을 뼈정보를 가져옴
+	RevolverDesc.pCombinedTransformationMatrix = pModelCom->Get_BoneCombinedTransformationMatrix("right_prop_point");
+	if (nullptr == RevolverDesc.pCombinedTransformationMatrix)
+		return E_FAIL;
+	//뼈정보를 넣어줘서 제작
+	CGameObject* pRevolver = m_pGameInstance->Clone_Object(TEXT("Prototype_GameObject_Revolver"), &RevolverDesc);
+	if (nullptr == pRevolver)
+		return E_FAIL;
+	m_PartObjects.emplace_back(pRevolver);
 
 	return S_OK;
 }

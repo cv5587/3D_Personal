@@ -12,6 +12,15 @@ BEGIN(Client)
 
 class CRevolver final : public CPartObject
 {
+public:
+	enum REVOLVER {
+		REVOLVER_IDEL,
+	};
+public:
+	typedef struct : public CPartObject::PARTOBJ_DESC
+	{
+		const _float4x4* pCombinedTransformationMatrix;
+	}REVOLVER_DESC;
 private:
 	CRevolver(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CRevolver(const CRevolver& rhs);
@@ -29,6 +38,11 @@ private:
 	CShader* m_pShaderCom = { nullptr };
 	CModel* m_pModelCom = { nullptr };
 
+private:
+	const _float4x4* m_pSocketMatrix = { nullptr };
+
+private:
+	void Set_AnimationState();
 public:
 	HRESULT Add_Components();
 	HRESULT Bind_ShaderResources();

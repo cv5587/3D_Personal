@@ -53,6 +53,14 @@ void CState_Run::Update(CPlayer* Player, _float fTimeDelta)
 		Player->Set_State(PLAYERSTATE::PLAYER_JOG);
 		Player->Go_Right(fTimeDelta);
 	}
+	else if (m_pGameInstance->Get_DIMouseState(DIM_RB))
+	{
+		if (Player->isEquip() != PLAYEREQUIP::EQUIP_NONE)
+			Player->Set_State(PLAYERSTATE::PLAYER_AIM_S);
+	}
+	else if (m_pGameInstance->Get_DIKeyState(DIK_R))
+		if (Player->isEquip() == PLAYEREQUIP::EQUIP_REVOLVER)
+			Player->Set_State(PLAYERSTATE::PLAYER_RELOAD_S);
 	else
 	{
 		Player->Set_State(PLAYERSTATE::PLAYER_IDLE);

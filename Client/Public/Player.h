@@ -8,7 +8,7 @@ BEGIN(Client)
 class CPlayer final : public CLandObject
 {
 public:
-	enum PART { PART_BODY, PART_CAMERA, PART_WEAPON,  PART_END };
+	enum PART { PART_BODY,  PART_STONE, PART_REOVLVER,  PART_PIPE, PART_END };
 	//enum STATE { STATE_IDLE, STATE_WALK, STATE_RUN, STATE_ATTACK, STATE_END };
 
 private:
@@ -57,7 +57,7 @@ public:
 
 	const _bool						isEquipChange() { return m_bChangeEquip; }
 	const _bool						isAnimFinished() { return m_bAnimFinished; }
-	
+	const _bool						isRevolver_AnimFin() { return m_bRevolver_AnimFin; }
 private:
 	vector<class CGameObject*>		m_PartObjects;
 	PLAYERSTATE								m_eState = { PLAYERSTATE::PLAYER_IDLE };
@@ -68,6 +68,7 @@ private:
 	_bool											m_bAnimFinished = { true };
 	_float											m_fSensor = { 0.0f };
 	
+	_bool											m_bRevolver_AnimFin = { true };
 private:
 	void Mouse_Fix();
 public:

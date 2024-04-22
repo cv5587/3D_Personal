@@ -4,6 +4,7 @@
 #include "Base.h"
 
 #define KEYDOWN(name, key) (name[key] & 0x80) 
+#define MOUSEDOWN(name, key) (name[key] & 0x80) 
 
 
 
@@ -17,12 +18,16 @@ private:
 	virtual ~CInput_Device(void) = default;
 
 public:
-	_byte	Get_DIKeyState(_ubyte byKeyID) { return KEYDOWN(m_byKeyState,byKeyID); }
-	_byte		Get_DIKeyState_Once(_ubyte byKeyID);
-	_byte	Get_DIMouseState(MOUSEKEYSTATE eMouse)
-	{
-		return m_tMouseState.rgbButtons[eMouse];
+	_byte	Get_DIKeyState(_ubyte byKeyID) 	{
+		return KEYDOWN(m_byKeyState,byKeyID); 
 	}
+	_byte		Get_DIKeyState_Once(_ubyte byKeyID);
+
+	_byte	Get_DIMouseState(MOUSEKEYSTATE eMouse)	{
+		return MOUSEDOWN(m_tMouseState.rgbButtons, eMouse);
+	}
+
+	_byte		Get_DIMouseState_Once(MOUSEKEYSTATE eMouse);
 
 	_long	Get_DIMouseMove(MOUSEMOVESTATE eMouseState)
 	{
@@ -43,7 +48,8 @@ private:
 private:
 	_byte					m_byKeyState[256];		// 키보드에 있는 모든 키값을 저장하기 위한 변수
 	DIMOUSESTATE			m_tMouseState;
-	_bool key_down = false;
+	_bool m_bKeyDown = false;
+	_bool m_bMouseDown = false;
 public:
 	static CInput_Device* Create(HINSTANCE hInst, HWND hWnd);
 	virtual void	Free(void);

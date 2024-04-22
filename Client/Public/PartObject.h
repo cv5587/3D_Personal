@@ -42,6 +42,7 @@ protected:
 	const PLAYEREQUIP* m_pEquip = { nullptr };
 	 _bool* m_pAnimFinished = { false };
 
+
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;
 	virtual void Free() override;
