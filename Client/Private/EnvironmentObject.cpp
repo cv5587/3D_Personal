@@ -75,10 +75,22 @@ HRESULT CEnvironmentObject::Add_Components()
         TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
         return E_FAIL;
 
-    /* For.Com_Shader */
-    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxMeshID"),
-        TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
-        return E_FAIL;
+
+
+    /* For.Com_Shader *///나무 검사
+    wstring CompareName = TEXT("Pin");
+    if (m_ModelTag.substr(26, 3) == CompareName)
+    {
+        if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxMeshTree"),
+            TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
+            return E_FAIL;
+    }
+    else
+    {
+        if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxMesh"),
+            TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
+            return E_FAIL;
+    }
 
     return S_OK;
 }
@@ -91,8 +103,7 @@ HRESULT CEnvironmentObject::Bind_ShaderResources()
         return E_FAIL;
     if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_float4x4(CPipeLine::TS_PROJ))))
         return E_FAIL;
-    if (FAILED(m_pShaderCom->Bind_ID("g_ID",m_iRenderID )))
-        return E_FAIL;
+
 
     return S_OK;
 }

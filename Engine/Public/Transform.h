@@ -57,15 +57,17 @@ public:
 public:
 	void Scaling(_float fScaleX, _float fScaleY, _float fScaleZ);
 	void Set_Scale(_float fScaleX, _float fScaleY, _float fScaleZ);
-	HRESULT Go_Straight(_float fTimeDelta);
-	HRESULT Go_Backward(_float fTimeDelta);
-	HRESULT Go_Left(_float fTimeDelta);
-	HRESULT Go_Right(_float fTimeDelta);
-	
-	HRESULT Go_LeftStraight(_float fTimeDelta);
-	HRESULT Go_RightStraight(_float fTimeDelta);
-	HRESULT Go_LeftBackward(_float fTimeDelta);
-	HRESULT Go_RightBackward(_float fTimeDelta);
+
+	HRESULT Go_Straight(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
+	HRESULT Go_Backward(_float fTimeDelta, class  CNavigation* pNavigation = nullptr);
+	HRESULT Go_Left(_float fTimeDelta, class  CNavigation* pNavigation = nullptr);
+	HRESULT Go_Right(_float fTimeDelta, class  CNavigation* pNavigation = nullptr);
+
+	HRESULT Go_LeftStraight(_float fTimeDelta, class  CNavigation* pNavigation = nullptr);
+	HRESULT Go_RightStraight(_float fTimeDelta, class  CNavigation* pNavigation = nullptr);
+	HRESULT Go_LeftBackward(_float fTimeDelta, class  CNavigation* pNavigation = nullptr);
+	HRESULT Go_RightBackward(_float fTimeDelta, class  CNavigation* pNavigation = nullptr);
+
 
 	HRESULT LookAt(_fvector vTargetPosition);
 	HRESULT LookAt_For_LandObject(_fvector vTargetPosition);

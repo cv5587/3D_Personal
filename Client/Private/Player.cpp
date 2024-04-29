@@ -7,6 +7,7 @@
 #include "Revolver.h"
 #include "StateMachine.h"
 #include "Player_Camera.h"
+#include "Inventory.h"
 
 CPlayer::CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLandObject{ pDevice, pContext }
@@ -39,10 +40,12 @@ HRESULT CPlayer::Initialize(void* pArg)
 		return E_FAIL;
 
 	m_pStateMachine = CStateMachine::GetInstance();
+	Safe_AddRef(m_pStateMachine);
 	m_pStateMachine->Initialize();
 
 	m_pStateMachine->Set_CurrentState(this, PLAYERSTATE::PLAYER_IDLE);
-	//Set_Equip(PLAYEREQUIP::EQUIP_NONE);
+
+	m_pInventory = CInventory::Create(m_pDevice,m_pContext);
 
 	m_fSensor = 0.02f;
 
@@ -73,61 +76,77 @@ void CPlayer::Priority_Tick(_float fTimeDelta)
 
 void CPlayer::Tick(_float fTimeDelta)
 {
-
-	if (m_eEquip != PLAYEREQUIP::EQUIP_STONE)
+	if (!m_bAcquire)
 	{
-		if (m_pGameInstance->Get_DIKeyState_Once(DIK_U))
+		if (m_pGameInstance->Get_DIMouseState(DIM_LB))
 		{
-			Set_Equip(PLAYEREQUIP::EQUIP_STONE);
-			Set_State(PLAYERSTATE::PLAYER_EQUIP);
+			CGameObject* pPickObject = m_pGameInstance->FindID_CloneObject(LEVEL_GAMEPLAY, m_pGameInstance->Picking_IDScreen());
+			if (nullptr != pPickObject)
+				m_bAcquire = true;
 		}
-	}
-	 if (m_eEquip != PLAYEREQUIP::EQUIP_REVOLVER)
-	{
-		if (m_pGameInstance->Get_DIKeyState_Once(DIK_I))
+
+
+		if (m_eEquip != PLAYEREQUIP::EQUIP_STONE)
 		{
-			Set_Equip(PLAYEREQUIP::EQUIP_REVOLVER);
-			Set_State(PLAYERSTATE::PLAYER_EQUIP);
+			if (m_pGameInstance->Get_DIKeyState_Once(DIK_U))
+			{
+				Set_Equip(PLAYEREQUIP::EQUIP_STONE);
+				Set_State(PLAYERSTATE::PLAYER_EQUIP);
+			}
 		}
-	}
+		if (m_eEquip != PLAYEREQUIP::EQUIP_REVOLVER)
+		{
+			if (m_pGameInstance->Get_DIKeyState_Once(DIK_I))
+			{
+				Set_Equip(PLAYEREQUIP::EQUIP_REVOLVER);
+				Set_State(PLAYERSTATE::PLAYER_EQUIP);
+			}
+		}
 
-	if (m_pGameInstance->Get_DIKeyState_Once(DIK_P))
+		if (m_pGameInstance->Get_DIKeyState_Once(DIK_P))
+		{
+			Set_State(PLAYERSTATE::PLAYER_UNEQUIP);
+		}
+
+		_long		MouseMove = { 0 };
+
+		if (MouseMove = m_pGameInstance->Get_DIMouseMove(DIMS_X))
+		{
+			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * m_fSensor * MouseMove);
+		}
+
+
+
+		Mouse_Fix();
+
+		m_pStateMachine->Update(this, fTimeDelta);
+
+		m_pNavigationCom->Set_OnNavigation(m_pTransformCom);
+
+		m_pColliderCom->Tick(m_pTransformCom->Get_WorldMatrix());
+
+		m_PartObjects[PART_BODY]->Tick(fTimeDelta);
+		switch (m_eEquip)
+		{
+		case Client::EQUIP_STONE:
+			m_PartObjects[PART_STONE]->Tick(fTimeDelta);
+			break;
+		case Client::EQUIP_REVOLVER:
+			m_PartObjects[PART_REOVLVER]->Tick(fTimeDelta);
+			break;
+		case Client::EQUIP_PIPE:
+			m_PartObjects[PART_PIPE]->Tick(fTimeDelta);
+			break;
+		}
+
+	}
+	else//m_bAcquire ==true
 	{
-		Set_State(PLAYERSTATE::PLAYER_UNEQUIP);
+		//카메라가 ui 카메라가 돌아야됨.
+		int a = 10;
+		m_bAcquire = false;
 	}
-
-	_long		MouseMove = { 0 };
-
-	if (MouseMove = m_pGameInstance->Get_DIMouseMove(DIMS_X))
-	{
-		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * m_fSensor * MouseMove);
-	}
-
-
-
-	Mouse_Fix();
-
-	m_pStateMachine->Update(this, fTimeDelta);
 	
-
-	if (FAILED(__super::SetUp_OnTerrain(m_pTransformCom)))
-		return;
-
-
-	m_PartObjects[PART_BODY]->Tick(fTimeDelta);
-	switch (m_eEquip)
-	{
-	case Client::EQUIP_STONE:
-		m_PartObjects[PART_STONE]->Tick(fTimeDelta);
-		break;
-	case Client::EQUIP_REVOLVER:
-		m_PartObjects[PART_REOVLVER]->Tick(fTimeDelta);
-		break;
-	case Client::EQUIP_PIPE:
-		m_PartObjects[PART_PIPE]->Tick(fTimeDelta);
-		break;
-	}
-
 }
 
 void CPlayer::Late_Tick(_float fTimeDelta)
@@ -152,11 +171,37 @@ void CPlayer::Late_Tick(_float fTimeDelta)
 HRESULT CPlayer::Render()
 {
 
+#ifdef _DEBUG
+	m_pColliderCom->Render();
+	m_pNavigationCom->Render();
+#endif
+
 	return S_OK;
 }
 
 HRESULT CPlayer::Add_Components()
 {
+
+	/* For.Com_Collider */
+	CBounding_AABB::BOUNDING_AABB_DESC		ColliderDesc{};
+
+	ColliderDesc.eType = CCollider::TYPE_AABB;
+	ColliderDesc.vExtents = _float3(0.3f, 0.7f, 0.3f);//aabb 조절가능
+	ColliderDesc.vCenter = _float3(0.f, ColliderDesc.vExtents.y, 0.f);
+
+
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider"),
+		TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &ColliderDesc)))
+		return E_FAIL;
+
+	/* For.Com_Navigation */
+	CNavigation::NAVIGATION_DESC	NavigationDesc{};
+
+	NavigationDesc.iCurrentCellIndex = 0;
+
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Navigation"),
+		TEXT("Com_Navigation"), reinterpret_cast<CComponent**>(&m_pNavigationCom), &NavigationDesc)))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -257,42 +302,42 @@ HRESULT CPlayer::Add_PartObjects()
 
 void CPlayer::Go_Straight(_float fTimeDelta)
 {
-	m_pTransformCom->Go_Straight(fTimeDelta);
+	m_pTransformCom->Go_Straight(fTimeDelta, m_pNavigationCom);
 }
 
 void CPlayer::Go_Backward(_float fTimeDelta)
 {
-	m_pTransformCom->Go_Backward(fTimeDelta);
+	m_pTransformCom->Go_Backward(fTimeDelta, m_pNavigationCom);
 }
 
 void CPlayer::Go_Left(_float fTimeDelta)
 {
-	m_pTransformCom->Go_Left(fTimeDelta);
+	m_pTransformCom->Go_Left(fTimeDelta, m_pNavigationCom);
 }
 
 void CPlayer::Go_Right(_float fTimeDelta)
 {
-	m_pTransformCom->Go_Right(fTimeDelta);
+	m_pTransformCom->Go_Right(fTimeDelta, m_pNavigationCom);
 }
 
 void CPlayer::Go_LeftStraight(_float fTimeDelta)
 {
-	m_pTransformCom->Go_LeftStraight(fTimeDelta);
+	m_pTransformCom->Go_LeftStraight(fTimeDelta, m_pNavigationCom);
 }
 
 void CPlayer::Go_RightStraight(_float fTimeDelta)
 {
-	m_pTransformCom->Go_RightStraight(fTimeDelta);
+	m_pTransformCom->Go_RightStraight(fTimeDelta, m_pNavigationCom);
 }
 
 void CPlayer::Go_LeftBackward(_float fTimeDelta)
 {
-	m_pTransformCom->Go_LeftBackward(fTimeDelta);
+	m_pTransformCom->Go_LeftBackward(fTimeDelta, m_pNavigationCom);
 }
 
 void CPlayer::Go_RightBackward(_float fTimeDelta)
 {
-	m_pTransformCom->Go_RightBackward(fTimeDelta);
+	m_pTransformCom->Go_RightBackward(fTimeDelta, m_pNavigationCom);
 }
 
 void CPlayer::Set_DeltaValue(_float _fSpeedPerSec, _float _fRotationPerSec)
@@ -348,7 +393,14 @@ void CPlayer::Free()
 
 	m_PartObjects.clear();
 
+	Safe_Release(m_pInventory);
+
+	Safe_Release(m_pNavigationCom);
+
+	Safe_Release(m_pColliderCom);
+
 	Safe_Release(m_pStateMachine);
+
 	CStateMachine::DestroyInstance();
 
 }

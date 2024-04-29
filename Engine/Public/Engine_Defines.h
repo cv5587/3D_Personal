@@ -12,6 +12,14 @@
 #include "fx11\d3dx11effect.h"
 #include "DirectXTK\DDSTextureLoader.h"
 #include "DirectXTK\WICTextureLoader.h"
+#include "DirectXTK\ScreenGrab.h"//마스크
+#include "DirectXTK\PrimitiveBatch.h"//콜라이더
+#include "DirectXTK\VertexTypes.h"//콜라이더
+#include "DirectXTK\SpriteBatch.h"//폰트
+#include "DirectXTK\SpriteFont.h"//폰트
+#include "DirectXTK\Effects.h"
+
+
 #include "assimp\scene.h"
 #include "assimp\Importer.hpp"
 #include "assimp\postprocess.h"

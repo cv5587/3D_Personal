@@ -6,6 +6,7 @@
 #include "LandObject.h"	
 
 #include "TerrainManager.h"
+#include "Item.h"	
 
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
@@ -29,8 +30,8 @@ HRESULT CLevel_GamePlay::Initialize()
 	if (FAILED(Load_GameData(TEXT("LEVEL_GAMEPLAY_GAMEDATA"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_LandObjects()))
-		return E_FAIL;
+	//if (FAILED(Ready_LandObjects()))
+	//	return E_FAIL;
 
 	return S_OK;
 }
@@ -136,6 +137,7 @@ HRESULT CLevel_GamePlay::Load_GameData(const wstring& strLayerTag)
 		_tchar Layer[MAX_PATH] = TEXT("");
 		_tchar szProtoTag[MAX_PATH] = TEXT("");
 		_tchar szModelTag[MAX_PATH] = TEXT("");
+		_tchar szItemName[MAX_PATH] = TEXT("");
 		_float4x4 fWorldPosition{};
 
 		_uint Layersize = 0;
@@ -177,6 +179,35 @@ HRESULT CLevel_GamePlay::Load_GameData(const wstring& strLayerTag)
 					if (FAILED(m_pGameInstance->Add_CloneObject(iReadLevel, wLayer, strPrototypeTag, &pDesc)))
 						return E_FAIL;
 				}
+				else if (TEXT("Layer_Player") == wLayer)
+				{
+					CLandObject::LANDOBJ_DESC		LandObjDesc{};
+
+					LandObjDesc.pTerrainTransform = dynamic_cast<CTransform*>(m_pGameInstance->Get_Component(LEVEL_GAMEPLAY, TEXT("Layer_BackGround"), TEXT("Com_Transform")));
+					LandObjDesc.pTerrainVIBuffer = dynamic_cast<CVIBuffer*>(m_pGameInstance->Get_Component(LEVEL_GAMEPLAY, TEXT("Layer_BackGround"), TEXT("Com_VIBuffer")));
+					LandObjDesc.ProtoTypeTag = strPrototypeTag;
+					LandObjDesc.ModelTag = strModelTag;
+					LandObjDesc.vPrePosition = fWorldPosition;
+
+					if (FAILED(m_pGameInstance->Add_CloneObject(iReadLevel, wLayer, strPrototypeTag, &LandObjDesc)))
+						return E_FAIL;
+				}
+				else if (TEXT("Layer_Item") == wLayer)
+				{
+					CItem::ITEM_DESC itemDesc{};
+					itemDesc.ProtoTypeTag = strPrototypeTag;
+					itemDesc.ModelTag = strModelTag;
+					itemDesc.vPrePosition = fWorldPosition;
+
+					CItem::ITEM_DESC* pItemDesc{};
+					pItemDesc = static_cast<CItem::ITEM_DESC*>(Check_Model(&itemDesc));
+
+					if (nullptr == pItemDesc)
+						return E_FAIL;
+
+					if (FAILED(m_pGameInstance->Add_CloneObject(iReadLevel, wLayer, strPrototypeTag, pItemDesc)))
+						return E_FAIL;
+				}
 				else//몬스터 ,플레이어 설정 (몬스터는 터레인만 추가, 플레이어는 터레인,파츠(고정값이므로 작업필요 ㄴ))
 				{
 					CLandObject::LANDOBJ_DESC		LandObjDesc{};
@@ -197,25 +228,6 @@ HRESULT CLevel_GamePlay::Load_GameData(const wstring& strLayerTag)
 
 	fin.close();
 
-	////툴에서는 카메라를 제작해주지만 인게임으로 넘어가서는 플레이어 생성시 카메라 자동생성으로 제작하기.
-	/*CFreeCamera::FREE_CAMERA_DESC		CameraDesc{};
-
-	CameraDesc.fSensor = 0.05f;
-	CameraDesc.vEye = _float4(0.0f, 30.f, -25.f, 1.f);
-	CameraDesc.vAt = _float4(0.0f, 0.f, 0.f, 1.f);
-	CameraDesc.fFovy = XMConvertToRadians(60.0f);
-	CameraDesc.fAspect = g_iWinSizeX / (_float)g_iWinSizeY;
-	CameraDesc.fNear = 0.1f;
-	CameraDesc.fFar = 3000.f;
-	CameraDesc.fSpeedPerSec = 50.f;
-	CameraDesc.fRotationPerSec = XMConvertToRadians(90.f);
-	XMStoreFloat4x4(&CameraDesc.vPrePosition, XMMatrixIdentity());
-	CameraDesc.ProtoTypeTag = TEXT("Prototype_GameObject_FreeCamera");
-	CameraDesc.ModelTag = TEXT("");
-
-	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, TEXT("Layer_Camera"), TEXT("Prototype_GameObject_FreeCamera"), &CameraDesc)))
-		return E_FAIL;*/
-
 
 	return S_OK;
 }
@@ -233,6 +245,24 @@ HRESULT CLevel_GamePlay::Ready_Layer_Player(const wstring& strLayerTag, CLandObj
 
 
 	return S_OK;
+}
+
+void* CLevel_GamePlay::Check_Model(void* pArg)
+{
+
+	wstring ModelTag = static_cast<CGameObject::GAMEOBJECT_DESC*>(pArg)->ModelTag;
+	if (TEXT("Prototype_Component_Model_Stone")== ModelTag)
+	{
+		CItem::ITEM_DESC* itemDesc = static_cast<CItem::ITEM_DESC*>(pArg);
+
+		itemDesc->ItemName = TEXT("Stone");
+		itemDesc->ItemType = (_uint)CItem::ITEMTYPE::ITEM_STUFF;
+		itemDesc->iQuantity = 1;
+		return itemDesc;
+	}
+
+
+	return nullptr;
 }
 
 CLevel_GamePlay* CLevel_GamePlay::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

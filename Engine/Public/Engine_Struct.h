@@ -26,6 +26,15 @@ namespace Engine
 		double			Time;
 	}KEYFRAME;
 
+	typedef struct ENGINE_DLL
+	{
+		XMFLOAT3		vPosition;
+
+		static const unsigned int		iNumElements = { 1 };
+		static const D3D11_INPUT_ELEMENT_DESC	Elements[1];
+
+	}VTXPOS;
+
 	typedef struct ENGINE_DLL 
 	{
 		XMFLOAT3		vPosition;

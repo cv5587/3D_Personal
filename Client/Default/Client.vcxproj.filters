@@ -160,6 +160,12 @@
     <Filter Include="94. StateMachine\State\Player\State_Reload_E">
       <UniqueIdentifier>{fbefca20-0ef6-483c-aa53-613ce48fcd33}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\04.Inventory">
+      <UniqueIdentifier>{73b1c2e4-b8de-4f52-9133-54c908d1dbc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\04.Inventory\item">
+      <UniqueIdentifier>{3145fb2b-0389-4dfa-89e5-693d528148d0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -312,6 +318,12 @@
     <ClInclude Include="..\Public\State_Reload_E.h">
       <Filter>94. StateMachine\State\Player\State_Reload_E</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Item.h">
+      <Filter>02.GameObjects\04.Inventory\item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Inventory.h">
+      <Filter>02.GameObjects\04.Inventory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -455,6 +467,12 @@
     <ClCompile Include="..\Private\State_Reload_E.cpp">
       <Filter>94. StateMachine\State\Player\State_Reload_E</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Item.cpp">
+      <Filter>02.GameObjects\04.Inventory\item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Inventory.cpp">
+      <Filter>02.GameObjects\04.Inventory</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -475,19 +493,25 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl">
-      <Filter>97.ShaderFiles</Filter>
-    </FxCompile>
-    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl">
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimMesh.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMesh.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
-    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimMesh.hlsl">
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMeshID.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
-    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMeshID.hlsl">
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMeshTreeID.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMeshTree.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

@@ -3,13 +3,18 @@
 #include "Client_Defines.h"
 #include "LandObject.h"
 #include "Body_Player.h"
+BEGIN(Engine)
+class CCollider;
+class CNavigation;
+END
+
+
 BEGIN(Client)
 
 class CPlayer final : public CLandObject
 {
 public:
 	enum PART { PART_BODY,  PART_STONE, PART_REOVLVER,  PART_PIPE, PART_END };
-	//enum STATE { STATE_IDLE, STATE_WALK, STATE_RUN, STATE_ATTACK, STATE_END };
 
 private:
 	CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -69,6 +74,11 @@ private:
 	_float											m_fSensor = { 0.0f };
 	
 	_bool											m_bRevolver_AnimFin = { true };
+
+	_bool											m_bAcquire = {false};
+	class CNavigation* m_pNavigationCom = { nullptr };
+	class CCollider* m_pColliderCom = { nullptr };
+	class CInventory* m_pInventory = { nullptr };
 private:
 	void Mouse_Fix();
 public:

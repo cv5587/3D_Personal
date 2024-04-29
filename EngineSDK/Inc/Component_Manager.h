@@ -6,6 +6,13 @@
 #include "VIBuffer_Terrain.h"
 #include "Model.h"
 #include "Calculator.h"
+#include "Navigation.h"
+
+#include "Collider.h"
+#include "Bounding_OBB.h"
+#include "Bounding_AABB.h"
+#include "Bounding_Sphere.h"
+
 
 
 /* 컴포넌트의 원형들을 레벨별로 보관한다. */

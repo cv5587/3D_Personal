@@ -53,7 +53,7 @@ void CPlayer_Camera::Tick(_float fTimeDelta)
 		_vector		vUp = Socket.r[1];
 		_vector		vLook = Socket.r[2];
 
-		_matrix		RotationMatrix = XMMatrixRotationAxis(vRight, -0.01 * fTimeDelta* MouseMove);
+		_matrix		RotationMatrix = XMMatrixRotationAxis(vRight, -0.02 * fTimeDelta* MouseMove);
 
 		vRight = XMVector3TransformNormal(vRight, RotationMatrix);
 		vUp = XMVector3TransformNormal(vUp, RotationMatrix);	

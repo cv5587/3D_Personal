@@ -114,6 +114,10 @@ HRESULT CData_Manager::Load_Data(_uint iLevelIndex)
 					if (FAILED(m_pGameInstance->Add_CloneObject(iReadLevel, wLayer, strPrototypeTag, &pDesc)))
 						return E_FAIL;
 				}
+				else if (TEXT("Layer_Player"))
+				{
+
+				}
 				else//몬스터 ,플레이어 설정 (몬스터는 터레인만 추가, 플레이어는 터레인,파츠(고정값이므로 작업필요 ㄴ))
 				{
 					CLandObject::LANDOBJ_DESC		LandObjDesc{};
