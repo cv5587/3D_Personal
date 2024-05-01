@@ -63,7 +63,8 @@ public: /* For.Object_Manager */
 	//데이터 파싱
 	HRESULT Save_Level(_uint iLevelIndex);
 	class CComponent* Get_Component(_uint iLevelIndex, const wstring& strLayerTag, const wstring& strComponentTag, _uint iIndex = 0);
-
+	//레이어 렌더용
+	HRESULT Render_UI(_uint iLevelIndex, wstring LayerName);
 
 public: /* For.Component_Manager */
 	HRESULT Add_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag, CComponent* pPrototype);

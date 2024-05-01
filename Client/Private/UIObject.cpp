@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "CUIObject.h"
+#include "UIObject.h"
 
 #include "GameInstance.h"
 
@@ -59,7 +59,7 @@ void CUIObject::Tick(_float fTimeDelta)
 
 void CUIObject::Late_Tick(_float fTimeDelta)
 {
-	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_UI, this);
+	
 }
 
 HRESULT CUIObject::Render()
@@ -75,6 +75,13 @@ HRESULT CUIObject::Render()
 	m_pVIBufferCom->Render();
 
 	return S_OK;
+}
+
+//위치,크기, 아이콘ID  컨트롤 하면됨
+//레이어에 넣어두고 렌더그룹에 안 넣어주면 됨.
+void CUIObject::Choice_Render()
+{
+	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_UI, this);
 }
 
 HRESULT CUIObject::Add_Components()

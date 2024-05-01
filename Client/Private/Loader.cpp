@@ -12,7 +12,7 @@
 #include "Player_Camera.h"
 #include "Revolver.h"
 #include "GEARItem.h"
-#include "CUIObject.h"
+#include "UIObject.h"
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice{ pDevice }

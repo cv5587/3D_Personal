@@ -6,7 +6,7 @@
 #include "GameInstance.h"
 #include "Level_Loading.h"
 #include "BackGround.h"
-#include "CUIObject.h"
+#include "UIObject.h"
 
 #include "Shader.h"
 

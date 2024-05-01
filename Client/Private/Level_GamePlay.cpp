@@ -241,9 +241,9 @@ HRESULT CLevel_GamePlay::Load_GameData(const wstring& strLayerTag)
 HRESULT CLevel_GamePlay::Readt_Layer_SelectorIcon(const wstring& strLayerTag)
 {
 
+	//if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, strLayerTag, TEXT("Prototype_GameObject_SelectorIcon"))))
+	//	return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, strLayerTag, TEXT("Prototype_GameObject_SelectorIcon"))))
-		return E_FAIL;
 	return S_OK;
 }
 

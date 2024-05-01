@@ -28,6 +28,9 @@ public:
 	}
 
 public:
+	//UI·»´õ
+	void Render_UI();
+public:
 	HRESULT Save_Data(ofstream* fout);	
 private:
 	list<class CGameObject* >		m_GameObjects;

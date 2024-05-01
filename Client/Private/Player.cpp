@@ -45,7 +45,7 @@ HRESULT CPlayer::Initialize(void* pArg)
 
 	m_pStateMachine->Set_CurrentState(this, PLAYERSTATE::PLAYER_IDLE);
 
-	m_pPickUpSelector = CPickUpSelector::Create(m_pInventory);
+	m_pPickUpSelector = CPickUpSelector::Create(m_pDevice,m_pContext, m_pInventory);
 
 	m_fSensor = 0.02f;
 

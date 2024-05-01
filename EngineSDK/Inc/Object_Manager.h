@@ -42,8 +42,13 @@ public:
 	//파츠 오브젝트용
 	class CGameObject* Clone_Object(const wstring& strPrototypeTag, void* pArg);
 
-	//데이터 파싱
+
+
 public:
+	//UI렌더
+	void Render_UI(_uint iLevelIndex, wstring LayerName);
+public:
+	//데이터 파싱
 	HRESULT Save_Level(_uint iLevelIndex);
 
 private:

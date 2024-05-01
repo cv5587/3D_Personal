@@ -27,7 +27,7 @@ public:
 	virtual void Tick(_float fTimeDelta);
 	virtual void Late_Tick(_float fTimeDelta);
 	virtual HRESULT Render();
-
+	virtual void Choice_Render();
 public:
 	class		CComponent* Get_Transform();
 	class		CComponent* Get_Component(const wstring& strComponentTag);

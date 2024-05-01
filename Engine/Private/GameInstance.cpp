@@ -291,6 +291,15 @@ CComponent* CGameInstance::Get_Component(_uint iLevelIndex, const wstring& strLa
 
 }
 
+HRESULT CGameInstance::Render_UI(_uint iLevelIndex, wstring LayerName)
+{
+	if (nullptr == m_pObject_Manager)
+		return E_FAIL;
+
+	 m_pObject_Manager->Render_UI(iLevelIndex, LayerName);
+	 return S_OK;
+}
+
 HRESULT CGameInstance::Add_Prototype(_uint iLevelIndex, const wstring & strPrototypeTag, CComponent * pPrototype)
 {
 	return m_pComponent_Manager->Add_Prototype(iLevelIndex, strPrototypeTag, pPrototype);	

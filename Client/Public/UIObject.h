@@ -12,8 +12,9 @@ END
 class CUIObject final:
     public CGameObject
 {
-	typedef struct {
-		_uint ID;
+public:
+	typedef struct :public CGameObject::GAMEOBJECT_DESC{
+		_uint Icon_ID;
 	}UI_DESC;
 
 private:
@@ -28,6 +29,7 @@ public:
 	virtual void Tick(_float fTimeDelta) override;
 	virtual void Late_Tick(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
+	virtual void Choice_Render() override;
 
 private:
 	CShader* m_pShaderCom = { nullptr };

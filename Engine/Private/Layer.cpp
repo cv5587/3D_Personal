@@ -115,6 +115,12 @@ void CLayer::Late_Tick(_float fTimeDelta)
 		pGameObject->Late_Tick(fTimeDelta);
 }
 
+void CLayer::Render_UI()
+{
+	for (auto& pGameObject : m_GameObjects)
+		pGameObject->Choice_Render();
+}
+
 HRESULT CLayer::Save_Data(ofstream* fout)
 {
 

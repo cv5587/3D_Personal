@@ -169,6 +169,9 @@
     <Filter Include="93.PickUpSelector">
       <UniqueIdentifier>{3ec4b7d0-f16b-4add-9757-2b8e19f9da94}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\00.UI\UImanager">
+      <UniqueIdentifier>{7884584b-cc47-43a5-a6ce-da73f16e4e25}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -203,9 +206,6 @@
     </ClInclude>
     <ClInclude Include="..\public\BackGround.h">
       <Filter>02.GameObjects\00.BackGround</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\CUIObject.h">
-      <Filter>02.GameObjects\00.UI</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Terrain.h">
       <Filter>02.GameObjects\01.Terrain</Filter>
@@ -327,6 +327,12 @@
     <ClInclude Include="..\Public\GEARItem.h">
       <Filter>02.GameObjects\04.Inventory\item</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\UIObject.h">
+      <Filter>02.GameObjects\00.UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UImanager.h">
+      <Filter>02.GameObjects\00.UI\UImanager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -352,9 +358,6 @@
     </ClCompile>
     <ClCompile Include="..\private\BackGround.cpp">
       <Filter>02.GameObjects\00.BackGround</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\CUIObject.cpp">
-      <Filter>02.GameObjects\00.UI</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Terrain.cpp">
       <Filter>02.GameObjects\01.Terrain</Filter>
@@ -475,6 +478,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\GEARItem.cpp">
       <Filter>02.GameObjects\04.Inventory\item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UIObject.cpp">
+      <Filter>02.GameObjects\00.UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UImanager.cpp">
+      <Filter>02.GameObjects\00.UI\UImanager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -16,12 +16,13 @@ class CPickUpSelector :
         
     }SELECTOR_DESC;
 private:
-    CPickUpSelector();
+    CPickUpSelector(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
     virtual ~CPickUpSelector() = default;
 
 private:
     class CGameInstance* m_pGameInstance = { nullptr };
-
+    class ID3D11Device* m_pDevice;
+    class ID3D11DeviceContext* m_pContext;
 public:
     HRESULT Initialize(void* pArg=nullptr);
     HRESULT Pick_up(class CGameObject* pPickObject, _bool* Acquire);
@@ -36,9 +37,9 @@ private:
     _float m_fSensor = { 0.2f };
 
     class CInventory* m_pPlayerInventory = { nullptr };
-
+    class CUImanager* m_pUImanager = { nullptr };
 public:
-    static CPickUpSelector* Create(void* pArg=nullptr);
+    static CPickUpSelector* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext,void* pArg=nullptr);
     virtual void Free() override;
 };
 

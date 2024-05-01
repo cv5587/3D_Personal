@@ -220,6 +220,14 @@ CGameObject* CObject_Manager::Clone_Object(const wstring& strPrototypeTag, void*
 	return pCloneObject;
 }
 
+void CObject_Manager::Render_UI(_uint iLevelIndex, wstring LayerName)
+{
+	CLayer* pLayer = Find_Layer(iLevelIndex, LayerName);
+
+	pLayer->Render_UI();
+
+}
+
 HRESULT CObject_Manager::Save_Level(_uint iLevelIndex)
 {
 	char FileRoute[MAX_PATH] = "../Bin/bin/Save_Data/";

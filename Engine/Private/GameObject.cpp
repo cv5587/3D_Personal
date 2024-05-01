@@ -66,6 +66,10 @@ HRESULT CGameObject::Render()
 	return S_OK;
 }
 
+void CGameObject::Choice_Render()
+{
+}
+
 CComponent* CGameObject::Get_Transform()
 {
 	auto& iter = m_Components.find(m_pTransformTag);
@@ -119,6 +123,7 @@ void CGameObject::Make_Description(void* pArg)
 	m_pTransformCom->Make_Description(pDesc);
 
 }
+
 
 HRESULT CGameObject::Add_Component(_uint iPrototypeLevelIndex, const wstring& strPrototypeTag, const wstring& strComponentTag, CComponent** ppOut, void* pArg)
 {

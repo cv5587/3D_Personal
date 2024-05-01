@@ -173,9 +173,6 @@
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\Public\Body_Player.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
-    <ClInclude Include="..\public\CUIObject.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="..\Public\Data_Manager.h" />
     <ClInclude Include="..\Public\EnvironmentObject.h" />
     <ClInclude Include="..\Public\FreeCamera.h" />
@@ -219,6 +216,8 @@
     <ClInclude Include="..\Public\State_Walk_S.h" />
     <ClInclude Include="..\Public\Terrain.h" />
     <ClInclude Include="..\Public\TerrainManager.h" />
+    <ClInclude Include="..\Public\UImanager.h" />
+    <ClInclude Include="..\Public\UIObject.h" />
     <ClInclude Include="..\Public\Weapon.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Resource.h" />
@@ -228,9 +227,6 @@
   <ItemGroup>
     <ClCompile Include="..\private\BackGround.cpp" />
     <ClCompile Include="..\Private\Body_Player.cpp" />
-    <ClCompile Include="..\private\CUIObject.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="..\Private\Data_Manager.cpp" />
     <ClCompile Include="..\Private\EnvironmentObject.cpp" />
     <ClCompile Include="..\Private\FreeCamera.cpp" />
@@ -274,6 +270,8 @@
     <ClCompile Include="..\Private\State_Walk_S.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
     <ClCompile Include="..\Private\TerrainManager.cpp" />
+    <ClCompile Include="..\Private\UImanager.cpp" />
+    <ClCompile Include="..\Private\UIObject.cpp" />
     <ClCompile Include="..\Private\Weapon.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">

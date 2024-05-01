@@ -1,12 +1,17 @@
 #include "PickUpSelector.h"
 #include "GameInstance.h"
 #include "Item.h"
+#include "UImanager.h"
 
 
-CPickUpSelector::CPickUpSelector()
-	:m_pGameInstance{CGameInstance::GetInstance()}
+CPickUpSelector::CPickUpSelector(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	:m_pGameInstance{CGameInstance::GetInstance()},
+	m_pDevice{ pDevice },
+	m_pContext{pContext}
 {
 	Safe_AddRef(m_pGameInstance);
+	Safe_AddRef(m_pDevice);
+	Safe_AddRef(m_pContext);
 }
 
 HRESULT CPickUpSelector::Initialize(void* pArg)
@@ -14,6 +19,7 @@ HRESULT CPickUpSelector::Initialize(void* pArg)
 	m_pPlayerInventory = static_cast<CInventory*>(pArg);	
 	Safe_AddRef(m_pPlayerInventory);
 	
+	m_pUImanager = CUImanager::Create(m_pDevice,m_pContext);
 
 	return S_OK;
 }
@@ -83,6 +89,8 @@ HRESULT CPickUpSelector::Tick( _float fTimeDelta)
 		return S_OK;
 	}
 
+	m_pUImanager->Render_KeyUI(CUImanager::Layer_KEY);
+
 	return S_OK;
 }
 
@@ -101,9 +109,9 @@ HRESULT CPickUpSelector::Render()
 }
 
 
-CPickUpSelector* CPickUpSelector::Create(void* pArg)
+CPickUpSelector* CPickUpSelector::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, void* pArg)
 {
-	CPickUpSelector* pInstance = new CPickUpSelector();
+	CPickUpSelector* pInstance = new CPickUpSelector(pDevice, pContext);	
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
@@ -117,6 +125,9 @@ CPickUpSelector* CPickUpSelector::Create(void* pArg)
 void CPickUpSelector::Free()
 {
 	Safe_Release(m_pPlayerInventory);
+	Safe_Release(m_pUImanager);
 	Safe_Release(m_pGameInstance);
+	Safe_Release(m_pDevice);
+	Safe_Release(m_pContext);
 }
 //결국 리스트는 주소를 가지고 있어야도미;처음 제작 할때 주소를 가지고 와서 보관하고 사용하자.
