@@ -179,8 +179,7 @@
     <ClInclude Include="..\Public\Data_Manager.h" />
     <ClInclude Include="..\Public\EnvironmentObject.h" />
     <ClInclude Include="..\Public\FreeCamera.h" />
-    <ClInclude Include="..\Public\Inventory.h" />
-    <ClInclude Include="..\Public\Item.h" />
+    <ClInclude Include="..\Public\GEARItem.h" />
     <ClInclude Include="..\Public\LandObject.h" />
     <ClInclude Include="..\Public\Level_GamePlay.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
@@ -189,6 +188,7 @@
     <ClInclude Include="..\public\MainApp.h" />
     <ClInclude Include="..\Public\Monster.h" />
     <ClInclude Include="..\Public\PartObject.h" />
+    <ClInclude Include="..\Public\PickUpSelector.h" />
     <ClInclude Include="..\Public\Player.h" />
     <ClInclude Include="..\Public\Player_Camera.h" />
     <ClInclude Include="..\Public\Revolver.h" />
@@ -234,8 +234,7 @@
     <ClCompile Include="..\Private\Data_Manager.cpp" />
     <ClCompile Include="..\Private\EnvironmentObject.cpp" />
     <ClCompile Include="..\Private\FreeCamera.cpp" />
-    <ClCompile Include="..\Private\Inventory.cpp" />
-    <ClCompile Include="..\Private\Item.cpp" />
+    <ClCompile Include="..\Private\GEARItem.cpp" />
     <ClCompile Include="..\Private\LandObject.cpp" />
     <ClCompile Include="..\Private\Level_GamePlay.cpp" />
     <ClCompile Include="..\Private\Level_Loading.cpp" />
@@ -244,6 +243,7 @@
     <ClCompile Include="..\private\MainApp.cpp" />
     <ClCompile Include="..\Private\Monster.cpp" />
     <ClCompile Include="..\Private\PartObject.cpp" />
+    <ClCompile Include="..\Private\PickUpSelector.cpp" />
     <ClCompile Include="..\Private\Player.cpp" />
     <ClCompile Include="..\Private\Player_Camera.cpp" />
     <ClCompile Include="..\Private\Revolver.cpp" />

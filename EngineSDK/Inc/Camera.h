@@ -26,7 +26,7 @@ public:
 
 protected:
 
-	_float4x4* m_pEyeBoneMatrix;
+	_float4x4*				m_pEyeBoneMatrix;
 	_float4x4				m_WorldMatrix;
 
 	_float				m_fFovy = { 0.f };

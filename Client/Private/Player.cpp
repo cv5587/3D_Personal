@@ -7,7 +7,7 @@
 #include "Revolver.h"
 #include "StateMachine.h"
 #include "Player_Camera.h"
-#include "Inventory.h"
+#include "PickUpSelector.h"
 
 CPlayer::CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLandObject{ pDevice, pContext }
@@ -45,7 +45,7 @@ HRESULT CPlayer::Initialize(void* pArg)
 
 	m_pStateMachine->Set_CurrentState(this, PLAYERSTATE::PLAYER_IDLE);
 
-	m_pInventory = CInventory::Create(m_pDevice,m_pContext);
+	m_pPickUpSelector = CPickUpSelector::Create(m_pInventory);
 
 	m_fSensor = 0.02f;
 
@@ -78,12 +78,51 @@ void CPlayer::Tick(_float fTimeDelta)
 {
 	if (!m_bAcquire)
 	{
-		if (m_pGameInstance->Get_DIMouseState(DIM_LB))
+		if (m_pGameInstance->Get_DIMouseState_Once(DIM_LB))
 		{
+
 			CGameObject* pPickObject = m_pGameInstance->FindID_CloneObject(LEVEL_GAMEPLAY, m_pGameInstance->Picking_IDScreen());
 			if (nullptr != pPickObject)
+			{
 				m_bAcquire = true;
+				m_pPickUpSelector->Pick_up(pPickObject, &m_bAcquire);
+			}
 		}
+
+		_long		MouseMove = { 0 };
+		if (MouseMove = m_pGameInstance->Get_DIMouseMove(DIMS_X))
+		{
+			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * m_fSensor * MouseMove);
+		}
+
+
+		m_pStateMachine->Update(this, fTimeDelta);
+
+		m_pNavigationCom->Set_OnNavigation(m_pTransformCom);
+
+		m_pColliderCom->Tick(m_pTransformCom->Get_WorldMatrix());
+
+		m_PartObjects[PART_BODY]->Tick(fTimeDelta);
+		switch (m_eEquip)
+		{
+		case Client::EQUIP_STONE:
+			m_PartObjects[PART_STONE]->Tick(fTimeDelta);
+			break;
+		case Client::EQUIP_REVOLVER:
+			m_PartObjects[PART_REOVLVER]->Tick(fTimeDelta);
+			break;
+		case Client::EQUIP_PIPE:
+			m_PartObjects[PART_PIPE]->Tick(fTimeDelta);
+			break;
+		}
+
+
+	}
+	else//m_bAcquire ==true
+	{
+		m_pPickUpSelector->Tick(fTimeDelta);		
+	}
+
 
 
 		if (m_eEquip != PLAYEREQUIP::EQUIP_STONE)
@@ -108,44 +147,7 @@ void CPlayer::Tick(_float fTimeDelta)
 			Set_State(PLAYERSTATE::PLAYER_UNEQUIP);
 		}
 
-		_long		MouseMove = { 0 };
-
-		if (MouseMove = m_pGameInstance->Get_DIMouseMove(DIMS_X))
-		{
-			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * m_fSensor * MouseMove);
-		}
-
-
-
-		Mouse_Fix();
-
-		m_pStateMachine->Update(this, fTimeDelta);
-
-		m_pNavigationCom->Set_OnNavigation(m_pTransformCom);
-
-		m_pColliderCom->Tick(m_pTransformCom->Get_WorldMatrix());
-
-		m_PartObjects[PART_BODY]->Tick(fTimeDelta);
-		switch (m_eEquip)
-		{
-		case Client::EQUIP_STONE:
-			m_PartObjects[PART_STONE]->Tick(fTimeDelta);
-			break;
-		case Client::EQUIP_REVOLVER:
-			m_PartObjects[PART_REOVLVER]->Tick(fTimeDelta);
-			break;
-		case Client::EQUIP_PIPE:
-			m_PartObjects[PART_PIPE]->Tick(fTimeDelta);
-			break;
-		}
-
-	}
-	else//m_bAcquire ==true
-	{
-		//카메라가 ui 카메라가 돌아야됨.
-		int a = 10;
-		m_bAcquire = false;
-	}
+		Mouse_Fix();	
 	
 }
 
@@ -203,6 +205,10 @@ HRESULT CPlayer::Add_Components()
 		TEXT("Com_Navigation"), reinterpret_cast<CComponent**>(&m_pNavigationCom), &NavigationDesc)))
 		return E_FAIL;
 
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Inventory"),
+		TEXT("Com_Inventory"), reinterpret_cast<CComponent**>(&m_pInventory))))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -245,7 +251,7 @@ HRESULT CPlayer::Add_PartObjects()
 
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, TEXT("Layer_Camera"), TEXT("Prototype_GameObject_PlayerCamera"), &CameraDesc)))
 		return E_FAIL;
-
+	
 
 	///*돌*/
 	///* 무기객체를 복제해온다. */
@@ -393,13 +399,15 @@ void CPlayer::Free()
 
 	m_PartObjects.clear();
 
-	Safe_Release(m_pInventory);
-
 	Safe_Release(m_pNavigationCom);
 
 	Safe_Release(m_pColliderCom);
 
 	Safe_Release(m_pStateMachine);
+
+	Safe_Release(m_pPickUpSelector);
+
+	Safe_Release(m_pInventory);
 
 	CStateMachine::DestroyInstance();
 

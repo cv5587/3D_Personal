@@ -42,6 +42,7 @@ HRESULT CCamera::Initialize(void* pArg)
 
 void CCamera::Priority_Tick(_float fTimeDelta)
 {
+	/*
 	if (m_pGameInstance->Get_DIKeyState(DIK_UP))
 		m_pTransformCom->Go_Straight(fTimeDelta);
 	if (m_pGameInstance->Get_DIKeyState(DIK_DOWN))
@@ -49,7 +50,7 @@ void CCamera::Priority_Tick(_float fTimeDelta)
 	if (m_pGameInstance->Get_DIKeyState(DIK_LEFT))
 		m_pTransformCom->Go_Left(fTimeDelta);
 	if (m_pGameInstance->Get_DIKeyState(DIK_RIGHT))
-		m_pTransformCom->Go_Right(fTimeDelta);
+		m_pTransformCom->Go_Right(fTimeDelta);*/
 	//m_pTransformCom->Set_State_Matrix(m_pGameInstance->Get_Transform_Matrix(CPipeLine::TS_CAMWORLD));
 }
 

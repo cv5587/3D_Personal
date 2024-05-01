@@ -166,6 +166,9 @@
     <Filter Include="02.GameObjects\04.Inventory\item">
       <UniqueIdentifier>{3145fb2b-0389-4dfa-89e5-693d528148d0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="93.PickUpSelector">
+      <UniqueIdentifier>{3ec4b7d0-f16b-4add-9757-2b8e19f9da94}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -318,11 +321,11 @@
     <ClInclude Include="..\Public\State_Reload_E.h">
       <Filter>94. StateMachine\State\Player\State_Reload_E</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Item.h">
-      <Filter>02.GameObjects\04.Inventory\item</Filter>
+    <ClInclude Include="..\Public\PickUpSelector.h">
+      <Filter>93.PickUpSelector</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Inventory.h">
-      <Filter>02.GameObjects\04.Inventory</Filter>
+    <ClInclude Include="..\Public\GEARItem.h">
+      <Filter>02.GameObjects\04.Inventory\item</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -467,11 +470,11 @@
     <ClCompile Include="..\Private\State_Reload_E.cpp">
       <Filter>94. StateMachine\State\Player\State_Reload_E</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Item.cpp">
-      <Filter>02.GameObjects\04.Inventory\item</Filter>
+    <ClCompile Include="..\Private\PickUpSelector.cpp">
+      <Filter>93.PickUpSelector</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Inventory.cpp">
-      <Filter>02.GameObjects\04.Inventory</Filter>
+    <ClCompile Include="..\Private\GEARItem.cpp">
+      <Filter>02.GameObjects\04.Inventory\item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -80,6 +80,8 @@ public:
 public:
 	HRESULT Bind_ShaderResource(class CShader* pShader, const _char* pConstantName);
 
+public:
+	void Make_Description(void* pArg);
 private:
 	/* row major */
 	_float4x4				m_WorldMatrix;

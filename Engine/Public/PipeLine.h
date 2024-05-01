@@ -31,6 +31,7 @@ private:
 	_float4x4				m_TransformStateMatrixInverse[TS_END];
 	_float4					m_vCamPosition;
 	_float4x4*				m_CamWorldMatrix;
+	
 
 public:
 	static CPipeLine* Create();

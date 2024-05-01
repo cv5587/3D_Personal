@@ -12,6 +12,7 @@ public:
 		wstring ProtoTypeTag;
 		wstring		ModelTag;
 		_float4x4		vPrePosition ;
+
 	}GAMEOBJECT_DESC;
 
 protected:
@@ -44,6 +45,8 @@ public:
 
 public:
 	HRESULT Save_Data(ofstream* fout);
+	virtual void Make_Description(void* pArg) ;
+
 
 protected:
 	ID3D11Device* m_pDevice = { nullptr };
@@ -53,10 +56,13 @@ protected:
 	class CGameInstance* m_pGameInstance = { nullptr };
 	class CTransform* m_pTransformCom = { nullptr };
 	static const _tchar* m_pTransformTag;
+
 protected:
 	wstring m_ProtoTypeTag;//참조원형
 	wstring m_ModelTag;//모델 태그
 	_int m_iRenderID = { -1 };
+
+
 protected:
 	map<const wstring, class CComponent*>		m_Components;
 

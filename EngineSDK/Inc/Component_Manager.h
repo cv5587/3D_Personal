@@ -13,6 +13,8 @@
 #include "Bounding_AABB.h"
 #include "Bounding_Sphere.h"
 
+#include "Inventory.h"
+
 
 
 /* 컴포넌트의 원형들을 레벨별로 보관한다. */

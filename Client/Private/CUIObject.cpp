@@ -12,7 +12,8 @@ CUIObject::CUIObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 }
 
 CUIObject::CUIObject(const CUIObject& rhs)
-	:CGameObject(rhs), m_fX(rhs.m_fX), m_fY(rhs.m_fY), m_fSizeX(rhs.m_fSizeX), m_fSizeY(rhs.m_fSizeY),
+	:CGameObject(rhs),
+	m_fX(rhs.m_fX), m_fY(rhs.m_fY), m_fSizeX(rhs.m_fSizeX), m_fSizeY(rhs.m_fSizeY),
 	m_WorldMatrix(rhs.m_WorldMatrix), m_ViewMatrix(rhs.m_ViewMatrix), m_ProjMatrix(rhs.m_ProjMatrix)
 {
 }
@@ -24,21 +25,24 @@ HRESULT CUIObject::Initialize_Prototype()
 
 HRESULT CUIObject::Initialize(void* pArg)
 {
+	if (FAILED(__super::Initialize(nullptr)))
+		return E_FAIL;
+
 	if (FAILED(Add_Components()))
 		return E_FAIL;
 
-	m_fSizeX = 225.f;
-	m_fSizeY = 225.f;
+	m_fSizeX = 60.f;
+	m_fSizeY = 60.f;
 	m_fX = g_iWinSizeX >> 1;
 	m_fY = g_iWinSizeY >> 1;
 
-	XMStoreFloat4x4(&m_WorldMatrix, XMMatrixIdentity());
-	m_WorldMatrix._11 = m_fSizeX;
-	m_WorldMatrix._22 = m_fSizeY;
+	//이제 아이콘을 어떻게 따로 위치를 잡을지를 알아보고
+	//아이콘을 어떻게 저장해놓고 언제 보여줄지 로직을 잡자
+	m_pTransformCom->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMVectorSet(-m_fX*0.3f, -m_fY*0.4f, 0.f, 1.f));
+	
 
-	m_WorldMatrix._41 = m_fX - g_iWinSizeX * 0.5f;
-	m_WorldMatrix._42 = -m_fY + g_iWinSizeY * 0.5f;
-
+	//뷰,투영행렬
 	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
 	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH(g_iWinSizeX, g_iWinSizeY, 0.f, 1.0f));
 
@@ -63,7 +67,8 @@ HRESULT CUIObject::Render()
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 
-	m_pShaderCom->Begin(1);
+	//아이콘 여러개 넣을려고 생각해서 만듬
+	m_pShaderCom->Begin(m_iID);
 
 	m_pVIBufferCom->Bind_Buffers();
 
@@ -82,7 +87,7 @@ HRESULT CUIObject::Add_Components()
 	if (nullptr == m_pShaderCom)
 		return E_FAIL;
 
-	m_pTextureCom = dynamic_cast<CTexture*>(m_pGameInstance->Clone_Component(LEVEL_LOADING, TEXT("Prototype_Component_Texture_Icon")));
+	m_pTextureCom = dynamic_cast<CTexture*>(m_pGameInstance->Clone_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_SelectorIcon")));
 	if (nullptr == m_pTextureCom)
 		return E_FAIL;
 
@@ -91,8 +96,9 @@ HRESULT CUIObject::Add_Components()
 
 HRESULT CUIObject::Bind_ShaderResources()
 {
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_WorldMatrix)))
+	if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
+
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))

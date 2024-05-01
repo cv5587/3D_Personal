@@ -6,7 +6,7 @@
 #include "LandObject.h"	
 
 #include "TerrainManager.h"
-#include "Item.h"	
+#include "GEARItem.h"	
 
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
@@ -28,6 +28,9 @@ HRESULT CLevel_GamePlay::Initialize()
 	//if (FAILED(Ready_Layer_Environment(TEXT("Layer_EnvironmentObject"))))
 	//	return E_FAIL;
 	if (FAILED(Load_GameData(TEXT("LEVEL_GAMEPLAY_GAMEDATA"))))
+		return E_FAIL;
+
+	if (FAILED(Readt_Layer_SelectorIcon(TEXT("Layer_SelectorIcon"))))
 		return E_FAIL;
 
 	//if (FAILED(Ready_LandObjects()))
@@ -199,13 +202,16 @@ HRESULT CLevel_GamePlay::Load_GameData(const wstring& strLayerTag)
 					itemDesc.ModelTag = strModelTag;
 					itemDesc.vPrePosition = fWorldPosition;
 
-					CItem::ITEM_DESC* pItemDesc{};
-					pItemDesc = static_cast<CItem::ITEM_DESC*>(Check_Model(&itemDesc));
+					_tchar ItemName[MAX_PATH] = TEXT("");
+					fin.read((char*)ItemName, sizeof(_tchar) * MAX_PATH);
+					wstring wItemName(ItemName);
 
-					if (nullptr == pItemDesc)
-						return E_FAIL;
+					itemDesc.ItemName = wItemName;	
+					fin.read((char*)&itemDesc.iQuantity, sizeof(_uint));
+					fin.read((char*)&itemDesc.ItemType[0], sizeof(_uint));
+					fin.read((char*)&itemDesc.ItemType[1], sizeof(_uint));
 
-					if (FAILED(m_pGameInstance->Add_CloneObject(iReadLevel, wLayer, strPrototypeTag, pItemDesc)))
+					if (FAILED(m_pGameInstance->Add_CloneObject(iReadLevel, wLayer, strPrototypeTag, &itemDesc)))
 						return E_FAIL;
 				}
 				else//몬스터 ,플레이어 설정 (몬스터는 터레인만 추가, 플레이어는 터레인,파츠(고정값이므로 작업필요 ㄴ))
@@ -232,6 +238,15 @@ HRESULT CLevel_GamePlay::Load_GameData(const wstring& strLayerTag)
 	return S_OK;
 }
 
+HRESULT CLevel_GamePlay::Readt_Layer_SelectorIcon(const wstring& strLayerTag)
+{
+
+
+	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, strLayerTag, TEXT("Prototype_GameObject_SelectorIcon"))))
+		return E_FAIL;
+	return S_OK;
+}
+
 HRESULT CLevel_GamePlay::Ready_Layer_Player(const wstring& strLayerTag, CLandObject::LANDOBJ_DESC* pLandObjDesc)
 {
 	pLandObjDesc->ModelTag = TEXT("Prototype_Component_Model_Player");
@@ -245,24 +260,6 @@ HRESULT CLevel_GamePlay::Ready_Layer_Player(const wstring& strLayerTag, CLandObj
 
 
 	return S_OK;
-}
-
-void* CLevel_GamePlay::Check_Model(void* pArg)
-{
-
-	wstring ModelTag = static_cast<CGameObject::GAMEOBJECT_DESC*>(pArg)->ModelTag;
-	if (TEXT("Prototype_Component_Model_Stone")== ModelTag)
-	{
-		CItem::ITEM_DESC* itemDesc = static_cast<CItem::ITEM_DESC*>(pArg);
-
-		itemDesc->ItemName = TEXT("Stone");
-		itemDesc->ItemType = (_uint)CItem::ITEMTYPE::ITEM_STUFF;
-		itemDesc->iQuantity = 1;
-		return itemDesc;
-	}
-
-
-	return nullptr;
 }
 
 CLevel_GamePlay* CLevel_GamePlay::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

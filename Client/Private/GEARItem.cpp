@@ -1,33 +1,35 @@
-#include "Item.h"
+#include "GEARItem.h"
 
 #include "GameInstance.h"
-CItem::CItem(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	:CGameObject{pDevice,pContext}
+CGEARItem::CGEARItem(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	:CItem{pDevice,pContext}
 {
 }
 
-CItem::CItem(const CGameObject& rhs)
-	:CGameObject{rhs}
+CGEARItem::CGEARItem(const CGEARItem& rhs)
+	:CItem{rhs}
 {
 }
 
-HRESULT CItem::Initialize_Prototype()
+HRESULT CGEARItem::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CItem::Initialize(void* pArg)
+HRESULT CGEARItem::Initialize(void* pArg)
 {
+
 	GAMEOBJECT_DESC* pDesc = (GAMEOBJECT_DESC*)pArg;
+
+	//이동과 회전은 밖에서 넘겨주게 만들어주자
+	pDesc->fSpeedPerSec = 2.f;
+	pDesc->fRotationPerSec = XMConvertToRadians(120.0f);
+
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
-	m_pTransformCom->Set_State_Matrix(XMLoadFloat4x4(&pDesc->vPrePosition));
 
-	ITEM_DESC* pItemDesc = static_cast<ITEM_DESC*>(pArg);
-	m_ItemType = static_cast<ITEMTYPE>(pItemDesc->ItemType);
-	m_Quantity= pItemDesc->iQuantity;
-	m_ItemName = pItemDesc->ItemName;
+	m_pTransformCom->Set_State_Matrix(XMLoadFloat4x4(&pDesc->vPrePosition));
 
 	if (FAILED(Add_Components()))
 		return E_FAIL;
@@ -35,20 +37,20 @@ HRESULT CItem::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CItem::Priority_Tick(_float fTimeDelta)
+void CGEARItem::Priority_Tick(_float fTimeDelta)
 {
 }
 
-void CItem::Tick(_float fTimeDelta)
+void CGEARItem::Tick(_float fTimeDelta)
 {
 }
 
-void CItem::Late_Tick(_float fTimeDelta)
+void CGEARItem::Late_Tick(_float fTimeDelta)
 {
 	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 }
 
-HRESULT CItem::Render()
+HRESULT CGEARItem::Render()
 {
 
 	if (FAILED(Bind_ShaderResources()))
@@ -72,15 +74,7 @@ HRESULT CItem::Render()
 	return S_OK;
 }
 
-_bool CItem::Type_Compare(CItem::ITEMTYPE Itemtype)
-{
-	if (m_ItemType == Itemtype)
-		return true;
-	else
-		return false;
-}
-
-HRESULT CItem::Add_Components()
+HRESULT CGEARItem::Add_Components()
 {
 	/* For.Com_Model */
 	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, m_ModelTag,
@@ -96,7 +90,7 @@ HRESULT CItem::Add_Components()
 	return S_OK;
 }
 
-HRESULT CItem::Bind_ShaderResources()
+HRESULT CGEARItem::Bind_ShaderResources()
 {
 	if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
@@ -110,33 +104,33 @@ HRESULT CItem::Bind_ShaderResources()
 	return S_OK;
 }
 
-CItem* CItem::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CGEARItem* CGEARItem::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	CItem* pInstance = new CItem(pDevice, pContext);
+	CGEARItem* pInstance = new CGEARItem(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed To Created : CItem");
+		MSG_BOX("Failed To Created : GEARItem");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-CGameObject* CItem::Clone(void* pArg)
+CGameObject* CGEARItem::Clone(void* pArg)
 {
-	CItem* pInstance = new CItem(*this);
+	CGEARItem* pInstance = new CGEARItem(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed To Cloned : CItem");
+		MSG_BOX("Failed To Cloned : GEARItem");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CItem::Free()
+void CGEARItem::Free()
 {
 	__super::Free();
 

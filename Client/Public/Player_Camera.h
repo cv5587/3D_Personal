@@ -23,7 +23,6 @@ private:
 	const _float4x4* m_pParentMatrix;
 	_float4x4 m_fixWorld;
 	class CBone* m_pCamBone = { nullptr };
-private:
 public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;

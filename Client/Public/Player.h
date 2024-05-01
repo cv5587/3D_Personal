@@ -74,11 +74,13 @@ private:
 	_float											m_fSensor = { 0.0f };
 	
 	_bool											m_bRevolver_AnimFin = { true };
-
+	//pickupselector 돌릴지 말지 확인용 
 	_bool											m_bAcquire = {false};
+
 	class CNavigation* m_pNavigationCom = { nullptr };
 	class CCollider* m_pColliderCom = { nullptr };
 	class CInventory* m_pInventory = { nullptr };
+	class CPickUpSelector* m_pPickUpSelector = { nullptr };
 private:
 	void Mouse_Fix();
 public:

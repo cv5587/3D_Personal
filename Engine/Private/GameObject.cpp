@@ -109,6 +109,17 @@ HRESULT CGameObject::Save_Data(ofstream* fout)
 	return S_OK;
 }
 
+void CGameObject::Make_Description(void* pArg)
+{
+	GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
+
+	pDesc->ModelTag = m_ModelTag;
+	pDesc->ProtoTypeTag = m_ProtoTypeTag;
+
+	m_pTransformCom->Make_Description(pDesc);
+
+}
+
 HRESULT CGameObject::Add_Component(_uint iPrototypeLevelIndex, const wstring& strPrototypeTag, const wstring& strComponentTag, CComponent** ppOut, void* pArg)
 {
 	if (m_Components.end() != m_Components.find(strComponentTag))

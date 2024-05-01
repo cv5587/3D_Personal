@@ -299,6 +299,15 @@ HRESULT CTransform::Bind_ShaderResource(CShader* pShader, const _char* pConstant
 	return pShader->Bind_Matrix(pConstantName, &m_WorldMatrix);
 }
 
+void CTransform::Make_Description(void* pArg)
+{
+	TRANSFORM_DESC* pDesc = static_cast<TRANSFORM_DESC*>(pArg);
+
+	pDesc->fRotationPerSec = m_fRotationPerSec;
+	pDesc->fSpeedPerSec = m_fSpeedPerSec;
+
+}
+
 CTransform * CTransform::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
 	CTransform* pInstance = new CTransform(pDevice, pContext);

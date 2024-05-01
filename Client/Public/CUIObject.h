@@ -8,13 +8,14 @@ class CShader;
 class CTexture;
 class CVIBuffer_Rect;
 END
-enum UIID
-{
-	UI_ICON0, UI_END
-};
-class CUIObject :
+
+class CUIObject final:
     public CGameObject
 {
+	typedef struct {
+		_uint ID;
+	}UI_DESC;
+
 private:
 	CUIObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CUIObject(const CUIObject& rhs);
@@ -36,7 +37,7 @@ private:
 	_float							m_fX, m_fY, m_fSizeX, m_fSizeY;
 	_float4x4						m_WorldMatrix, m_ViewMatrix, m_ProjMatrix;
 
-	wstring							m_szID;	
+	_uint							m_iID = {0};
 private:
 	HRESULT Add_Components();
 	HRESULT Bind_ShaderResources();

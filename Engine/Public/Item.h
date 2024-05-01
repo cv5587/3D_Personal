@@ -1,28 +1,22 @@
 #pragma once
-#include "Client_Defines.h"
 #include "GameObject.h"
 BEGIN(Engine)
-class CShader;
-class CModel;
-END
-
-BEGIN(Client)
-class CItem :
+class ENGINE_DLL CItem :
     public CGameObject
 {
 public:
 	typedef struct : public CGameObject::GAMEOBJECT_DESC {
 		_uint iQuantity;
-		_uint ItemType;
+		_uint ItemType[2];
 		wstring ItemName;
 	}ITEM_DESC;
 
 	enum ITEMTYPE {
-		ITEM_KINDLING, 
-		ITEM_MEDKITS, 
-		ITEM_CLOTH, 
+		ITEM_KINDLING,
+		ITEM_MEDKITS,
+		ITEM_CLOTH,
 		ITEM_FOOD,
-		ITEM_EQUIPMENT, 
+		ITEM_EQUIPMENT,
 		ITEM_STUFF,
 		ITEM_END
 	};
@@ -31,6 +25,7 @@ protected:
 	CItem(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CItem(const CGameObject& rhs);
 	virtual ~CItem() = default;
+
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -41,24 +36,20 @@ public:
 	virtual HRESULT Render() override;
 
 public:
-	_bool Type_Compare(CItem::ITEMTYPE Itemtype);
+	wstring Get_ItemName() { return m_ItemName; }
 
+	virtual void Make_Description(void* pArg) override;
+
+	void* Get_Description(void* pDesc) ;
+
+	HRESULT Save_Data(ofstream* fout);
 protected:
-	CShader* m_pShaderCom = { nullptr };
-	CModel* m_pModelCom = { nullptr };
-
-public:
-	HRESULT Add_Components();
-	HRESULT Bind_ShaderResources();
-
-protected:
-	ITEMTYPE m_ItemType = { ITEM_END };
-	_uint			 m_Quantity = {1};
+	vector<ITEMTYPE> m_ItemType;
+	_uint			 m_Quantity = { 1 };
 	wstring		m_ItemName = { TEXT("") };
 
 public:
-	static CItem* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual CGameObject* Clone(void* pArg) override;
+	virtual CGameObject* Clone(void* pArg) = 0;//생성은 클라에서 복사하면 세부값 정해서 만들기위해 추상
 	virtual void Free() override;
 };
 

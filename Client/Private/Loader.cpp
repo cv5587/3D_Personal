@@ -11,7 +11,8 @@
 #include "Weapon.h"
 #include "Player_Camera.h"
 #include "Revolver.h"
-#include "Item.h"
+#include "GEARItem.h"
+#include "CUIObject.h"
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice{ pDevice }
@@ -96,6 +97,12 @@ HRESULT CLoader::Loading_For_LogoLevel()
 HRESULT CLoader::Loading_For_GamePlayLevel()
 {
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩 중 입니다."));
+
+	/* For.Prototype_Component_Texture_SelectorIcon */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_SelectorIcon"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/Selector/ICON_Info%d.png"), 8))))
+		return E_FAIL;
+
 	/*For. Ground_Snow*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Snow_Ground_B"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/Terrain/Ground_Snow/TRN_Snow_Ground_B.dds")))))
@@ -107,9 +114,6 @@ HRESULT CLoader::Loading_For_GamePlayLevel()
 		CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/Terrain/Heightmap/heightmap_lakeregion.bmp")))))
 		return E_FAIL;
 
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Fiona"),
-	//	CModel::Create(m_pDevice, m_pContext, "../Bin/bin/Prototype_Component_Model_Fiona.bin"))))
-	//	return E_FAIL;
 	//돌
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_CliffA"),
 		CModel::Create(m_pDevice, m_pContext, "../Bin/bin/Prototype_Component_Model_CliffA.bin"))))
@@ -330,7 +334,18 @@ HRESULT CLoader::Loading_For_GamePlayLevel()
 		CNavigation::Create(m_pDevice, m_pContext, TEXT("../Bin/bin/NavigationData.bin")))))
 		return E_FAIL;
 
+	lstrcpy(m_szLoadingText, TEXT("인벤토리 원형을 로딩 중 입니다."));
+	/*For.Prototypr_Component_Inventory*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Inventory"),
+		CInventory::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	lstrcpy(m_szLoadingText, TEXT("객체원형을 로딩 중 입니다."));
+
+	/* For.Prototype_GameObject_SelectorIcon */
+	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_SelectorIcon"), 
+		CUIObject::Create(m_pDevice, m_pContext))))	
+		return E_FAIL;
 
 	/* For.Prototype_GameObject_Terrain*/
 	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Terrain"),
@@ -377,9 +392,9 @@ HRESULT CLoader::Loading_For_GamePlayLevel()
 		CRevolver::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	/* For.Prototype_GameObject_Item */
-	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Item"),
-		CItem::Create(m_pDevice, m_pContext))))
+	/* For.Prototype_GameObject_GEARItem */
+	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_GEARItem"),
+		CGEARItem::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
