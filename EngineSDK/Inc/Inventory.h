@@ -18,9 +18,13 @@ public:
 public:
     HRESULT Add_Item(class CItem* pItem);
 
+    _float Get_TotalWeight() {
+        return m_fTotalWeight;
+    }
+
 private:
     vector<class CItemData*> m_Inventory;
-
+    _float                                  m_fTotalWeight = { 0.f };
 
 private:
     class CItemData* find_Item(wstring ItemName);

@@ -20,6 +20,7 @@ private:
 	vector<_uint> m_ItemType;
 	_uint			 m_iQuantity = { 0 };
 	wstring		m_ItemName = { TEXT("") };
+	_float		m_fWeight = { 0.f };
 
 	wstring m_ProtoTypeTag;//참조원형
 	wstring m_ModelTag;//모델 태그

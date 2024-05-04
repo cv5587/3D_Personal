@@ -142,6 +142,12 @@
     <Filter Include="01.Utility\02.GameObjects\Item">
       <UniqueIdentifier>{d4a9d859-e9a2-4771-ad0f-a2ad1314e8b3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\06.Fonts">
+      <UniqueIdentifier>{bdd5ed06-3cdd-4f1d-9844-748531c95f20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\06.Fonts\Manager">
+      <UniqueIdentifier>{141bb065-bffe-4d43-aed8-cff0de6c512e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -282,6 +288,12 @@
     <ClInclude Include="..\Public\Item.h">
       <Filter>01.Utility\02.GameObjects\Item</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CustomFont.h">
+      <Filter>01.Utility\06.Fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Font_Manager.h">
+      <Filter>01.Utility\06.Fonts\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -409,6 +421,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Item.cpp">
       <Filter>01.Utility\02.GameObjects\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CustomFont.cpp">
+      <Filter>01.Utility\06.Fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Font_Manager.cpp">
+      <Filter>01.Utility\06.Fonts\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

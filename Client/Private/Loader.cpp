@@ -11,8 +11,9 @@
 #include "Weapon.h"
 #include "Player_Camera.h"
 #include "Revolver.h"
-#include "GEARItem.h"
+#include "GEARStone.h"
 #include "UIObject.h"
+#include "UITEXT.h"
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice{ pDevice }
@@ -98,11 +99,53 @@ HRESULT CLoader::Loading_For_GamePlayLevel()
 {
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩 중 입니다."));
 
-	/* For.Prototype_Component_Texture_SelectorIcon */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_SelectorIcon"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/Selector/ICON_Info%d.png"), 8))))
+	/* For.Prototype_Component_Texture_BASESelectorIcon */ 
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_BASESelectorIcon"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/Selector/ICON_BASEInfo%d.dds"), 3))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_KEYSelectorIcon */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_KEYSelectorIcon"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/Selector/ICON_KEYInfo%d.dds"), 2))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_TYPESelectorIcon */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_TYPESelectorIcon"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/Selector/ICON_TYPEInfo%d.dds"), 6))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Inventoryback */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Inventoryback"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/Inventory/Inven_back%d.dds"), 2))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Inventorybutton */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Inventorybutton"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/Inventory/Inven_button%d.dds"), 3))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Inventorycase */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_InventoryCase"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/Inventory/Inven_Case.dds"),1))))	
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_InventoryDetail */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_InventoryDetail"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/Inventory/Inven_Detail%d.dds"), 8))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_InventorySelect */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_InventorySelect"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/Inventory/Inven_Select.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_InventoryWeightbar */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_InventoryWeightbar"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/Inventory/Inven_Weightbar%d.dds"), 2))))
+		return E_FAIL;
+
+	/*******************************************************************************************************/
+	
 	/*For. Ground_Snow*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Snow_Ground_B"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/Terrain/Ground_Snow/TRN_Snow_Ground_B.dds")))))
@@ -347,6 +390,11 @@ HRESULT CLoader::Loading_For_GamePlayLevel()
 		CUIObject::Create(m_pDevice, m_pContext))))	
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_UIText */
+	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_UIText"),
+		CUITEXT::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	/* For.Prototype_GameObject_Terrain*/
 	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Terrain"),
 		CTerrain::Create(m_pDevice, m_pContext))))
@@ -392,9 +440,9 @@ HRESULT CLoader::Loading_For_GamePlayLevel()
 		CRevolver::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	/* For.Prototype_GameObject_GEARItem */
-	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_GEARItem"),
-		CGEARItem::Create(m_pDevice, m_pContext))))
+	/* For.Prototype_GameObject_GEARStone */
+	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_GEARStone"),
+		CGEARStone::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));

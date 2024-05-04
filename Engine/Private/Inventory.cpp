@@ -43,6 +43,8 @@ HRESULT CInventory::Add_Item(CItem* pItem)
 
 	m_Inventory.emplace_back(pItemData);
 
+	m_fTotalWeight += Desc.fWeight;
+
 	return S_OK;
 }
 

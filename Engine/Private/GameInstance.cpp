@@ -8,7 +8,7 @@
 #include "Object_Manager.h"
 #include "Renderer.h"
 #include "Calculator.h"
-
+#include "Font_Manager.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -65,6 +65,11 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, cons
 	/*Calculator 积己*/
 	m_pCalculator = CCalculator::Create(*ppDevice, *ppContext, EngineDesc.hWnd, EngineDesc.iWinSizeX, EngineDesc.iWinSizeY);
 	if (nullptr == m_pCalculator)
+		return E_FAIL;
+
+	/*迄飘 概聪历 积己*/
+	m_pFont_Manager = CFont_Manager::Create(*ppDevice, *ppContext);
+	if (nullptr == m_pFont_Manager)
 		return E_FAIL;
 
 	return S_OK;
@@ -261,6 +266,14 @@ CGameObject* CGameInstance::FindID_CloneObject(_uint iLevelIndex,const _int& ID)
 	return m_pObject_Manager->FindID_CloneObject(iLevelIndex, ID);
 }
 
+CGameObject* CGameInstance::FindIndex_CloneObject(_uint iLevelIndex, const wstring& strLayerTag, _uint iIndex)
+{
+	if (nullptr == m_pObject_Manager)
+		return nullptr;
+
+	return m_pObject_Manager->FindIndex_CloneObject(iLevelIndex, strLayerTag, iIndex);
+}
+
 vector< const _float4x4*>* CGameInstance::Get_ObPos(_uint iLevelIndex, const wstring& strLayerTag)
 {
 	return m_pObject_Manager->Get_ObPos(iLevelIndex, strLayerTag);
@@ -378,6 +391,16 @@ _int CGameInstance::Picking_IDScreen()
 _bool CGameInstance::Compare_Float4(_float4 f1, _float4 f2)
 {
 	return m_pCalculator->Compare_Float4(f1,f2);
+}
+
+HRESULT CGameInstance::Add_Font(const wstring& strFontTag, const wstring& strFontFilePath)
+{
+	return m_pFont_Manager->Add_Font(strFontTag, strFontFilePath);
+}
+
+HRESULT CGameInstance::Render_Font(const wstring& strFontTag, const wstring& strText, const _float2& vPosition, _fvector vColor)
+{
+	return m_pFont_Manager->Render_Font(strFontTag, strText, vPosition, vColor);
 }
 
 void CGameInstance::Release_Engine()

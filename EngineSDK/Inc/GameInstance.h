@@ -57,6 +57,7 @@ public: /* For.Object_Manager */
 	HRESULT Delete_CloneObject(_uint iLevelIndex,  CGameObject* pGameObject);
 	CGameObject* Find_CloneObject(_uint iLevelIndex, const wstring& strLayerTag, CGameObject* pGameObject);
 	CGameObject* FindID_CloneObject(_uint iLevelIndex, const _int& ID);
+	CGameObject* FindIndex_CloneObject(_uint iLevelIndex , const wstring& strLayerTag,_uint iIndex =0 );
 	vector< const _float4x4*>* Get_ObPos(_uint iLevelIndex, const wstring& strLayerTag);
 	//파츠오브젝트용
 	class CGameObject* Clone_Object(const wstring& strPrototypeTag, void* pArg);
@@ -89,7 +90,9 @@ public:/*For.Calculator*/
 	_int Picking_IDScreen();
 	_bool Compare_Float4(_float4 f1, _float4 f2);
 
-public:/*For.StatePattern*/
+public: /* For.Font_Manager */
+	HRESULT Add_Font(const wstring& strFontTag, const wstring& strFontFilePath);
+	HRESULT Render_Font(const wstring& strFontTag, const wstring& strText, const _float2& vPosition, _fvector vColor);
 
 private:
 	class CGraphic_Device*				m_pGraphic_Device = { nullptr };
@@ -101,7 +104,7 @@ private:
 	class CRenderer*							m_pRenderer = { nullptr };
 	class CPipeLine*							m_pPipeLine = { nullptr };
 	class CCalculator*						m_pCalculator = { nullptr };
-
+	class CFont_Manager*					m_pFont_Manager = { nullptr };
 public:	
 	static void Release_Engine();
 	virtual void Free() override;

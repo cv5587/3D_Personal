@@ -2,6 +2,7 @@
 #include "UIObject.h"
 
 #include "GameInstance.h"
+#include "Item.h"
 
 CUIObject::CUIObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CGameObject(pDevice,pContext),m_fX(0.f),m_fY(0.f), m_fSizeX(0), m_fSizeY(0)
@@ -25,26 +26,33 @@ HRESULT CUIObject::Initialize_Prototype()
 
 HRESULT CUIObject::Initialize(void* pArg)
 {
-	if (FAILED(__super::Initialize(nullptr)))
+	UI_DESC* pDesc = static_cast<UI_DESC*>(pArg);
+
+	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
-	if (FAILED(Add_Components()))
-		return E_FAIL;
 
-	m_fSizeX = 60.f;
-	m_fSizeY = 60.f;
-	m_fX = g_iWinSizeX >> 1;
-	m_fY = g_iWinSizeY >> 1;
 
-	//이제 아이콘을 어떻게 따로 위치를 잡을지를 알아보고
-	//아이콘을 어떻게 저장해놓고 언제 보여줄지 로직을 잡자
-	m_pTransformCom->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMVectorSet(-m_fX*0.3f, -m_fY*0.4f, 0.f, 1.f));
-	
+	m_iID=pDesc->Icon_ID;
+	m_TextureTag = pDesc->TextureTag;
 
+	//m_fSizeX = 60.f;
+	//m_fSizeY = 60.f;
+	//m_fX = g_iWinSizeX >> 1;
+	//m_fY = g_iWinSizeY >> 1;
+
+	////이제 아이콘을 어떻게 따로 위치를 잡을지를 알아보고
+	////아이콘을 어떻게 저장해놓고 언제 보여줄지 로직을 잡자
+	//m_pTransformCom->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
+	//m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMVectorSet(-m_fX*0.3f, -m_fY*0.4f, 0.f, 1.f));
+	//
+	m_pTransformCom->Set_State_Matrix(XMLoadFloat4x4(&pDesc->vPrePosition));
 	//뷰,투영행렬
 	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
 	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH(g_iWinSizeX, g_iWinSizeY, 0.f, 1.0f));
+
+	if (FAILED(Add_Components()))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -66,9 +74,8 @@ HRESULT CUIObject::Render()
 {
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
-
-	//아이콘 여러개 넣을려고 생각해서 만듬
-	m_pShaderCom->Begin(m_iID);
+	//이건 쉐이더패스 몇번째꺼 쓸지에 대한 거임;;
+	m_pShaderCom->Begin(0);
 
 	m_pVIBufferCom->Bind_Buffers();
 
@@ -84,6 +91,23 @@ void CUIObject::Choice_Render()
 	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_UI, this);
 }
 
+//ui위치마다 하나의 객체는 무조건 생성해야됨.
+//각 위치의 아이콘의 iD만 바꿔주는형식으로 제작
+void CUIObject::UI_Render(_uint IconID)
+{
+	m_iID = IconID;
+	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_UI, this);
+}
+
+_bool CUIObject::Compare_ID()
+{
+	
+	if (CItem::ITEM_END == m_iID)
+		return false;
+	else
+		return true;
+}
+
 HRESULT CUIObject::Add_Components()
 {
 	m_pVIBufferCom = dynamic_cast<CVIBuffer_Rect*>(m_pGameInstance->Clone_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect")));
@@ -94,7 +118,7 @@ HRESULT CUIObject::Add_Components()
 	if (nullptr == m_pShaderCom)
 		return E_FAIL;
 
-	m_pTextureCom = dynamic_cast<CTexture*>(m_pGameInstance->Clone_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_SelectorIcon")));
+	m_pTextureCom = dynamic_cast<CTexture*>(m_pGameInstance->Clone_Component(LEVEL_GAMEPLAY, m_TextureTag));
 	if (nullptr == m_pTextureCom)
 		return E_FAIL;
 
@@ -111,7 +135,8 @@ HRESULT CUIObject::Bind_ShaderResources()
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
 		return E_FAIL;
 
-	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", 0)))
+	//아이콘 여러개 넣을려고 생각해서 만듬 (이게 몇번째 텍스처에 접근할지에 대한 것임)
+	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", m_iID)))
 		return E_FAIL;
 
 	return S_OK;
@@ -136,7 +161,7 @@ CGameObject* CUIObject::Clone(void* pArg)
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed To Cloned : CBackGround");
+		MSG_BOX("Failed To Cloned : CUIObject");
 		Safe_Release(pInstance);
 	}
 

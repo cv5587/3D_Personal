@@ -6,7 +6,7 @@ CItem::CItem(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 }
 
 CItem::CItem(const CGameObject& rhs)
-	:CGameObject{rhs}
+	:CGameObject{ rhs }
 {
 }
 
@@ -26,6 +26,7 @@ HRESULT CItem::Initialize(void* pArg)
 	
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
+
 
 	return S_OK;
 }
@@ -57,6 +58,8 @@ void CItem::Make_Description(void* pArg)
 	pDesc->iQuantity = m_Quantity;
 
 	pDesc->ItemName = m_ItemName;
+
+	pDesc->fWeight = m_fWeight;
 }
 
 void* CItem::Get_Description(void* pDesc)
@@ -97,6 +100,7 @@ HRESULT CItem::Save_Data(ofstream* fout)
 
 	return S_OK;
 }
+
 
 void CItem::Free()
 {

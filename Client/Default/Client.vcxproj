@@ -176,7 +176,7 @@
     <ClInclude Include="..\Public\Data_Manager.h" />
     <ClInclude Include="..\Public\EnvironmentObject.h" />
     <ClInclude Include="..\Public\FreeCamera.h" />
-    <ClInclude Include="..\Public\GEARItem.h" />
+    <ClInclude Include="..\Public\GEARStone.h" />
     <ClInclude Include="..\Public\LandObject.h" />
     <ClInclude Include="..\Public\Level_GamePlay.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
@@ -216,8 +216,10 @@
     <ClInclude Include="..\Public\State_Walk_S.h" />
     <ClInclude Include="..\Public\Terrain.h" />
     <ClInclude Include="..\Public\TerrainManager.h" />
+    <ClInclude Include="..\Public\UIInventory.h" />
     <ClInclude Include="..\Public\UImanager.h" />
     <ClInclude Include="..\Public\UIObject.h" />
+    <ClInclude Include="..\Public\UITEXT.h" />
     <ClInclude Include="..\Public\Weapon.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Resource.h" />
@@ -230,7 +232,7 @@
     <ClCompile Include="..\Private\Data_Manager.cpp" />
     <ClCompile Include="..\Private\EnvironmentObject.cpp" />
     <ClCompile Include="..\Private\FreeCamera.cpp" />
-    <ClCompile Include="..\Private\GEARItem.cpp" />
+    <ClCompile Include="..\Private\GEARStone.cpp" />
     <ClCompile Include="..\Private\LandObject.cpp" />
     <ClCompile Include="..\Private\Level_GamePlay.cpp" />
     <ClCompile Include="..\Private\Level_Loading.cpp" />
@@ -270,8 +272,10 @@
     <ClCompile Include="..\Private\State_Walk_S.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
     <ClCompile Include="..\Private\TerrainManager.cpp" />
+    <ClCompile Include="..\Private\UIInventory.cpp" />
     <ClCompile Include="..\Private\UImanager.cpp" />
     <ClCompile Include="..\Private\UIObject.cpp" />
+    <ClCompile Include="..\Private\UITEXT.cpp" />
     <ClCompile Include="..\Private\Weapon.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">

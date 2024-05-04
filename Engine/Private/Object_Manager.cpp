@@ -151,6 +151,17 @@ CGameObject* CObject_Manager::FindID_CloneObject(_uint iLevelIndex, const _int& 
 	return nullptr;
 }
 
+CGameObject* CObject_Manager::FindIndex_CloneObject(_uint iLevelIndex, const wstring& strLayerTag, _uint iIndex)
+{
+
+	CLayer* pLayer = Find_Layer(iLevelIndex, strLayerTag);
+
+	if (nullptr == pLayer)
+		return nullptr;
+	else
+		return pLayer->Find_GameObject(iIndex);
+}
+
 void CObject_Manager::Priority_Tick(_float fTimeDelta)
 {
 	for (_uint i = 0; i < m_iNumLevels; ++i)
@@ -225,7 +236,6 @@ void CObject_Manager::Render_UI(_uint iLevelIndex, wstring LayerName)
 	CLayer* pLayer = Find_Layer(iLevelIndex, LayerName);
 
 	pLayer->Render_UI();
-
 }
 
 HRESULT CObject_Manager::Save_Level(_uint iLevelIndex)

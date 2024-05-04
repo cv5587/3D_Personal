@@ -20,6 +20,7 @@ public:
 	HRESULT Delete_GameObject( class CGameObject* pGameObject);
 	CGameObject* Find_GameObject(class CGameObject* pGameObject);
 	CGameObject* Find_GameObject(const _int& ID);
+	CGameObject* Find_GameObject(const _uint& index);
 	void Priority_Tick(_float fTimeDelta);
 	void Tick(_float fTimeDelta);
 	void Late_Tick(_float fTimeDelta);
@@ -30,6 +31,7 @@ public:
 public:
 	//UI·»´õ
 	void Render_UI();
+	void Render_PickUI(_uint ObjIndex,_uint IconID);
 public:
 	HRESULT Save_Data(ofstream* fout);	
 private:

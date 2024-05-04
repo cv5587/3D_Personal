@@ -97,6 +97,23 @@ CGameObject* CLayer::Find_GameObject(const _int& ID)
 	return nullptr;
 }
 
+CGameObject* CLayer::Find_GameObject(const _uint& index)
+{
+	if (m_GameObjects.size() < index)
+		return nullptr;
+
+	_uint iCheckIndex = { 0 };
+	for (auto& pGameObject : m_GameObjects)
+	{
+		if (iCheckIndex == index)
+			return pGameObject;
+
+		iCheckIndex++;
+	}
+
+	return nullptr;//이럼 리스트 관리 못한거라 망한거임 
+}
+
 void CLayer::Priority_Tick(_float fTimeDelta)
 {
 	for (auto& pGameObject : m_GameObjects)
@@ -120,6 +137,20 @@ void CLayer::Render_UI()
 	for (auto& pGameObject : m_GameObjects)
 		pGameObject->Choice_Render();
 }
+
+void CLayer::Render_PickUI(_uint ObjIndex, _uint IconID)
+{
+	_uint index = 0;
+	for(auto& pGameObject: m_GameObjects)
+	{
+		if (ObjIndex == index)
+		{
+			pGameObject->UI_Render(IconID);
+		}
+		index++;
+	}
+}
+
 
 HRESULT CLayer::Save_Data(ofstream* fout)
 {

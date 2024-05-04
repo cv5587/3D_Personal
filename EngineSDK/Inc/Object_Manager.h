@@ -34,6 +34,7 @@ public:
 	HRESULT Delete_CloneObject(_uint iLevelIndex,  CGameObject* pGameObject);
 	CGameObject* Find_CloneObject(_uint iLevelIndex, const wstring& strLayerTag, CGameObject* pGameObject);
 	CGameObject* FindID_CloneObject(_uint iLevelIndex, const _int& ID);
+	CGameObject* FindIndex_CloneObject(_uint iLevelIndex, const wstring& strLayerTag, _uint iIndex);
 	void Priority_Tick(_float fTimeDelta);
 	void Tick(_float fTimeDelta);
 	void Late_Tick(_float fTimeDelta);

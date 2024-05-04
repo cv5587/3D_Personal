@@ -31,7 +31,7 @@ public:
 	HRESULT Open_Level(LEVEL eLevelID);
 	HRESULT Ready_Prototype_GameObject();
 	HRESULT Ready_Prototype_Component();
-
+	HRESULT Ready_Font();
 
 public:
 	static CMainApp* Create();

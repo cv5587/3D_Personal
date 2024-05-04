@@ -8,7 +8,7 @@ class CModel;
 END
 
 BEGIN(Client)
-class CGEARItem final :
+class CGEARStone final :
     public CItem
 {
 public:
@@ -18,9 +18,9 @@ public:
 	}GEARITEM_DESC;
 
 protected:
-	CGEARItem(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CGEARItem(const CGEARItem& rhs);
-	virtual ~CGEARItem() = default;
+	CGEARStone(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CGEARStone(const CGEARStone& rhs);
+	virtual ~CGEARStone() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -40,7 +40,7 @@ public:
 
 
 public:
-	static CGEARItem* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CGEARStone* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
 };

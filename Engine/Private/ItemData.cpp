@@ -26,6 +26,8 @@ HRESULT CItemData::Initialize(void* pArg)
 	m_fSpeedPerSec = pDesc->fSpeedPerSec;
 	m_fRotationPerSec = pDesc->fRotationPerSec;
 
+	m_fWeight = pDesc->fWeight;
+
 	return S_OK;
 }
 

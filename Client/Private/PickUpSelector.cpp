@@ -57,6 +57,12 @@ HRESULT CPickUpSelector::Tick( _float fTimeDelta)
 	if (nullptr == m_PickObject)
 		return E_FAIL;
 
+	if(!m_UIInfoSet)
+	{
+		m_pUImanager->Item_SetInfo(m_PickObject, m_pPlayerInventory->Get_TotalWeight());
+		m_UIInfoSet = true;
+	}
+
 	CTransform* pTransform = dynamic_cast<CTransform*>(m_PickObject->Get_Transform());
 
 	_long		MouseMove = { 0 };
@@ -77,6 +83,7 @@ HRESULT CPickUpSelector::Tick( _float fTimeDelta)
 		m_pPlayerInventory->Add_Item(dynamic_cast<CItem*>(m_PickObject));
 		m_pGameInstance->Delete_CloneObject(LEVEL_GAMEPLAY,m_PickObject);
 		*m_pAcquire = false;
+		m_UIInfoSet = false;
 		return S_OK;
 	}
 
@@ -86,10 +93,14 @@ HRESULT CPickUpSelector::Tick( _float fTimeDelta)
 		pTransform->Set_State_Matrix(XMLoadFloat4x4(&m_PickObjectOriginMatrix));
 		m_PickObject = nullptr;
 		*m_pAcquire = false;
+		m_UIInfoSet = false;
 		return S_OK;
 	}
 
-	m_pUImanager->Render_KeyUI(CUImanager::Layer_KEY);
+	m_pUImanager->Render_UI(CUImanager::Layer_KEY);
+	m_pUImanager->Render_UI(CUImanager::Layer_Base);
+	m_pUImanager->Render_TypeUI(CUImanager::Layer_Type);
+	m_pUImanager->Render_UI(CUImanager::Layer_Text);
 
 	return S_OK;
 }

@@ -160,17 +160,26 @@
     <Filter Include="94. StateMachine\State\Player\State_Reload_E">
       <UniqueIdentifier>{fbefca20-0ef6-483c-aa53-613ce48fcd33}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\04.Inventory">
-      <UniqueIdentifier>{73b1c2e4-b8de-4f52-9133-54c908d1dbc2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\04.Inventory\item">
-      <UniqueIdentifier>{3145fb2b-0389-4dfa-89e5-693d528148d0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="93.PickUpSelector">
       <UniqueIdentifier>{3ec4b7d0-f16b-4add-9757-2b8e19f9da94}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\00.UI\UImanager">
       <UniqueIdentifier>{7884584b-cc47-43a5-a6ce-da73f16e4e25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\04.Item">
+      <UniqueIdentifier>{73b1c2e4-b8de-4f52-9133-54c908d1dbc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\04.Item\Stone">
+      <UniqueIdentifier>{3145fb2b-0389-4dfa-89e5-693d528148d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\UIObject">
+      <UniqueIdentifier>{8e1a933b-3214-4b4c-906c-32333d411535}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\UITEXT">
+      <UniqueIdentifier>{c00c883d-0b6b-4915-aa0a-ff3fad93b36b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\UIInventory">
+      <UniqueIdentifier>{2cd2c203-5e99-43f8-a4b1-7a013dabf20a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -324,14 +333,20 @@
     <ClInclude Include="..\Public\PickUpSelector.h">
       <Filter>93.PickUpSelector</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\GEARItem.h">
-      <Filter>02.GameObjects\04.Inventory\item</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\UIObject.h">
-      <Filter>02.GameObjects\00.UI</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\UImanager.h">
       <Filter>02.GameObjects\00.UI\UImanager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\GEARStone.h">
+      <Filter>02.GameObjects\04.Item\Stone</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UIObject.h">
+      <Filter>02.GameObjects\00.UI\UIObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UITEXT.h">
+      <Filter>02.GameObjects\00.UI\UITEXT</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UIInventory.h">
+      <Filter>02.GameObjects\00.UI\UIInventory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -476,14 +491,20 @@
     <ClCompile Include="..\Private\PickUpSelector.cpp">
       <Filter>93.PickUpSelector</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\GEARItem.cpp">
-      <Filter>02.GameObjects\04.Inventory\item</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\UIObject.cpp">
-      <Filter>02.GameObjects\00.UI</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\UImanager.cpp">
       <Filter>02.GameObjects\00.UI\UImanager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\GEARStone.cpp">
+      <Filter>02.GameObjects\04.Item\Stone</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UIObject.cpp">
+      <Filter>02.GameObjects\00.UI\UIObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UITEXT.cpp">
+      <Filter>02.GameObjects\00.UI\UITEXT</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UIInventory.cpp">
+      <Filter>02.GameObjects\00.UI\UIInventory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

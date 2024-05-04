@@ -32,6 +32,9 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(m_pGameInstance->Initialize_Engine(g_hInst,LEVEL_END, EngineDesc, &m_pDevice, &m_pContext)))
 		return E_FAIL;	
 
+	if (FAILED(Ready_Font()))
+		return E_FAIL;
+
 	if (FAILED(Ready_Prototype_Component()))
 		return E_FAIL;
 
@@ -106,6 +109,24 @@ HRESULT CMainApp::Ready_Prototype_Component()
 		return E_FAIL;
 
 
+
+	return S_OK;
+}
+
+HRESULT CMainApp::Ready_Font()
+{
+	// MakeSpriteFont "³Ø½¼lv1°íµñ Normal" /FontSize:14 /FastPack /CharacterRegion:0x0020-0x00FF /CharacterRegion:0x3131-0x3163 /CharacterRegion:0xAC00-0xD800 /DefaultCharacter:0xAC00 Normal14.spritefont
+	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font_Bold18"), TEXT("../Bin/Asset2D/Fonts/Bold18.spritefont"))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font_Bold14"), TEXT("../Bin/Asset2D/Fonts/Bold14.spritefont"))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font_Bold12"), TEXT("../Bin/Asset2D/Fonts/Bold12.spritefont"))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font_Normal14"), TEXT("../Bin/Asset2D/Fonts/Normal14.spritefont"))))
+		return E_FAIL;
 
 	return S_OK;
 }

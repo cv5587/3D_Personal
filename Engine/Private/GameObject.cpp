@@ -70,6 +70,10 @@ void CGameObject::Choice_Render()
 {
 }
 
+void CGameObject::UI_Render(_uint IconID)
+{
+}
+
 CComponent* CGameObject::Get_Transform()
 {
 	auto& iter = m_Components.find(m_pTransformTag);

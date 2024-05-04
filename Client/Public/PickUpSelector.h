@@ -38,6 +38,9 @@ private:
 
     class CInventory* m_pPlayerInventory = { nullptr };
     class CUImanager* m_pUImanager = { nullptr };
+
+    _bool m_UIInfoSet = { false };
+
 public:
     static CPickUpSelector* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext,void* pArg=nullptr);
     virtual void Free() override;
