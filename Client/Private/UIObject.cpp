@@ -5,7 +5,7 @@
 #include "Item.h"
 
 CUIObject::CUIObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	:CGameObject(pDevice,pContext),m_fX(0.f),m_fY(0.f), m_fSizeX(0), m_fSizeY(0)
+	:CUIBase(pDevice,pContext),m_fX(0.f),m_fY(0.f), m_fSizeX(0), m_fSizeY(0)
 {
 	ZeroMemory(&m_WorldMatrix, sizeof(_float4x4));		
 	ZeroMemory(&m_ViewMatrix, sizeof(_float4x4));
@@ -13,7 +13,7 @@ CUIObject::CUIObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 }
 
 CUIObject::CUIObject(const CUIObject& rhs)
-	:CGameObject(rhs),
+	:CUIBase(rhs),
 	m_fX(rhs.m_fX), m_fY(rhs.m_fY), m_fSizeX(rhs.m_fSizeX), m_fSizeY(rhs.m_fSizeY),
 	m_WorldMatrix(rhs.m_WorldMatrix), m_ViewMatrix(rhs.m_ViewMatrix), m_ProjMatrix(rhs.m_ProjMatrix)
 {
@@ -26,15 +26,12 @@ HRESULT CUIObject::Initialize_Prototype()
 
 HRESULT CUIObject::Initialize(void* pArg)
 {
-	UI_DESC* pDesc = static_cast<UI_DESC*>(pArg);
+	UI_OBJECT_DESC* pDesc = static_cast<UI_OBJECT_DESC*>(pArg);
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
 
-
-	m_iID=pDesc->Icon_ID;
-	m_TextureTag = pDesc->TextureTag;
 
 	//m_fSizeX = 60.f;
 	//m_fSizeY = 60.f;
@@ -95,14 +92,14 @@ void CUIObject::Choice_Render()
 //각 위치의 아이콘의 iD만 바꿔주는형식으로 제작
 void CUIObject::UI_Render(_uint IconID)
 {
-	m_iID = IconID;
+	m_iIconID = IconID;
 	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_UI, this);
 }
 
 _bool CUIObject::Compare_ID()
 {
 	
-	if (CItem::ITEM_END == m_iID)
+	if (CItem::ITEM_END == m_iIconID)
 		return false;
 	else
 		return true;
@@ -136,7 +133,7 @@ HRESULT CUIObject::Bind_ShaderResources()
 		return E_FAIL;
 
 	//아이콘 여러개 넣을려고 생각해서 만듬 (이게 몇번째 텍스처에 접근할지에 대한 것임)
-	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", m_iID)))
+	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", m_iIconID)))
 		return E_FAIL;
 
 	return S_OK;
@@ -148,7 +145,7 @@ CUIObject* CUIObject::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContex
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed To Created : UI");
+		MSG_BOX("Failed To Created : UIObject");
 		Safe_Release(pInstance);
 	}
 

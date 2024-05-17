@@ -29,11 +29,16 @@ public:
 	}
 
 public:
+	class CUIBase* Find_UI(const _int& UIID);
+	//충돌체크용
+	_bool Intersect( class CCollider* pTargetCollider);
+public:
 	//UI렌더
 	void Render_UI();
 	void Render_PickUI(_uint ObjIndex,_uint IconID);
 public:
 	HRESULT Save_Data(ofstream* fout);	
+
 private:
 	list<class CGameObject* >		m_GameObjects;
 	vector< const _float4x4*>		m_ObPosition;

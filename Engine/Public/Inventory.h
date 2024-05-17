@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Component.h"
-
+#include "ItemData.h"
 BEGIN(Engine)
 class ENGINE_DLL CInventory final
     : public CComponent
@@ -17,9 +17,19 @@ public:
 
 public:
     HRESULT Add_Item(class CItem* pItem);
+    HRESULT Add_Rabbit();
+    HRESULT Drop_Item(wstring ItemName, void* pDesc);
 
     _float Get_TotalWeight() {
         return m_fTotalWeight;
+    }
+    _uint Get_LastIndex()
+    {
+        return m_Inventory.size() - 1;
+    }
+    vector<class CItemData*> Get_vecItemData()
+    {
+        return m_Inventory;
     }
 
 private:

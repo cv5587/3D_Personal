@@ -52,7 +52,8 @@ void CState_Reload_S::Update(CPlayer* Player, _float fTimeDelta)
 	_bool revolver= Player->isRevolver_AnimFin();
 	if (Player->isAnimFinished() && Player->isRevolver_AnimFin())
 	{
-		Player->End_Change();
+
+		//Player->End_Change();
 
 		if (m_pGameInstance->Get_DIMouseState(DIM_LB))	
 			Player->Set_State(PLAYERSTATE::PLAYER_RELOAD_E);
@@ -69,6 +70,19 @@ void CState_Reload_S::Update(CPlayer* Player, _float fTimeDelta)
 				//TODO::24042219 일단 바로 장전 모션 나오게 제작
 			//만약 탄창 빈공간 이 있으면 재장전 시작하는 조건문(번호 받아오기)
 	}
+	_long		MouseMoveX = { 0 };
+	if (MouseMoveX = m_pGameInstance->Get_DIMouseMove(DIMS_X))
+	{
+		Player->Player_Turn(fTimeDelta, MouseMoveX);
+	}
+
+	_long		MouseMoveY = { 0 };
+	if (MouseMoveY = m_pGameInstance->Get_DIMouseMove(DIMS_Y))
+	{
+		Player->Cam_Turn(fTimeDelta, MouseMoveY);
+	}
+
+	Player->Mouse_Fix();
 }
 
 void CState_Reload_S::Exit(CPlayer* Player)

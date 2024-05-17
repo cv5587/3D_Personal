@@ -101,6 +101,8 @@ HRESULT CGameInstance::Draw(const _float4 & vClearColor)
 		return E_FAIL;
 	if (FAILED(Clear_IDScreenBuffer_View()))
 		return E_FAIL;
+	if (FAILED(Clear_UIIDScreenBuffer_View()))
+		return E_FAIL;
 	if (FAILED(Clear_DepthStencil_View()))
 		return E_FAIL;
 	_float pfloat = -1.f;
@@ -108,6 +110,9 @@ HRESULT CGameInstance::Draw(const _float4 & vClearColor)
 		return E_FAIL;
 	_int pint = -1;
 	if (FAILED(Clear_Texture(TextureType::HitIDTexture, &pint)))
+		return E_FAIL;
+
+	if (FAILED(Clear_Texture(TextureType::HitUIIDTexture, &pint)))
 		return E_FAIL;
 
 	m_pRenderer->Draw();	
@@ -149,6 +154,11 @@ HRESULT CGameInstance::Clear_IDScreenBuffer_View()
 	return m_pGraphic_Device->Clear_IDScreenBuffer_View();
 }
 
+HRESULT CGameInstance::Clear_UIIDScreenBuffer_View()
+{
+	return m_pGraphic_Device->Clear_UIIDScreenBuffer_View();
+}
+
 HRESULT CGameInstance::Clear_DepthStencil_View()
 {
 	return m_pGraphic_Device->Clear_DepthStencil_View();
@@ -167,6 +177,12 @@ _float CGameInstance::Compute_ProjZ(const POINT& ptWindowPos, ID3D11Texture2D* p
 _int CGameInstance::Compute_ID(const POINT& ptWindowPos, ID3D11Texture2D* pIDScreenTexture)
 {
 	return m_pGraphic_Device->Compute_ID(ptWindowPos, pIDScreenTexture);
+}
+
+_int CGameInstance::Compute_UIID(const POINT& ptWindowPos, ID3D11Texture2D* pIDScreenTexture)
+{
+	return m_pGraphic_Device->Compute_UIID(ptWindowPos, pIDScreenTexture);
+
 }
 
 _byte CGameInstance::Get_DIKeyState(_ubyte byKeyID)
@@ -313,6 +329,17 @@ HRESULT CGameInstance::Render_UI(_uint iLevelIndex, wstring LayerName)
 	 return S_OK;
 }
 
+CUIBase* CGameInstance::FindUIID_CloneObject(_uint iLevelIndex, const wstring& strLayerTag, _int UIID)
+{
+	return m_pObject_Manager->FindUIID_CloneObject(iLevelIndex, strLayerTag, UIID);
+}
+
+_bool CGameInstance::Intersect(_uint iLevelIndex, const wstring& strLayerTag, CCollider* pTargetCollider)
+{
+	return m_pObject_Manager->Intersect(iLevelIndex, strLayerTag, pTargetCollider);
+}
+
+
 HRESULT CGameInstance::Add_Prototype(_uint iLevelIndex, const wstring & strPrototypeTag, CComponent * pPrototype)
 {
 	return m_pComponent_Manager->Add_Prototype(iLevelIndex, strPrototypeTag, pPrototype);	
@@ -388,9 +415,24 @@ _int CGameInstance::Picking_IDScreen()
 	return m_pCalculator->Picking_IDScreen();
 }
 
+_int CGameInstance::Picking_UIIDScreen()
+{
+	return m_pCalculator->Picking_UIIDScreen();
+}
+
 _bool CGameInstance::Compare_Float4(_float4 f1, _float4 f2)
 {
 	return m_pCalculator->Compare_Float4(f1,f2);
+}
+
+_vector CGameInstance::Picking_UI(_fmatrix ProjM)
+{
+	return m_pCalculator->Picking_UI(ProjM);
+}
+
+void CGameInstance::World_MouseRay(_vector* RayArray)
+{
+	m_pCalculator->World_MouseRay(RayArray);
 }
 
 HRESULT CGameInstance::Add_Font(const wstring& strFontTag, const wstring& strFontFilePath)
@@ -419,6 +461,7 @@ void CGameInstance::Free()
 	Safe_Release(m_pRenderer);
 	Safe_Release(m_pObject_Manager);
 	Safe_Release(m_pLevel_Manager);
+	Safe_Release(m_pFont_Manager);
 	Safe_Release(m_pInput_Device);
 	Safe_Release(m_pGraphic_Device);
 }

@@ -77,7 +77,7 @@ HRESULT CChannel::Initialize(ifstream* fin)
 
 void CChannel::Update_TransformationMatrix(_double CurrentPosition, const vector<class CBone*>& Bones, _uint* pCurrentKeyFrameIndex)
 {
-	if (m_iBoneIndex != 27)
+	if (m_iBoneIndex != 12)
 	{
 		if (0.0 == CurrentPosition)
 			*pCurrentKeyFrameIndex = 0;
@@ -117,7 +117,7 @@ void CChannel::Update_TransformationMatrix(_double CurrentPosition, const vector
 
 void CChannel::Shift_Animation_TransformationMatrix(_double ShiftCurrentPosition, const vector<class CBone*>& Bones,_bool& bFirst,_double& ShiftDuration)
 {
-	if(m_iBoneIndex!=27)
+	if(m_iBoneIndex!=12)
 	{
 		if (bFirst)
 			m_bGetShiftBone = false;

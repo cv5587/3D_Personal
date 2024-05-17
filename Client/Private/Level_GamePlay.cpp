@@ -6,7 +6,9 @@
 #include "LandObject.h"	
 
 #include "TerrainManager.h"
-#include "GEARStone.h"	
+#include "GEAR.h"	
+#include "CLTH.h"
+#include "Monster.h"
 
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
@@ -184,6 +186,9 @@ HRESULT CLevel_GamePlay::Load_GameData(const wstring& strLayerTag)
 				}
 				else if (TEXT("Layer_Player") == wLayer)
 				{
+					_int CellIndex = { -1 };
+					fin.read((char*)&CellIndex, sizeof(_int));
+
 					CLandObject::LANDOBJ_DESC		LandObjDesc{};
 
 					LandObjDesc.pTerrainTransform = dynamic_cast<CTransform*>(m_pGameInstance->Get_Component(LEVEL_GAMEPLAY, TEXT("Layer_BackGround"), TEXT("Com_Transform")));
@@ -191,40 +196,65 @@ HRESULT CLevel_GamePlay::Load_GameData(const wstring& strLayerTag)
 					LandObjDesc.ProtoTypeTag = strPrototypeTag;
 					LandObjDesc.ModelTag = strModelTag;
 					LandObjDesc.vPrePosition = fWorldPosition;
-
+					LandObjDesc.CellIndex = CellIndex;
 					if (FAILED(m_pGameInstance->Add_CloneObject(iReadLevel, wLayer, strPrototypeTag, &LandObjDesc)))
 						return E_FAIL;
 				}
 				else if (TEXT("Layer_Item") == wLayer)
 				{
-					CItem::ITEM_DESC itemDesc{};
-					itemDesc.ProtoTypeTag = strPrototypeTag;
-					itemDesc.ModelTag = strModelTag;
-					itemDesc.vPrePosition = fWorldPosition;
+					if (TEXT("Prototype_GameObject_GEAR") == strPrototypeTag)
+					{
+						CGEAR::GEARITEM_DESC GEARItemDESC{};
+						GEARItemDESC.ProtoTypeTag = strPrototypeTag;
+						GEARItemDESC.ModelTag = strModelTag;
+						GEARItemDESC.vPrePosition = fWorldPosition;
 
-					_tchar ItemName[MAX_PATH] = TEXT("");
-					fin.read((char*)ItemName, sizeof(_tchar) * MAX_PATH);
-					wstring wItemName(ItemName);
+						_tchar ItemName[MAX_PATH] = TEXT("");
+						fin.read((char*)ItemName, sizeof(_tchar) * MAX_PATH);
+						wstring wItemName(ItemName);
 
-					itemDesc.ItemName = wItemName;	
-					fin.read((char*)&itemDesc.iQuantity, sizeof(_uint));
-					fin.read((char*)&itemDesc.ItemType[0], sizeof(_uint));
-					fin.read((char*)&itemDesc.ItemType[1], sizeof(_uint));
+						GEARItemDESC.ItemName = wItemName;
+						fin.read((char*)&GEARItemDESC.iQuantity, sizeof(_uint));
+						fin.read((char*)&GEARItemDESC.ItemType[0], sizeof(_uint));
+						fin.read((char*)&GEARItemDESC.ItemType[1], sizeof(_uint));
 
-					if (FAILED(m_pGameInstance->Add_CloneObject(iReadLevel, wLayer, strPrototypeTag, &itemDesc)))
-						return E_FAIL;
-				}
-				else//몬스터 ,플레이어 설정 (몬스터는 터레인만 추가, 플레이어는 터레인,파츠(고정값이므로 작업필요 ㄴ))
+						if (FAILED(m_pGameInstance->Add_CloneObject(iReadLevel, wLayer, strPrototypeTag, &GEARItemDESC)))
+							return E_FAIL;
+					}
+					else if (TEXT("Prototype_GameObject_CLTH") == strPrototypeTag)
+					{
+						CCLTH::CLTHITEM_DESC CLTHItemDESC{};
+						CLTHItemDESC.ProtoTypeTag = strPrototypeTag;
+						CLTHItemDESC.ModelTag = strModelTag;
+						CLTHItemDESC.vPrePosition = fWorldPosition;
+
+						_tchar ItemName[MAX_PATH] = TEXT("");
+						fin.read((char*)ItemName, sizeof(_tchar) * MAX_PATH);
+						wstring wItemName(ItemName);
+
+						CLTHItemDESC.ItemName = wItemName;
+						fin.read((char*)&CLTHItemDESC.iQuantity, sizeof(_uint));
+						fin.read((char*)&CLTHItemDESC.ItemType[0], sizeof(_uint));
+						fin.read((char*)&CLTHItemDESC.ItemType[1], sizeof(_uint));
+
+						if (FAILED(m_pGameInstance->Add_CloneObject(iReadLevel, wLayer, strPrototypeTag, &CLTHItemDESC)))
+							return E_FAIL;
+					}
+									}
+				else if (TEXT("Layer_Monster") == wLayer)
 				{
-					CLandObject::LANDOBJ_DESC		LandObjDesc{};
+					_int CellIndex = { -1 };
+					fin.read((char*)&CellIndex, sizeof(_int));
 
-					LandObjDesc.pTerrainTransform = dynamic_cast<CTransform*>(m_pGameInstance->Get_Component(LEVEL_GAMEPLAY, TEXT("Layer_BackGround"), TEXT("Com_Transform")));
-					LandObjDesc.pTerrainVIBuffer = dynamic_cast<CVIBuffer*>(m_pGameInstance->Get_Component(LEVEL_GAMEPLAY, TEXT("Layer_BackGround"), TEXT("Com_VIBuffer")));
-					LandObjDesc.ProtoTypeTag = strPrototypeTag;
-					LandObjDesc.ModelTag = strModelTag;
-					LandObjDesc.vPrePosition = fWorldPosition;
+					CMonster::MOSTER_DESC		MOSTER_DESC{};
 
-					if (FAILED(m_pGameInstance->Add_CloneObject(iReadLevel, wLayer, strPrototypeTag, &LandObjDesc)))
+					MOSTER_DESC.pTerrainTransform = dynamic_cast<CTransform*>(m_pGameInstance->Get_Component(LEVEL_GAMEPLAY, TEXT("Layer_BackGround"), TEXT("Com_Transform")));
+					MOSTER_DESC.pTerrainVIBuffer = dynamic_cast<CVIBuffer*>(m_pGameInstance->Get_Component(LEVEL_GAMEPLAY, TEXT("Layer_BackGround"), TEXT("Com_VIBuffer")));
+					MOSTER_DESC.ProtoTypeTag = strPrototypeTag;
+					MOSTER_DESC.ModelTag = strModelTag;
+					MOSTER_DESC.vPrePosition = fWorldPosition;
+					MOSTER_DESC.CellIndex = CellIndex;
+					if (FAILED(m_pGameInstance->Add_CloneObject(iReadLevel, wLayer, strPrototypeTag, &MOSTER_DESC)))
 						return E_FAIL;
 				}
 			}

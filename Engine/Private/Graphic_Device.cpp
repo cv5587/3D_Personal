@@ -36,18 +36,22 @@ HRESULT CGraphic_Device::Initialize(const ENGINE_DESC& EngineDesc, _Inout_ ID3D1
 	if (FAILED(Ready_IDScreenRenderTargetView(EngineDesc.iWinSizeX, EngineDesc.iWinSizeY)))
 		return E_FAIL;
 
+	if (FAILED(Ready_UIIDScreenRenderTargetView(EngineDesc.iWinSizeX, EngineDesc.iWinSizeY)))
+		return E_FAIL;
+
 	if (FAILED(Ready_DepthStencilRenderTargetView(EngineDesc.iWinSizeX, EngineDesc.iWinSizeY)))
 		return E_FAIL;
 
 	/* 장치에 바인드해놓을 렌더타겟들과 뎁스스텐실뷰를 세팅한다. */
 	/* 장치는 동시에 최대 8개의 렌더타겟을 들고 있을 수 있다. */
-	ID3D11RenderTargetView*		pRTVs[3] = {
+	ID3D11RenderTargetView*		pRTVs[4] = {
 		m_pBackBufferRTV, 
 		m_pHitScreenRTV,
-		m_pIDScreenRTV
+		m_pIDScreenRTV,
+		m_pUIIDScreenRTV
 	};
 
-	m_pDeviceContext->OMSetRenderTargets(3, pRTVs,
+	m_pDeviceContext->OMSetRenderTargets(4, pRTVs,
 		m_pDepthStencilView);		
 	
 	D3D11_VIEWPORT			ViewPortDesc;
@@ -107,6 +111,19 @@ HRESULT CGraphic_Device::Clear_IDScreenBuffer_View()
 	m_pDeviceContext->ClearRenderTargetView(m_pIDScreenRTV, (_float*)&vClearValue);
 
 	
+	return S_OK;
+}
+
+HRESULT CGraphic_Device::Clear_UIIDScreenBuffer_View()
+{
+	if (nullptr == m_pDeviceContext)
+		return E_FAIL;
+
+	_float4 vClearValue = { 0.f,0.f,1.f,1.f };
+
+	m_pDeviceContext->ClearRenderTargetView(m_pUIIDScreenRTV, (_float*)&vClearValue);
+
+
 	return S_OK;
 }
 
@@ -171,6 +188,36 @@ _int CGraphic_Device::Compute_ID(const POINT& ptWindowPos, ID3D11Texture2D* pIDS
 	D3D11_MAPPED_SUBRESOURCE		SubResources{};
 
 	m_pDeviceContext->CopyResource(pIDScreenTexture, m_pIDScreenTexture);
+
+	//lock 같은 개념
+	if (FAILED(m_pDeviceContext->Map(pIDScreenTexture, 0, D3D11_MAP_READ, 0, &SubResources)))
+		return E_FAIL;
+
+	_int fProjZ(-1);
+
+	_uint		iIndex = ptWindowPos.y * ViewPortDesc.Width + ptWindowPos.x;
+
+	if (ptWindowPos.x >= 0 && ptWindowPos.x < ViewPortDesc.Width && ptWindowPos.y >= 0 && ptWindowPos.y < ViewPortDesc.Height)
+	{
+		fProjZ = ((_int*)SubResources.pData)[iIndex];
+	}
+	//unlock 같은 개념
+	m_pDeviceContext->Unmap(pIDScreenTexture, 0);
+
+	return fProjZ;
+}
+
+_int CGraphic_Device::Compute_UIID(const POINT& ptWindowPos, ID3D11Texture2D* pIDScreenTexture)
+{
+
+	D3D11_VIEWPORT			ViewPortDesc;
+	_uint numViewport(1);
+
+	m_pDeviceContext->RSGetViewports(&numViewport, &ViewPortDesc);
+
+	D3D11_MAPPED_SUBRESOURCE		SubResources{};
+
+	m_pDeviceContext->CopyResource(pIDScreenTexture, m_pUIIDScreenTexture);
 
 	//lock 같은 개념
 	if (FAILED(m_pDeviceContext->Map(pIDScreenTexture, 0, D3D11_MAP_READ, 0, &SubResources)))
@@ -327,6 +374,38 @@ HRESULT CGraphic_Device::Ready_IDScreenRenderTargetView(_uint iWinCX, _uint iWin
 	return S_OK;
 }
 
+HRESULT CGraphic_Device::Ready_UIIDScreenRenderTargetView(_uint iWinCX, _uint iWinCY)
+{
+
+	if (nullptr == m_pDevice)
+		return E_FAIL;
+
+	ZeroMemory(&m_UIIDTextureDesc, sizeof(D3D11_TEXTURE2D_DESC));
+
+	m_UIIDTextureDesc.Width = iWinCX;
+	m_UIIDTextureDesc.Height = iWinCY;
+	m_UIIDTextureDesc.MipLevels = 1;
+	m_UIIDTextureDesc.ArraySize = 1;
+	m_UIIDTextureDesc.Format = DXGI_FORMAT_R32_SINT;
+
+	m_UIIDTextureDesc.SampleDesc.Quality = 0;
+	m_UIIDTextureDesc.SampleDesc.Count = 1;
+
+	m_UIIDTextureDesc.Usage = D3D11_USAGE_DEFAULT;
+	m_UIIDTextureDesc.BindFlags = D3D11_BIND_RENDER_TARGET /*| D3D11_BIND_SHADER_RESOURCE*/;
+	/*| D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE*/
+	m_UIIDTextureDesc.CPUAccessFlags = 0;
+	m_UIIDTextureDesc.MiscFlags = 0;
+
+	if (FAILED(m_pDevice->CreateTexture2D(&m_UIIDTextureDesc, nullptr, &m_pUIIDScreenTexture)))
+		return E_FAIL;
+
+	if (FAILED(m_pDevice->CreateRenderTargetView(m_pUIIDScreenTexture, nullptr, &m_pUIIDScreenRTV)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 HRESULT CGraphic_Device::Ready_DepthStencilRenderTargetView(_uint iWinCX, _uint iWinCY)
 {
 	if (nullptr == m_pDevice)
@@ -386,7 +465,9 @@ void CGraphic_Device::Free()
 	Safe_Release(m_pDepthStencilView);
 	Safe_Release(m_pHitScreenTexture);
 	Safe_Release(m_pIDScreenTexture);
+	Safe_Release(m_pUIIDScreenTexture);	
 	Safe_Release(m_pIDScreenRTV);
+	Safe_Release(m_pUIIDScreenRTV);
 	Safe_Release(m_pHitScreenRTV);
 	Safe_Release(m_pBackBufferRTV);
 	Safe_Release(m_pDeviceContext);

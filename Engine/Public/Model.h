@@ -32,6 +32,7 @@ public:
 		return m_Animations[m_AnimDesc.iAnimIndex]->Get_Finished();
 	}
 	const _float4x4* Get_BoneCombinedTransformationMatrix(const _char* pBoneName) const;
+	const _float4x4* Get_BoneTransformationMatrix(const _char* pBoneName) const;
 	 _float4x4* Get_ControlBoneMatrix(const _char* pBoneName) ;
 
 
@@ -42,6 +43,7 @@ public:
 
 	HRESULT Bind_Material(class CShader* pShaderCom, const _char* pConstantName, _uint iMeshIndex, aiTextureType eMaterialType);
 	HRESULT Bind_BoneMatrices(class CShader* pShaderCom, const _char* pConstantName, _uint iMeshIndex);
+	HRESULT Bind_BulletBoneMatrices(class CShader* pShaderCom, const _char* pConstantName, _uint iMeshIndex);
 	void Play_Animation(_float fTimeDelta);
 	void Shift_Animation(_float fTimeDelta);
 	void Set_FirstAnimationIndex(const ANIMATION_DESC& AnimDesc) {
@@ -56,7 +58,10 @@ public:
 		m_Animations[m_AnimDesc.iAnimIndex]->Reset();
 		m_Animations[m_AnimDesc.iAnimIndex]->Shift_Reset();
 	}
-
+	void Set_RepeatAnimationIndex() {
+		m_Animations[m_AnimDesc.iAnimIndex]->Reset();
+		m_Animations[m_AnimDesc.iAnimIndex]->Shift_Reset();
+	}
 	HRESULT Make_Binary(const wstring FilePath);
 	HRESULT Read_Binary( char* FilePath);
 

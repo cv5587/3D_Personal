@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Client_Defines.h"
-#include "GameObject.h"
+#include "UIBase.h"
 
 BEGIN(Engine)
 class CShader;
@@ -9,13 +9,14 @@ class CVIBuffer_Rect;
 END
 
 class CUITEXT final :
-    public CGameObject
+    public CUIBase
 {
 public:
-	typedef struct :public CGameObject::GAMEOBJECT_DESC {
+	typedef struct :public CUIBase::UI_BASE_DESC {
 		wstring TextTag;
 		wstring Font;
 		_float2	TextPosition;
+		_float4 Color;
 	}UI_DESC;
 
 private:
@@ -47,6 +48,7 @@ private:
 	wstring						m_TextTag = { TEXT("") };
 	wstring						m_Font = { TEXT("") };
 	_float2						m_TextPosition = { 0.f, 0.f };
+	_float4						m_Color = {1.f, 1.f, 1.f, 1.f};	
 private:
 	HRESULT Add_Components();
 	HRESULT Bind_ShaderResources();

@@ -11,7 +11,7 @@ BEGIN(Engine)
 class ENGINE_DLL CCollider final : public CComponent
 {
 public:
-	enum TYPE { TYPE_AABB, TYPE_OBB, TYPE_SPHERE, TYPE_END };
+	enum TYPE { TYPE_AABB, TYPE_OBB, TYPE_SPHERE,  TYPE_END };
 
 public:
 	typedef struct
@@ -31,10 +31,12 @@ public:
 
 public:
 	_bool Intersect(CCollider* pTargetCollider);
+	_bool IntersectRay(_vector* pRayArray, _float* fDist);
 
 #ifdef _DEBUG
 public:
 	HRESULT Render();
+	HRESULT RenderUI(_fmatrix UIProjMatrix);
 #endif
 
 private:

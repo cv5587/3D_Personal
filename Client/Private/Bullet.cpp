@@ -1,41 +1,29 @@
-#include "GEARStone.h"
-
+#include "Bullet.h"
 #include "GameInstance.h"
-CGEARStone::CGEARStone(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	:CItem{pDevice,pContext}
+CBullet::CBullet(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	:CItem{ pDevice,pContext }
 {
 }
 
-CGEARStone::CGEARStone(const CGEARStone& rhs)
-	:CItem{rhs}
+CBullet::CBullet(const CBullet& rhs)
+	:CItem{ rhs }
 {
 }
 
-HRESULT CGEARStone::Initialize_Prototype()
+HRESULT CBullet::Initialize_Prototype()
 {
-	m_ItemUIName = TEXT("작은 돌");
-	m_ItemInfo = TEXT("작은 동물을 겁주기에 충분할 정도로 크다. \n 어쩌면 좀 더 큰 동물에게 겁을 줄 수도 있을\n 것 같다.");
-	m_ItemWeight = TEXT("0.15 KG");
-	m_ItemDurability = TEXT("100%");
-
-	m_fWeight = 0.15f;
-
 	return S_OK;
 }
 
-HRESULT CGEARStone::Initialize(void* pArg)
+HRESULT CBullet::Initialize(void* pArg)
 {
-
-	GAMEOBJECT_DESC* pDesc = (GAMEOBJECT_DESC*)pArg;
-
-	//이동과 회전은 밖에서 넘겨주게 만들어주자
-	pDesc->fSpeedPerSec = 2.f;
-	pDesc->fRotationPerSec = XMConvertToRadians(120.0f);
-
-
+	BULLET_ITEM_DESC* pDesc = static_cast<BULLET_ITEM_DESC*>(pArg);
+	if (FAILED(Check_Model(pArg)))
+		return E_FAIL;
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
+
 
 	m_pTransformCom->Set_State_Matrix(XMLoadFloat4x4(&pDesc->vPrePosition));
 
@@ -45,20 +33,20 @@ HRESULT CGEARStone::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CGEARStone::Priority_Tick(_float fTimeDelta)
+void CBullet::Priority_Tick(_float fTimeDelta)
 {
 }
 
-void CGEARStone::Tick(_float fTimeDelta)
+void CBullet::Tick(_float fTimeDelta)
 {
 }
 
-void CGEARStone::Late_Tick(_float fTimeDelta)
+void CBullet::Late_Tick(_float fTimeDelta)
 {
 	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 }
 
-HRESULT CGEARStone::Render()
+HRESULT CBullet::Render()
 {
 
 	if (FAILED(Bind_ShaderResources()))
@@ -82,8 +70,37 @@ HRESULT CGEARStone::Render()
 	return S_OK;
 }
 
-HRESULT CGEARStone::Add_Components()
+HRESULT CBullet::Check_Model(void* pArg)
 {
+
+	CItem::ITEM_DESC* itemDesc = static_cast<CItem::ITEM_DESC*>(pArg);
+	wstring modeltag = itemDesc->ModelTag;
+	if (modeltag == TEXT("Prototype_Component_Model_Stone"))
+	{
+
+		itemDesc->ItemName = TEXT("Stone");
+		itemDesc->ItemType[0] = (_uint)CItem::ITEMTYPE::ITEM_EQUIPMENT;
+		itemDesc->ItemType[1] = (_uint)CItem::ITEMTYPE::ITEM_END;
+		itemDesc->iQuantity = 1;
+		itemDesc->fSpeedPerSec = 2.f;
+		itemDesc->fRotationPerSec = XMConvertToRadians(120.f);
+
+		m_ItemUIName = TEXT("작은 돌");
+		m_ItemInfo = TEXT("작은 동물을 겁주기에 충분할 정도로 크다. \n 어쩌면 좀 더 큰 동물에게 겁을 줄 수도 있을\n 것 같다.");
+		m_ItemWeight = TEXT("0.15 KG");
+		m_ItemDurability = TEXT("100%");
+
+		m_Durability = 100.f;
+		m_fWeight = 0.15f;
+	}
+	//나무 = 불쏘시개 , 재료
+
+	return S_OK;
+}
+
+HRESULT CBullet::Add_Components()
+{
+
 	/* For.Com_Model */
 	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, m_ModelTag,
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
@@ -95,10 +112,11 @@ HRESULT CGEARStone::Add_Components()
 		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
 		return E_FAIL;
 
+
 	return S_OK;
 }
 
-HRESULT CGEARStone::Bind_ShaderResources()
+HRESULT CBullet::Bind_ShaderResources()
 {
 	if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
@@ -112,33 +130,33 @@ HRESULT CGEARStone::Bind_ShaderResources()
 	return S_OK;
 }
 
-CGEARStone* CGEARStone::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CBullet* CBullet::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	CGEARStone* pInstance = new CGEARStone(pDevice, pContext);
+	CBullet* pInstance = new CBullet(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed To Created : GEARItem");
+		MSG_BOX("Failed To Created : CBullet");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-CGameObject* CGEARStone::Clone(void* pArg)
+CGameObject* CBullet::Clone(void* pArg)
 {
-	CGEARStone* pInstance = new CGEARStone(*this);
+	CBullet* pInstance = new CBullet(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed To Cloned : GEARItem");
+		MSG_BOX("Failed To Cloned : CBullet");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CGEARStone::Free()
+void CBullet::Free()
 {
 	__super::Free();
 

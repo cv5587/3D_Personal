@@ -42,6 +42,7 @@ HRESULT CGameObject::Initialize(void* pArg)
 		GAMEOBJECT_DESC* pDesc = (GAMEOBJECT_DESC*)pArg;
 		m_ModelTag = pDesc->ModelTag;
 		m_ProtoTypeTag = pDesc->ProtoTypeTag;
+		m_CellIndex = pDesc->CellIndex;
 	}
 
 	m_Components.emplace(m_pTransformTag, m_pTransformCom);
@@ -72,6 +73,16 @@ void CGameObject::Choice_Render()
 
 void CGameObject::UI_Render(_uint IconID)
 {
+}
+
+_bool CGameObject::Intersect(CCollider* pTargetCollider)
+{
+	return true;
+}
+
+_bool CGameObject::IntersectRay(_vector* pRayArray)
+{
+	return true;
 }
 
 CComponent* CGameObject::Get_Transform()
@@ -123,6 +134,8 @@ void CGameObject::Make_Description(void* pArg)
 
 	pDesc->ModelTag = m_ModelTag;
 	pDesc->ProtoTypeTag = m_ProtoTypeTag;
+
+
 
 	m_pTransformCom->Make_Description(pDesc);
 

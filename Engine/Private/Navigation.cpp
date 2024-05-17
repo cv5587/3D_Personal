@@ -1,4 +1,4 @@
-#include "..\Public\Navigation.h"
+ï»¿#include "..\Public\Navigation.h"
 
 #include "Cell.h"
 #include "Shader.h"
@@ -103,19 +103,19 @@ void CNavigation::Update(const _float4x4* pWorldMatrix)
 	m_WorldMatrix = *pWorldMatrix;
 }
 
-_bool CNavigation::isMove(_fvector vPosition)
+_bool CNavigation::isMove(_fvector vPosition, _float4* LineDir)
 {
-	//¿ùµå¸¦ °¡Á®¿Í¼­ ·ÎÄÃ·Î ³»·ÁÁØ´ÙÀ½ °è»êÇÑ´Ù.
+	//ì›”ë“œë¥¼ ê°€ì ¸ì™€ì„œ ë¡œì»¬ë¡œ ë‚´ë ¤ì¤€ë‹¤ìŒ ê³„ì‚°í•œë‹¤.
 	_vector		vLocalPos = XMVector3TransformCoord(vPosition, XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_WorldMatrix)));
 
 
 	_int			iNeighborIndex = { -1 };
 
-	/* ¼¿ ¾È¿¡¼­ ¿òÁ÷¿´´Ù. */
-	if (true == m_Cells[m_iCurrentCellIndex]->isIn(vLocalPos, &iNeighborIndex))
+	/* ì…€ ì•ˆì—ì„œ ì›€ì§ì˜€ë‹¤. */
+	if (true == m_Cells[m_iCurrentCellIndex]->isIn(vLocalPos, &iNeighborIndex, LineDir))
 		return true;
 
-	/* ¼¿ ¹ÛÀ¸·Î ¿òÁ÷¿´´Ù. */
+	/* ì…€ ë°–ìœ¼ë¡œ ì›€ì§ì˜€ë‹¤. */
 	else
 	{
 		if (-1 != iNeighborIndex)
@@ -125,7 +125,7 @@ _bool CNavigation::isMove(_fvector vPosition)
 				if (-1 == iNeighborIndex)
 					return false;
 
-				if (true == m_Cells[iNeighborIndex]->isIn(vLocalPos, &iNeighborIndex))
+				if (true == m_Cells[iNeighborIndex]->isIn(vLocalPos, &iNeighborIndex, LineDir))
 				{
 					m_iCurrentCellIndex = iNeighborIndex;
 					return true;
@@ -241,7 +241,7 @@ void CNavigation::Undo_Cell()
 		m_Cells[i]->NeighborSort(iCellIndex);
 	}
 }
-//Æ½À¸·Î ¿ùµå ¹Þ¾Æ¿À°í³ª¼­ ÇÒ°Í
+//í‹±ìœ¼ë¡œ ì›”ë“œ ë°›ì•„ì˜¤ê³ ë‚˜ì„œ í• ê²ƒ
 HRESULT CNavigation::Set_OnNavigation(CTransform* pTransform)
 {
 	_vector vWorldPos = pTransform->Get_State(CTransform::STATE_POSITION);
@@ -257,6 +257,67 @@ HRESULT CNavigation::Set_OnNavigation(CTransform* pTransform)
 	pTransform->Set_State(CTransform::STATE_POSITION, XMVector3TransformCoord(XMLoadFloat3(&vLocalPos), XMLoadFloat4x4(&m_WorldMatrix)));
 
 	return S_OK;
+}
+
+_bool CNavigation::Compare_Height(CTransform* pTransform)
+{
+	_vector vWorldPos = pTransform->Get_State(CTransform::STATE_POSITION);
+
+	_float3 vLocalPos;//ëŒì˜ ë¡œì»¬
+	XMStoreFloat3(&vLocalPos, XMVector3TransformCoord(vWorldPos, XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_WorldMatrix))));
+
+	if (-1 == m_iCurrentCellIndex)
+		return S_OK;
+
+	_float3 vCellPos{};
+	vCellPos.y = m_Cells[m_iCurrentCellIndex]->Set_OnCell(vLocalPos);//ì…€ì˜ ë†’ì´
+
+	if (vLocalPos.y > vCellPos.y)
+		return false;
+	else
+	{
+		vLocalPos.y = vCellPos.y;
+
+		pTransform->Set_State(CTransform::STATE_POSITION, XMVector3TransformCoord(XMLoadFloat3(&vLocalPos), XMLoadFloat4x4(&m_WorldMatrix)));
+		return true;
+	}
+
+}
+//TODO ::0513 êµ¬í˜„  ì¤€ë¹„í•˜ì…ˆ
+_bool CNavigation::Cell_Reflect(_fvector* vDirection, _fvector vPosition)
+{
+
+	//ì›”ë“œë¥¼ ê°€ì ¸ì™€ì„œ ë¡œì»¬ë¡œ ë‚´ë ¤ì¤€ë‹¤ìŒ ê³„ì‚°í•œë‹¤.
+	_vector		vLocalPos = XMVector3TransformCoord(vPosition, XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_WorldMatrix)));
+
+
+	_int			iNeighborIndex = { -1 };
+
+	/* ì…€ ì•ˆì—ì„œ ì›€ì§ì˜€ë‹¤. */
+	if (true == m_Cells[m_iCurrentCellIndex]->isIn(vLocalPos, &iNeighborIndex))
+		return true;
+
+	/* ì…€ ë°–ìœ¼ë¡œ ì›€ì§ì˜€ë‹¤. */
+	else
+	{
+		if (-1 != iNeighborIndex)
+		{
+			while (true)
+			{
+				if (-1 == iNeighborIndex)
+					return false;
+
+				if (true == m_Cells[iNeighborIndex]->isIn(vLocalPos, &iNeighborIndex))
+				{
+					m_iCurrentCellIndex = iNeighborIndex;
+					return true;
+				}
+			}
+
+		}
+		else
+			return false;
+	}
 }
 
 #ifdef _DEBUG

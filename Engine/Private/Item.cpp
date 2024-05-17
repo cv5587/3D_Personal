@@ -23,7 +23,10 @@ HRESULT CItem::Initialize(void* pArg)
 
 	m_ItemType.emplace_back((ITEMTYPE)pDesc->ItemType[0]);
 	m_ItemType.emplace_back((ITEMTYPE)pDesc->ItemType[1]);
-	
+
+	m_bThrow = pDesc->bThrow;
+	m_iCellIndex = pDesc->iCellIndex;
+	m_bisEquip = false;
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
@@ -48,6 +51,25 @@ HRESULT CItem::Render()
 	return S_OK;
 }
 
+_bool CItem::Intersect(CCollider* pTargetCollider)	
+{
+	if (!m_bThrow)
+		return false;
+
+	if (m_pColliderCom->Intersect(pTargetCollider))
+	{
+		m_pNavigationCom->Set_OnNavigation(m_pTransformCom);
+		m_bThrow = false;
+		m_iCellIndex = -1;
+		m_pNavigationCom->Reset_CellIndex();
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 void CItem::Make_Description(void* pArg)
 {
 	ITEM_DESC* pDesc = static_cast<ITEM_DESC*>(pArg);
@@ -59,7 +81,15 @@ void CItem::Make_Description(void* pArg)
 
 	pDesc->ItemName = m_ItemName;
 
+	pDesc->ItemUIName = m_ItemUIName;
+
+	pDesc->ItemInfo = m_ItemInfo;
+
 	pDesc->fWeight = m_fWeight;
+
+	pDesc->Durability = m_Durability;
+
+	pDesc->isEquip = m_bisEquip;	
 }
 
 void* CItem::Get_Description(void* pDesc)
@@ -104,5 +134,8 @@ HRESULT CItem::Save_Data(ofstream* fout)
 
 void CItem::Free()
 {
+	Safe_Release(m_pNavigationCom);
+	Safe_Release(m_pColliderCom);
 	__super::Free();
+
 }

@@ -163,14 +163,8 @@
     <Filter Include="93.PickUpSelector">
       <UniqueIdentifier>{3ec4b7d0-f16b-4add-9757-2b8e19f9da94}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\00.UI\UImanager">
-      <UniqueIdentifier>{7884584b-cc47-43a5-a6ce-da73f16e4e25}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\04.Item">
       <UniqueIdentifier>{73b1c2e4-b8de-4f52-9133-54c908d1dbc2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\04.Item\Stone">
-      <UniqueIdentifier>{3145fb2b-0389-4dfa-89e5-693d528148d0}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\00.UI\UIObject">
       <UniqueIdentifier>{8e1a933b-3214-4b4c-906c-32333d411535}</UniqueIdentifier>
@@ -178,8 +172,65 @@
     <Filter Include="02.GameObjects\00.UI\UITEXT">
       <UniqueIdentifier>{c00c883d-0b6b-4915-aa0a-ff3fad93b36b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\00.UI\UIInventory">
+    <Filter Include="94. StateMachine\State\Player\State_PickUp">
+      <UniqueIdentifier>{1caed946-b89e-4bed-83cb-eabbd0c26651}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94. StateMachine\State\Player\State_Inventory">
+      <UniqueIdentifier>{f125e0ce-94eb-4d72-98d3-3f35c994f05d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\UIBack">
+      <UniqueIdentifier>{6295e9cb-a72a-424b-ba64-071d21b302df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\UIColor">
+      <UniqueIdentifier>{7d58f44e-2382-44ce-8075-fa6546ca0005}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="92.UIInventory">
       <UniqueIdentifier>{2cd2c203-5e99-43f8-a4b1-7a013dabf20a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\manager">
+      <UniqueIdentifier>{7884584b-cc47-43a5-a6ce-da73f16e4e25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\UIToggleID">
+      <UniqueIdentifier>{c2953c8c-42b1-4ef4-81e5-b1791564bb34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\UISortToggle">
+      <UniqueIdentifier>{f9c737eb-ecf3-408e-aa02-3033004ecfd6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\UIButton">
+      <UniqueIdentifier>{62de024b-1270-4149-a706-755263266605}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\UIItemIcon">
+      <UniqueIdentifier>{6b7a791c-24d5-4fa0-a5f7-365f6e3e85cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\UIItemToggle">
+      <UniqueIdentifier>{59b2c243-b5a1-44bf-b820-b1b30975ebb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\04.Item\GEAR">
+      <UniqueIdentifier>{3145fb2b-0389-4dfa-89e5-693d528148d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\04.Item\CLTH">
+      <UniqueIdentifier>{3663f9bf-ab47-4a68-bba5-1695ff9555ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\UIStateCloth">
+      <UniqueIdentifier>{437af01a-b3f4-480a-8f05-87ae0428d2a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Bulllet">
+      <UniqueIdentifier>{075deace-7d63-4b81-b98e-365ad9b04a74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\02.LandObject\Player\PartObject\Weapon\PickRabbit">
+      <UniqueIdentifier>{ae2a7543-3f97-470a-a7fa-af6bf482d056}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94. StateMachine\State\Player\State_Kill">
+      <UniqueIdentifier>{ddda8125-83ce-46b4-a6b2-07bc4fb2915b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94. StateMachine\State\Player\State_Release">
+      <UniqueIdentifier>{8d9f12d8-4f08-42b2-9c41-b8389adf5a37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\UIClothToggle">
+      <UniqueIdentifier>{68183c47-9437-4883-836b-0fd9534747dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94. StateMachine\State\Player\State_Reload_Loop">
+      <UniqueIdentifier>{d8ab09a0-8e34-45c3-a0aa-ae0d9df9d501}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -334,10 +385,10 @@
       <Filter>93.PickUpSelector</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\UImanager.h">
-      <Filter>02.GameObjects\00.UI\UImanager</Filter>
+      <Filter>02.GameObjects\00.UI\manager</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\GEARStone.h">
-      <Filter>02.GameObjects\04.Item\Stone</Filter>
+    <ClInclude Include="..\Public\GEAR.h">
+      <Filter>02.GameObjects\04.Item\GEAR</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\UIObject.h">
       <Filter>02.GameObjects\00.UI\UIObject</Filter>
@@ -345,8 +396,59 @@
     <ClInclude Include="..\Public\UITEXT.h">
       <Filter>02.GameObjects\00.UI\UITEXT</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\State_PickUp.h">
+      <Filter>94. StateMachine\State\Player\State_PickUp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Inventory.h">
+      <Filter>94. StateMachine\State\Player\State_Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UIBack.h">
+      <Filter>02.GameObjects\00.UI\UIBack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UIColor.h">
+      <Filter>02.GameObjects\00.UI\UIColor</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\UIInventory.h">
-      <Filter>02.GameObjects\00.UI\UIInventory</Filter>
+      <Filter>92.UIInventory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UIToggleID.h">
+      <Filter>02.GameObjects\00.UI\UIToggleID</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UISortToggle.h">
+      <Filter>02.GameObjects\00.UI\UISortToggle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UIButton.h">
+      <Filter>02.GameObjects\00.UI\UIButton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UIItemIcon.h">
+      <Filter>02.GameObjects\00.UI\UIItemIcon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UIItemToggle.h">
+      <Filter>02.GameObjects\00.UI\UIItemToggle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UIStateCloth.h">
+      <Filter>02.GameObjects\00.UI\UIStateCloth</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CLTH.h">
+      <Filter>02.GameObjects\04.Item\CLTH</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Bullet.h">
+      <Filter>02.GameObjects\Bulllet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PickRabbit.h">
+      <Filter>02.GameObjects\02.LandObject\Player\PartObject\Weapon\PickRabbit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Kill.h">
+      <Filter>94. StateMachine\State\Player\State_Kill</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Release.h">
+      <Filter>94. StateMachine\State\Player\State_Release</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UIClothToggle.h">
+      <Filter>02.GameObjects\00.UI\UIClothToggle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Reload_Loop.h">
+      <Filter>94. StateMachine\State\Player\State_Reload_Loop</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -492,10 +594,10 @@
       <Filter>93.PickUpSelector</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\UImanager.cpp">
-      <Filter>02.GameObjects\00.UI\UImanager</Filter>
+      <Filter>02.GameObjects\00.UI\manager</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\GEARStone.cpp">
-      <Filter>02.GameObjects\04.Item\Stone</Filter>
+    <ClCompile Include="..\Private\GEAR.cpp">
+      <Filter>02.GameObjects\04.Item\GEAR</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\UIObject.cpp">
       <Filter>02.GameObjects\00.UI\UIObject</Filter>
@@ -503,8 +605,59 @@
     <ClCompile Include="..\Private\UITEXT.cpp">
       <Filter>02.GameObjects\00.UI\UITEXT</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\State_PickUp.cpp">
+      <Filter>94. StateMachine\State\Player\State_PickUp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Inventory.cpp">
+      <Filter>94. StateMachine\State\Player\State_Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UIBack.cpp">
+      <Filter>02.GameObjects\00.UI\UIBack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UIColor.cpp">
+      <Filter>02.GameObjects\00.UI\UIColor</Filter>
+    </ClCompile>
     <ClCompile Include="..\Private\UIInventory.cpp">
-      <Filter>02.GameObjects\00.UI\UIInventory</Filter>
+      <Filter>92.UIInventory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UIToggleID.cpp">
+      <Filter>02.GameObjects\00.UI\UIToggleID</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UISortToggle.cpp">
+      <Filter>02.GameObjects\00.UI\UISortToggle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UIButton.cpp">
+      <Filter>02.GameObjects\00.UI\UIButton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UIItemIcon.cpp">
+      <Filter>02.GameObjects\00.UI\UIItemIcon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UIItemToggle.cpp">
+      <Filter>02.GameObjects\00.UI\UIItemToggle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UIStateCloth.cpp">
+      <Filter>02.GameObjects\00.UI\UIStateCloth</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLTH.cpp">
+      <Filter>02.GameObjects\04.Item\CLTH</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Bullet.cpp">
+      <Filter>02.GameObjects\Bulllet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PickRabbit.cpp">
+      <Filter>02.GameObjects\02.LandObject\Player\PartObject\Weapon\PickRabbit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Kill.cpp">
+      <Filter>94. StateMachine\State\Player\State_Kill</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Release.cpp">
+      <Filter>94. StateMachine\State\Player\State_Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UIClothToggle.cpp">
+      <Filter>02.GameObjects\00.UI\UIClothToggle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Reload_Loop.cpp">
+      <Filter>94. StateMachine\State\Player\State_Reload_Loop</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -545,6 +698,24 @@
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMeshTree.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTexBack.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTexColor.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosColor.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTexToggleID.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTexBrightnessToggleID.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimMeshMonster.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

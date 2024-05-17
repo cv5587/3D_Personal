@@ -9,6 +9,9 @@
 #include <DirectXMath.h>
 #include <DirectXCollision.h>
 #include <d3dcompiler.h>
+
+#include <random>
+
 #include "fx11\d3dx11effect.h"
 #include "DirectXTK\DDSTextureLoader.h"
 #include "DirectXTK\WICTextureLoader.h"
@@ -41,6 +44,7 @@ namespace Engine
 	{
 		HitPosTexture=0,
 		HitIDTexture=1,
+		HitUIIDTexture =2,
 	};
 }
 

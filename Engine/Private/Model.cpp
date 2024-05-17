@@ -52,6 +52,19 @@ const _float4x4* CModel::Get_BoneCombinedTransformationMatrix(const _char* pBone
 	return (*iter)->Get_CombinedTransformationMatrix();	
 }
 
+const _float4x4* CModel::Get_BoneTransformationMatrix(const _char* pBoneName) const
+{
+    auto	iter = find_if(m_Bones.begin(), m_Bones.end(), [&](CBone* pBone)->_bool
+        {
+            return pBone->Compare_Name(pBoneName);
+        });
+
+    if (iter == m_Bones.end())
+        return nullptr;
+
+    return (*iter)->Get_TransformationMatrix();
+}
+
 _float4x4* CModel::Get_ControlBoneMatrix(const _char* pBoneName)
 {
     auto	iter = find_if(m_Bones.begin(), m_Bones.end(), [&](CBone* pBone)->_bool
@@ -135,6 +148,16 @@ HRESULT CModel::Bind_BoneMatrices(CShader* pShaderCom, const _char* pConstantNam
     m_Meshes[iMeshIndex]->Fill_Matrices(m_Bones, m_MeshBoneMatrices);
 
     return pShaderCom->Bind_Matrices(pConstantName, m_MeshBoneMatrices, 512);
+}
+
+HRESULT CModel::Bind_BulletBoneMatrices(CShader* pShaderCom, const _char* pConstantName, _uint iMeshIndex)
+{
+    ZeroMemory(m_MeshBoneMatrices, sizeof(_float4x4) * 512);
+
+    m_Meshes[iMeshIndex]->Fill_BulletMatrices(m_Bones, m_MeshBoneMatrices);
+
+    return pShaderCom->Bind_Matrices(pConstantName, m_MeshBoneMatrices, 512);
+
 }
 
 void CModel::Play_Animation(_float fTimeDelta)

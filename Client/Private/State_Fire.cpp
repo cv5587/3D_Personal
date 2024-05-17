@@ -52,7 +52,7 @@ void CState_Fire::Update(CPlayer* Player, _float fTimeDelta)
 	if (Player->isAnimFinished())
 	{
 		Player->End_Change();
-
+		Player->isFire();
 		if (m_pGameInstance->Get_DIMouseState(DIM_RB))
 			Player->Set_State(PLAYERSTATE::PLAYER_AIM);
 		else
@@ -63,6 +63,20 @@ void CState_Fire::Update(CPlayer* Player, _float fTimeDelta)
 		
 
 	}
+
+	_long		MouseMoveX = { 0 };
+	if (MouseMoveX = m_pGameInstance->Get_DIMouseMove(DIMS_X))
+	{
+		Player->Player_Turn(fTimeDelta, MouseMoveX);
+	}
+
+	_long		MouseMoveY = { 0 };
+	if (MouseMoveY = m_pGameInstance->Get_DIMouseMove(DIMS_Y))
+	{
+		Player->Cam_Turn(fTimeDelta, MouseMoveY);
+	}
+
+	Player->Mouse_Fix();
 }
 
 void CState_Fire::Exit(CPlayer* Player)

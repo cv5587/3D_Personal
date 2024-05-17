@@ -97,7 +97,7 @@ void CState_Walk_LE::Update(CPlayer* Player, _float fTimeDelta)
 			}
 			else
 			{
-				Player->Set_State(PLAYERSTATE::PLAYER_AIM);
+				Player->Set_State(PLAYERSTATE::PLAYER_AIM_S);
 			}
 		}
 		else
@@ -105,6 +105,20 @@ void CState_Walk_LE::Update(CPlayer* Player, _float fTimeDelta)
 
 		Player->End_Change();
 	}
+
+	_long		MouseMoveX = { 0 };
+	if (MouseMoveX = m_pGameInstance->Get_DIMouseMove(DIMS_X))
+	{
+		Player->Player_Turn(fTimeDelta, MouseMoveX);
+	}
+
+	_long		MouseMoveY = { 0 };
+	if (MouseMoveY = m_pGameInstance->Get_DIMouseMove(DIMS_Y))
+	{
+		Player->Cam_Turn(fTimeDelta, MouseMoveY);
+	}
+
+	Player->Mouse_Fix();
 }
 
 void CState_Walk_LE::Exit(CPlayer* Player)

@@ -23,6 +23,7 @@ public:
 	virtual void Tick(_fmatrix WorldMatrix) = 0;
 public:
 	virtual _bool Intersect(CCollider::TYPE eTargetType, CBounding* pTargetBounding) = 0;
+	virtual _bool IntersectRay(_vector* pRayArray, _float* fDist) = 0;
 
 #ifdef _DEBUG
 public:

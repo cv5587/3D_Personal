@@ -70,7 +70,7 @@ _bool CCell::Compare_Points(_fvector vSourPoint, _fvector vDestPoint)
 	return false;
 }
 
-_bool CCell::isIn(_fvector vPoint, _int* pNeighborIndex)
+_bool CCell::isIn(_fvector vPoint, _int* pNeighborIndex, _float4* LineDir)
 {
 
 	_vector		vSour, vDest;
@@ -81,9 +81,14 @@ _bool CCell::isIn(_fvector vPoint, _int* pNeighborIndex)
 		_vector		vLine = XMLoadFloat3(&m_vPoints[(i + 1) % POINT_END]) - XMLoadFloat3(&m_vPoints[i]);
 		//2차원 외적
 		vDest = XMVectorSet(XMVectorGetZ(vLine) * -1.f, 0.f, XMVectorGetX(vLine), 0.f);
+		_vector Nordir=XMVector3Normalize(vDest);	
+		_float a = XMVectorGetX(XMVector3Dot(XMVector3Normalize(vSour), XMVector3Normalize(vDest)));
 
 		if (0 < XMVectorGetX(XMVector3Dot(XMVector3Normalize(vSour), XMVector3Normalize(vDest))))
 		{
+			if(nullptr!= LineDir)
+				XMStoreFloat4(LineDir, XMVector3Normalize(vDest));//충돌선의 노멀벡터 저장
+
 			*pNeighborIndex = m_iNeighborIndices[i];
 			return false;
 		}
@@ -91,7 +96,6 @@ _bool CCell::isIn(_fvector vPoint, _int* pNeighborIndex)
 
 	return true;
 }
-
 _bool CCell::Check_Points(_vector vPoint, _float3* StorePoint, _float SnapReach)
 {
 	_vector Length = { SnapReach,SnapReach,SnapReach,SnapReach };

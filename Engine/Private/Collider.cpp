@@ -4,6 +4,7 @@
 #include "Bounding_OBB.h"
 #include "Bounding_Sphere.h"
 
+
 #include "GameInstance.h"
 
 CCollider::CCollider(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -81,6 +82,12 @@ _bool CCollider::Intersect(CCollider* pTargetCollider)
 	return m_isColl = m_pBounding->Intersect(pTargetCollider->m_eType, pTargetCollider->m_pBounding);
 }
 
+_bool CCollider::IntersectRay( _vector* pRayArray, _float* fDist)
+{
+
+	return m_isColl = m_pBounding->IntersectRay( pRayArray, fDist);
+}
+
 #ifdef _DEBUG
 
 HRESULT CCollider::Render()
@@ -88,6 +95,25 @@ HRESULT CCollider::Render()
 	m_pShader->SetWorld(XMMatrixIdentity());
 	m_pShader->SetView(m_pGameInstance->Get_Transform_Matrix(CPipeLine::TS_VIEW));
 	m_pShader->SetProjection(m_pGameInstance->Get_Transform_Matrix(CPipeLine::TS_PROJ));
+
+	m_pContext->IASetInputLayout(m_pInputLayout);
+
+	m_pShader->Apply(m_pContext);
+
+	m_pBatch->Begin();
+
+	m_pBounding->Render(m_pBatch, m_isColl == true ? XMVectorSet(1.f, 0.f, 0.f, 1.f) : XMVectorSet(0.f, 1.f, 0.f, 1.f));
+
+	m_pBatch->End();
+
+	return S_OK;
+}
+
+HRESULT CCollider::RenderUI(_fmatrix UIProjMatrix)
+{
+	m_pShader->SetWorld(XMMatrixIdentity());
+	m_pShader->SetView(XMMatrixIdentity());
+	m_pShader->SetProjection(UIProjMatrix);
 
 	m_pContext->IASetInputLayout(m_pInputLayout);
 

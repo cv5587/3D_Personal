@@ -22,6 +22,8 @@ HRESULT CBody_Player::Initialize_Prototype()
 
 HRESULT CBody_Player::Initialize(void* pArg)
 {
+	BODY_DESC* pDesc = (BODY_DESC*)pArg;
+	m_pBulletsLeft = pDesc->pBulletsLeft;
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
@@ -57,7 +59,7 @@ void CBody_Player::Tick(_float fTimeDelta)
 void CBody_Player::Late_Tick(_float fTimeDelta)
 {
 
-	(*m_pAnimFinished) = m_pModelCom->Get_AnimFinished();
+	//(*m_pAnimFinished) = m_pModelCom->Get_AnimFinished();
 
 	XMStoreFloat4x4(&m_WorldMatrix, m_pTransformCom->Get_WorldMatrix() * XMLoadFloat4x4(m_pParentMatrix));
 
@@ -68,9 +70,33 @@ HRESULT CBody_Player::Render()
 {
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
-
-
-
+	/*
+		0 WeightedCube
+		1 HMM_FP_Hand_Bandage
+		2 Male_Arms
+		3 Will_Sleeves
+		4 Will_Hands
+	*/
+	switch (*m_pCloth)
+	{
+	case Client::CLOTH_NONE:
+		Mesh_Render(2);
+		break;
+	case Client::CLOTH_SLEEVES:
+		Mesh_Render(3);
+		Mesh_Render(4);
+		break;
+	case Client::CLOTH_BANDAGE:
+		Mesh_Render(1);
+		Mesh_Render(3);
+		Mesh_Render(4);
+		break;
+	case Client::CLOTH_END:
+		break;
+	default:
+		break;
+	}
+	/*
 	_uint	iNumMeshes = m_pModelCom->Get_NumMeshes();
 
 	for (size_t i = 0; i < iNumMeshes; i++)
@@ -83,7 +109,7 @@ HRESULT CBody_Player::Render()
 		m_pShaderCom->Begin(0);
 
 		m_pModelCom->Render(i);
-	}
+	}*/
 
 
 	return S_OK;
@@ -250,6 +276,10 @@ void CBody_Player::Set_AnimationState()
 			AnimDesc.iAnimIndex = 305;
 			AnimDesc.isLoop = false;
 			break;
+		case Client::PLAYER_RELOAD_LOOP://ÃÑ¾Ë °¹¼ö ¹Þ¾Æ¼­ È½¼ö¸¸Å­ ÁøÇà ¿¹Á¤
+			AnimDesc.iAnimIndex = 305;
+			AnimDesc.isLoop = false;
+			break;
 		case Client::PLAYER_RELOAD_E:
 			AnimDesc.iAnimIndex = 304;
 			AnimDesc.isLoop = false;
@@ -260,15 +290,65 @@ void CBody_Player::Set_AnimationState()
 			break;
 		}
 		break;
+
+	case EQUIP_RABBIT:	
+		switch (*m_pState)
+		{
+		case Client::PLAYER_IDLE:
+			AnimDesc.iAnimIndex = 86;
+			AnimDesc.isLoop = true;
+			break;
+		case Client::PLAYER_EQUIP:
+			AnimDesc.iAnimIndex = 85;
+			AnimDesc.isLoop = false;
+			break;
+		case Client::PLAYER_KILL:
+			AnimDesc.iAnimIndex = 87;
+			AnimDesc.isLoop = false;
+			break;
+		case Client::PLAYER_RELEASE:	
+			AnimDesc.iAnimIndex = 88;
+			AnimDesc.isLoop = false;
+			break;
+		}
+		break;
 	case EQUIP_PIPE:
 		break;
 	default:
 		break;
 	}
-	
-	*m_pAnimFinished = AnimDesc.isLoop;
 
-	m_pModelCom->Set_AnimationIndex(AnimDesc);
+	//if(*m_pState== PLAYER_RELOAD && !* m_pAnimFinished && *m_pBulletsLeft!=6)
+	//{
+	//	//*m_pAnimFinished = AnimDesc.isLoop;
+	//	m_pModelCom->Set_RepeatAnimationIndex(AnimDesc);
+	//}
+	//else
+	//{
+
+		*m_pAnimFinished = AnimDesc.isLoop;
+		m_pModelCom->Set_AnimationIndex(AnimDesc);
+
+	
+}
+
+HRESULT CBody_Player::Mesh_Render(_uint MeshIndex)
+{
+	m_pModelCom->Bind_BoneMatrices(m_pShaderCom, "g_BoneMatrices", MeshIndex);
+
+	if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_Texture", MeshIndex, aiTextureType_DIFFUSE)))
+		return E_FAIL;
+
+	m_pShaderCom->Begin(0);
+
+	m_pModelCom->Render(MeshIndex);
+
+	return S_OK;
+}
+
+void CBody_Player::Reset_Anim()
+{
+	m_pModelCom->Set_RepeatAnimationIndex();
 }
 
 HRESULT CBody_Player::Add_Components()

@@ -1,22 +1,21 @@
 #pragma once
 
 #include "Client_Defines.h"
-#include "GameObject.h"
+#include "UIBase.h"
 
 BEGIN(Engine)
 class CShader;
 class CTexture;
 class CVIBuffer_Rect;
 END
-
+BEGIN(Client)
 class CUIObject final:
-    public CGameObject
+    public CUIBase
 {
 public:
-	typedef struct :public CGameObject::GAMEOBJECT_DESC{
-		wstring TextureTag;
-		_uint Icon_ID;
-	}UI_DESC;
+	typedef struct :public CUIBase::UI_BASE_DESC {
+
+	}UI_OBJECT_DESC;
 
 private:
 	CUIObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -34,7 +33,7 @@ public:
 	virtual void UI_Render(_uint IconID) override;
 
 public:
-	void Set_ID(_uint ID) { m_iID = ID; }
+
 	_bool Compare_ID();
 private:
 	CShader* m_pShaderCom = { nullptr };
@@ -44,8 +43,7 @@ private:
 	_float							m_fX, m_fY, m_fSizeX, m_fSizeY;
 	_float4x4						m_WorldMatrix, m_ViewMatrix, m_ProjMatrix;
 
-	wstring						m_TextureTag = { TEXT("") };
-	_uint							m_iID = {0};
+
 private:
 	HRESULT Add_Components();
 	HRESULT Bind_ShaderResources();
@@ -57,3 +55,4 @@ public:
 
 };
 
+END

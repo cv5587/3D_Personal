@@ -148,6 +148,9 @@
     <Filter Include="01.Utility\06.Fonts\Manager">
       <UniqueIdentifier>{141bb065-bffe-4d43-aed8-cff0de6c512e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\02.GameObjects\UI">
+      <UniqueIdentifier>{5dfc68e9-437b-43e0-8030-d663bc8c2feb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -294,6 +297,9 @@
     <ClInclude Include="..\Public\Font_Manager.h">
       <Filter>01.Utility\06.Fonts\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\UIBase.h">
+      <Filter>01.Utility\02.GameObjects\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -427,6 +433,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Font_Manager.cpp">
       <Filter>01.Utility\06.Fonts\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UIBase.cpp">
+      <Filter>01.Utility\02.GameObjects\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -14,6 +14,7 @@
 #include "Bounding_Sphere.h"
 
 #include "Inventory.h"
+#include "ItemData.h"
 
 
 

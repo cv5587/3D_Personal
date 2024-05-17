@@ -19,6 +19,7 @@ public:
 		const _float4x4* pParentMatrix;
 		const PLAYERSTATE* pState;
 		const PLAYEREQUIP* pEquip;
+		const PLAYERCLOTH* pCloth;
 		_bool* pAnimFinished;
 	}PARTOBJ_DESC;
 
@@ -40,8 +41,9 @@ protected:
 	const _float4x4* m_pParentMatrix = { nullptr };
 	const PLAYERSTATE * m_pState = {nullptr};
 	const PLAYEREQUIP* m_pEquip = { nullptr };
+	const PLAYERCLOTH* m_pCloth = { nullptr };
 	 _bool* m_pAnimFinished = { false };
-
+	 _uint PreAnimIndex = { 0 };
 
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;

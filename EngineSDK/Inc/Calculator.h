@@ -16,6 +16,9 @@ public:
 	 _bool Pick_Object(_matrix InverseView, _matrix InverseProj,  vector< const _float4x4*>* ObPos, _float radius);
 	 _vector Picking_HitScreen();
 	 _int Picking_IDScreen();
+	 _int Picking_UIIDScreen();
+	 _vector Picking_UI(_fmatrix ProjM);
+	 void World_MouseRay(_vector* RayArray);
 
 public:
 	 _bool Compare_Float4(_float4 f1, _float4 f2);	
@@ -31,6 +34,7 @@ private:
 	//비워져있는 텍스처
 	ID3D11Texture2D* m_pHitScreenTexture = { nullptr };
 	ID3D11Texture2D* m_pIDScreenTexture = { nullptr };
+	ID3D11Texture2D* m_pUIIDScreenTexture = { nullptr };
 
 
 

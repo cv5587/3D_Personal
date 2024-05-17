@@ -1,6 +1,7 @@
 #include "..\Public\Layer.h"
 #include "GameObject.h"
-
+#include "UIBase.h"
+#include "Item.h"
 CLayer::CLayer()
 {
 
@@ -128,8 +129,40 @@ void CLayer::Tick(_float fTimeDelta)
 
 void CLayer::Late_Tick(_float fTimeDelta)
 {
+
+	for (auto iter = m_GameObjects.begin(); iter != m_GameObjects.end(); )
+	{
+		if ((*iter)->Get_Live())
+		{
+			(*iter)->Late_Tick(fTimeDelta);
+			++iter;
+		}
+		else
+		{
+			Safe_Release(*iter);	
+			iter = m_GameObjects.erase(iter);
+		}
+	}
+
+}
+
+CUIBase* CLayer::Find_UI(const _int& UIID)
+{
+
 	for (auto& pGameObject : m_GameObjects)
-		pGameObject->Late_Tick(fTimeDelta);
+		if (dynamic_cast<CUIBase*>(pGameObject)->Compare_UIID(UIID))
+			return dynamic_cast<CUIBase*>(pGameObject);	
+
+	return nullptr;
+}
+
+_bool CLayer::Intersect( CCollider* pTargetCollider)
+{
+	for (auto& pGameObject : m_GameObjects)
+		if (pGameObject->Intersect(pTargetCollider))
+			return true;
+
+	return false;
 }
 
 void CLayer::Render_UI()

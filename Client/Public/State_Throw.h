@@ -13,6 +13,9 @@ public:
     virtual void Update(class CPlayer* Player, _float fTimeDelta)override;
     virtual void Exit(class CPlayer* Player)override;
 
+private:
+    _float m_fThrowTime = { 0.f };
+    _bool m_bShot = { false };
 public:
     static CState* Create();
     virtual void Free() override;

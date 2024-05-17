@@ -41,6 +41,15 @@ _bool CBounding_Sphere::Intersect(CCollider::TYPE eTargetType, CBounding* pTarge
 	return isColl;
 }
 
+_bool CBounding_Sphere::IntersectRay(_vector* pRayArray, _float* fDist)
+{
+	_bool			isColl{ false };
+
+	isColl = m_pDesc->Intersects(pRayArray[0], pRayArray[1], *fDist);
+
+	return isColl;
+}
+
 #ifdef _DEBUG
 
 HRESULT CBounding_Sphere::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _fvector vColor)

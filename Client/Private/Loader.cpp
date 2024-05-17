@@ -11,9 +11,12 @@
 #include "Weapon.h"
 #include "Player_Camera.h"
 #include "Revolver.h"
-#include "GEARStone.h"
-#include "UIObject.h"
-#include "UITEXT.h"
+#include "GEAR.h"
+#include "CLTH.h"	
+#include "UImanager.h"
+#include "PickRabbit.h"
+#include"UIClothToggle.h"
+
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice{ pDevice }
@@ -99,6 +102,8 @@ HRESULT CLoader::Loading_For_GamePlayLevel()
 {
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩 중 입니다."));
 
+	/**************************************픽업셀렉터*******************************************/
+
 	/* For.Prototype_Component_Texture_BASESelectorIcon */ 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_BASESelectorIcon"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/Selector/ICON_BASEInfo%d.dds"), 3))))
@@ -113,6 +118,8 @@ HRESULT CLoader::Loading_For_GamePlayLevel()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_TYPESelectorIcon"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/Selector/ICON_TYPEInfo%d.dds"), 6))))
 		return E_FAIL;
+
+	/**************************************인벤토리*******************************************/
 
 	/* For.Prototype_Component_Texture_Inventoryback */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Inventoryback"),
@@ -144,8 +151,185 @@ HRESULT CLoader::Loading_For_GamePlayLevel()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/Inventory/Inven_Weightbar%d.dds"), 2))))
 		return E_FAIL;
 
-	/*******************************************************************************************************/
+	/**************************************인벤토리 토글 아이콘*******************************************/
+		/* For.Prototype_Component_Texture_InventoryToggleState */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_InventoryToggleState"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/Inventory/Toggle/Toggle_State%d.dds"), 2))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_InventoryToggleEquip */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_InventoryToggleEquip"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/Inventory/Toggle/Toggle_Equip%d.dds"), 2))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_InventoryToggleBag */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_InventoryToggleBag"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/Inventory/Toggle/Toggle_Bag%d.dds"), 2))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_InventoryToggleBlueprint */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_InventoryToggleBlueprint"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/Inventory/Toggle/Toggle_Blueprint%d.dds"), 2))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_InventoryItemCase */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_InventoryItemCase"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/Inventory/Inven_ItemCase%d.dds")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_InventoryPickLight */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_InventoryPickLight"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/Inventory/Inven_PickLight%d.dds"),1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_InventoryDetailCase*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_InventoryDetailCase"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/Inventory/Inven_ItemDetailCase%d.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Inven_ClothEquip*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Inven_ClothEquip"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/Inventory/Inven_ClothEquip.dds")))))
+		return E_FAIL;
+	/**************************************상태창*******************************************/
+
+	///옷 + 몸
+		/* For.Prototype_Component_Texture_PaperDoll_Fullbody*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_PaperDoll_Fullbody"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/State/PaperDoll_Fullbody.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Toque_Wool*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Toque_Wool"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/State/CLTH_HED_Toque_Wool.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Cargo_pants*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Cargo_pants"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/State/CLTH_LEG_Cargo_pants.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_WillBoots*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_WillBoots"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/State/CLTH_TOR_WillBoots.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_WillSweater*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_WillSweater"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/State/CLTH_TOR_WillSweater.dds"), 1))))
+		return E_FAIL;
+
+	/**************************************상태창 기본 아이콘들*******************************************/
+
+		/* For.Prototype_Component_Texture_State_Icon*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_State_Icon"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/State/State_Icon%d.dds"), 4))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_State_Iconback*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_State_Iconback"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/State/State_Iconback%d.dds"), 4))))
+		return E_FAIL;
+
+	/**************************************인벤Cloth 옷 케이스*******************************************/
+
+	/* For.Prototype_Component_Texture_InvenCloth_Left*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_InvenCloth_Left"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/InvenCloth/InvenCloth_Left.dds")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_InvenCloth_Right*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_InvenCloth_Right"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/InvenCloth/InvenCloth_Right.dds")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Clothcase_glove*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Clothcase_glove"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/InvenCloth/ClothCase/Clothcase_glove.dds")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Clothcase_hat*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Clothcase_hat"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/InvenCloth/ClothCase/Clothcase_hat.dds")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Clothcase_Inpant*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Clothcase_Inpant"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/InvenCloth/ClothCase/Clothcase_Inpant.dds")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Clothcase_jacket*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Clothcase_jacket"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/InvenCloth/ClothCase/Clothcase_jacket.dds")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Clothcase_neck*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Clothcase_neck"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/InvenCloth/ClothCase/Clothcase_neck.dds")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Clothcase_Outpant*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Clothcase_Outpant"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/InvenCloth/ClothCase/Clothcase_Outpant.dds")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Clothcase_shirts*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Clothcase_shirts"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/InvenCloth/ClothCase/Clothcase_shirts.dds")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Clothcase_shoes*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Clothcase_shoes"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/InvenCloth/ClothCase/Clothcase_shoes.dds")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Clothcase_socks*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Clothcase_socks"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/InvenCloth/ClothCase/Clothcase_socks.dds")))))
+		return E_FAIL;
+	/**************************************아이템 아이콘*******************************************/
 	
+		/* For.Prototype_Component_Texture_ico_GearItem_Stone */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_ico_GearItem_Stone"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/Item/ico_GearItem_Stone.dds")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_ico_GearItem_ToqueWool */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_ico_GearItem_ToqueWool"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/Item/ico_GearItem_BasicWoolHat.dds")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_ico_GearItem_CargoPants */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_ico_GearItem_Cargopants"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/Item/ico_GearItem_CargoPants.dds")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_ico_GearItem_Stick */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_ico_GearItem_Stick"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/Item/ico_GearItem_Stick.dds")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_ico_GearItem_WaterSupply */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_ico_GearItem_WaterSupply"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/Item/ico_GearItem_WaterSupply.dds")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_ico_GearItem_WillBoots*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_ico_GearItem_Boots"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/Item/ico_GearItem_WillBoots.dds")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_ico_GearItem_WillSweater */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_ico_GearItem_Sweater"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/Item/ico_GearItem_WillSweater.dds")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_ico_GearItem_Rabbit*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_ico_GearItem_Rabbit"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/Item/ico_GearItem_Rabbit.dds")))))
+		return E_FAIL;
+
+		/********************************************눈 텍스처***********************************************************/
 	/*For. Ground_Snow*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Snow_Ground_B"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/Terrain/Ground_Snow/TRN_Snow_Ground_B.dds")))))
@@ -157,7 +341,7 @@ HRESULT CLoader::Loading_For_GamePlayLevel()
 		CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/Terrain/Heightmap/heightmap_lakeregion.bmp")))))
 		return E_FAIL;
 
-	//돌
+	//절벽 바위
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_CliffA"),
 		CModel::Create(m_pDevice, m_pContext, "../Bin/bin/Prototype_Component_Model_CliffA.bin"))))
 		return E_FAIL;
@@ -178,6 +362,10 @@ HRESULT CLoader::Loading_For_GamePlayLevel()
 		CModel::Create(m_pDevice, m_pContext, "../Bin/bin/Prototype_Component_Model_Stone.bin"))))
 		return E_FAIL;
 	
+	//장비 토끼
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_PickRabbit"),
+		CModel::Create(m_pDevice, m_pContext, "../Bin/bin/Prototype_Component_Model_PickRabbit.bin"))))
+		return E_FAIL;
 
 	//큰바위A
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_RockBigA"),
@@ -284,54 +472,37 @@ HRESULT CLoader::Loading_For_GamePlayLevel()
 		return E_FAIL;
 
 
-	_matrix		PreTransformMatrix;
-	///* For.Prototype_Component_Model_Fiona */
-	//PreTransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f));
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Fiona"),
-	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Fiona/Fiona.fbx", PreTransformMatrix))))
-	//	return E_FAIL;
-	// /*ForkLift*/
-	//PreTransformMatrix = XMMatrixScaling(0.1f, 0.1f, 0.1f) * XMMatrixRotationY(XMConvertToRadians(180.f));
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_ForkLift"),
-	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM,CAnimation::OBJ_ENVIRONMENT, "../Bin/Resources/Models/ForkLift/ForkLift.fbx", PreTransformMatrix))))
-	//	return E_FAIL;
-	///*CliffA*/
-	//PreTransformMatrix = XMMatrixScaling(0.1f, 0.1f, 0.1f) * XMMatrixRotationY(XMConvertToRadians(180.f));
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_CliffA"),
-	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, CAnimation::OBJ_ENVIRONMENT, "../Bin/Asset2D/EnvironmentObject/CliffA/Cliff_Climbable_5m_v3.fbx", PreTransformMatrix))))
-	//	return E_FAIL;
-	///*토끼*/
-	//PreTransformMatrix= XMMatrixRotationY(XMConvertToRadians(180.0f));
-	//	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Rabbit"),
-	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, CAnimation::OBJ_MONSTER, "../Bin/Asset2D/Monster/Rabbit/WILDLIFE_Rabbit_fix.fbx", PreTransformMatrix))))
-	//	return E_FAIL;
+	//***************** 옷 ************************************************
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_ToqueWool"),
+		CModel::Create(m_pDevice, m_pContext, "../Bin/bin/Prototype_Component_Model_ToqueWool.bin"))))
+		return E_FAIL;
 
-	//	/*플레이어*/
-	//PreTransformMatrix = XMMatrixIdentity()* XMMatrixRotationY(XMConvertToRadians(180.0f));
-	//	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Player"),
-	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, CAnimation::OBJ_PLAYER, "../Bin/Asset2D/Player/NEW_FPHand_Rig_fix.fbx", PreTransformMatrix))))
-	//	return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Cargopants"),
+		CModel::Create(m_pDevice, m_pContext, "../Bin/bin/Prototype_Component_Model_Cargopants.bin"))))
+		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Boots"),
+		CModel::Create(m_pDevice, m_pContext, "../Bin/bin/Prototype_Component_Model_Boots.bin"))))
+		return E_FAIL;
 
-	//장비류
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Sweater"),
+		CModel::Create(m_pDevice, m_pContext, "../Bin/bin/Prototype_Component_Model_Sweater.bin"))))
+		return E_FAIL;
 
-		//	/*라이플*/
-	//PreTransformMatrix=XMMatrixIdentity();	
-	//	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Rifle"),
-	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Asset2D/Equipment/Rifle/rifle_rig.fbx", PreTransformMatrix))))
-	//	return E_FAIL;
+	//******************************************동굴
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Cave"),
+		CModel::Create(m_pDevice, m_pContext, "../Bin/bin/Prototype_Component_Model_Cave.bin"))))
+		return E_FAIL;
 
-	//			/*리볼버*/
-	//PreTransformMatrix=XMMatrixIdentity();
-	//	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Revolver"),
-	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, CAnimation::OBJ_WEAPON,"../Bin/Asset2D/Equipment/Revolver/FPH_Revolver_44Mag_Rig.fbx", PreTransformMatrix))))
-	//	return E_FAIL;
+	//******************************************농장집
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_FarmHouse"),
+		CModel::Create(m_pDevice, m_pContext, "../Bin/bin/Prototype_Component_Model_FarmHouse.bin"))))
+		return E_FAIL;
 
-	///*돌*/
-	//PreTransformMatrix =  XMMatrixIdentity();
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Stone"),
-	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, CAnimation::OBJ_WEAPON, "../Bin/Asset2D/Equipment/Stone/GEAR_Rock.fbx", PreTransformMatrix))))
-	//	return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_FarmHouseBasementDoor"),
+		CModel::Create(m_pDevice, m_pContext, "../Bin/bin/Prototype_Component_Model_FarmHouseBasementDoor.bin"))))
+		return E_FAIL;
+	//******************************************쉐이더********************
 
 	lstrcpy(m_szLoadingText, TEXT("셰이더를(을) 로딩 중 입니다."));
 	/* For.Prototype_Component_Shader_VtxNorTex */
@@ -364,6 +535,11 @@ HRESULT CLoader::Loading_For_GamePlayLevel()
 		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxAnimMesh.hlsl"), VTXANIMMESH::Elements, VTXANIMMESH::iNumElements))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Shader_VtxAnimMeshMonster */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxAnimMeshMonster"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxAnimMesh.hlsl"), VTXANIMMESH::Elements, VTXANIMMESH::iNumElements))))
+		return E_FAIL;
+
 	lstrcpy(m_szLoadingText, TEXT("충돌체 원형을 로딩 중 입니다."));
 
 	/* For.Prototype_Component_Collider */
@@ -385,14 +561,60 @@ HRESULT CLoader::Loading_For_GamePlayLevel()
 
 	lstrcpy(m_szLoadingText, TEXT("객체원형을 로딩 중 입니다."));
 
-	/* For.Prototype_GameObject_SelectorIcon */
-	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_SelectorIcon"), 
+	/* For.Prototype_GameObject_UIObject*/
+	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_UIObject"), 
 		CUIObject::Create(m_pDevice, m_pContext))))	
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_UIBack*/
+	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_UIBack"),
+		CUIBack::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_UIColor*/
+	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_UIColor"),
+		CUIColor::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_UIText */
 	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_UIText"),
 		CUITEXT::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_UIToggle */
+	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_UIToggle"),
+		CUIToggleID::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_UISortToggle */
+	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_UISortToggle"),
+		CUISortToggle::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_UIButton*/
+	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_UIButton"),
+		CUIButton::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_UIItemIcon*/
+	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_UIItemIcon"),
+		CUIItemIcon::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_UIItemToggle*/
+	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_UIItemToggle"),
+		CUIItemToggle::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_UIClothToggle*/
+	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_UIClothToggle"),
+		CUIClothToggle::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
+	/* For.Prototype_GameObject_UIStateCloth*/
+	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_UIStateCloth"),
+		CUIStateCloth::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Terrain*/
@@ -440,9 +662,19 @@ HRESULT CLoader::Loading_For_GamePlayLevel()
 		CRevolver::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	/* For.Prototype_GameObject_GEARStone */
-	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_GEARStone"),
-		CGEARStone::Create(m_pDevice, m_pContext))))
+	/* For.Prototype_GameObject_PickRabbit */
+	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_PickRabbit"),
+		CPickRabbit::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_GEAR */
+	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_GEAR"),
+		CGEAR::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_CLTH */
+	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_CLTH"),
+		CCLTH::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));

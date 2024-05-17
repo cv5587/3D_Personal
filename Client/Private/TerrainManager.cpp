@@ -21,7 +21,7 @@ HRESULT CTerrainManager::Clone_Terrain(void* pArg)
 	CTerrain::TERRAIN_DESC pDesc{};
 	pDesc.TerrainUV[0] = sTerrainUV[0];
 	pDesc.TerrainUV[1] = sTerrainUV[1];
-	XMStoreFloat4x4(&pDesc.vPrePosition, XMMatrixIdentity());
+	XMStoreFloat4x4(&pDesc.vPrePosition, XMMatrixIdentity() * XMMatrixScaling(2.0f, 2.0f, 2.0f));
 	pDesc.ProtoTypeTag = TEXT("Prototype_GameObject_Terrain");	
 	pDesc.ModelTag = TEXT("Prototype_Component_VIBuffer_Terrain");
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, TEXT("Layer_BackGround"), 

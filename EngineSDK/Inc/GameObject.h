@@ -12,7 +12,7 @@ public:
 		wstring ProtoTypeTag;
 		wstring		ModelTag;
 		_float4x4		vPrePosition ;
-
+		_int CellIndex;
 	}GAMEOBJECT_DESC;
 
 protected:
@@ -29,21 +29,37 @@ public:
 	virtual HRESULT Render();
 	virtual void Choice_Render();
 	virtual void UI_Render(_uint IconID);
+	virtual _bool Intersect(class CCollider* pTargetCollider) ;
+	virtual _bool IntersectRay(_vector* pRayArray) ;
+
+	virtual wstring Get_Prototype() {
+		return m_ProtoTypeTag;
+	}
+	virtual wstring Get_ModelTag() {
+		return m_ModelTag;
+	}
+	virtual class		CComponent* Get_Transform();
 public:
-	class		CComponent* Get_Transform();
 	class		CComponent* Get_Component(const wstring& strComponentTag);
 
 public:
 	void		Set_ID(_int ID) {
 		m_iRenderID = ID;
 	}
-	_bool Compare_ID(const _int& ID) {
+
+	virtual _bool Compare_ID(const _int& ID) {
 		if (ID == m_iRenderID)
 			return true;
 		else
 			return false;
 	}
 
+	void Set_Live(_bool Lived) {
+		m_isLived = Lived;
+	}
+	_bool Get_Live() {
+		return m_isLived;
+	}
 public:
 	HRESULT Save_Data(ofstream* fout);
 	virtual void Make_Description(void* pArg) ;
@@ -62,8 +78,9 @@ protected:
 	wstring m_ProtoTypeTag;//참조원형
 	wstring m_ModelTag;//모델 태그
 	_int m_iRenderID = { -1 };
+	_int m_CellIndex = { -1 };
 
-
+	_bool m_isLived = { true };
 protected:
 	map<const wstring, class CComponent*>		m_Components;
 

@@ -13,6 +13,11 @@ BEGIN(Client)
 
 class CBody_Player final : public CPartObject
 {
+public:
+	typedef struct : public CPartObject::PARTOBJ_DESC
+	{
+		_uint* pBulletsLeft;
+	}BODY_DESC;
 private:
 	CBody_Player(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CBody_Player(const CBody_Player& rhs);
@@ -29,9 +34,13 @@ public:
 private:
 	CShader* m_pShaderCom = { nullptr };
 	CModel* m_pModelCom = { nullptr };
+	_uint* m_pBulletsLeft = { nullptr };
+
 
 	void Set_AnimationState();
-
+	HRESULT Mesh_Render(_uint MeshIndex);
+public:
+	void Reset_Anim();
 public:
 	HRESULT Add_Components();
 	HRESULT Bind_ShaderResources();

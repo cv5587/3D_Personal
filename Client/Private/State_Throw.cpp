@@ -48,7 +48,17 @@ void CState_Throw::Update(CPlayer* Player, _float fTimeDelta)
 		Player->Go_Right(fTimeDelta);
 	}
 
+	m_fThrowTime += fTimeDelta;
 
+	if (m_fThrowTime >= 0.5f)
+	{
+		if (!m_bShot)
+		{
+			Player->Throw();
+
+			m_bShot = true;
+		}
+	}
 
 	if (Player->isAnimFinished())
 	{
@@ -59,10 +69,14 @@ void CState_Throw::Update(CPlayer* Player, _float fTimeDelta)
 		else
 			Player->Set_State(PLAYERSTATE::PLAYER_IDLE_EXHAUSTED);
 	}
+
+	Player->Mouse_Fix();
 }
 
 void CState_Throw::Exit(CPlayer* Player)
 {
+	m_bShot = false;
+	m_fThrowTime = 0.f;
 }
 
 CState* CState_Throw::Create()

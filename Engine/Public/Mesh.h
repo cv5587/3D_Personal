@@ -21,6 +21,7 @@ public:
 	HRESULT Initialize(CModel::MODELTYPE eModelType, const aiMesh* pAIMesh, _fmatrix PreTransformMatrix, const vector<class CBone*>& Bones);
 	HRESULT Initialize(CModel::MODELTYPE eModelType, ifstream* fin);
 	void Fill_Matrices(vector<class CBone*>& Bones, _float4x4* pMeshBoneMatrices);
+	void Fill_BulletMatrices(vector<class CBone*>& Bones, _float4x4* pMeshBoneMatrices);
 	HRESULT Save_Meshes(ofstream* fout, CModel::MODELTYPE eModelType);
 	//HRESULT Load_Meshes(ifstream* fin);
 

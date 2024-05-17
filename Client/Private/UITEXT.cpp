@@ -2,7 +2,7 @@
 #include "GameInstance.h"
 
 CUITEXT::CUITEXT(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	:CGameObject(pDevice, pContext), m_fX(0.f), m_fY(0.f), m_fSizeX(0), m_fSizeY(0)
+	:CUIBase(pDevice, pContext), m_fX(0.f), m_fY(0.f), m_fSizeX(0), m_fSizeY(0)
 {
 	ZeroMemory(&m_WorldMatrix, sizeof(_float4x4));
 	ZeroMemory(&m_ViewMatrix, sizeof(_float4x4));
@@ -10,7 +10,7 @@ CUITEXT::CUITEXT(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 }
 
 CUITEXT::CUITEXT(const CUITEXT& rhs)
-	:CGameObject(rhs),
+	:CUIBase(rhs),
 	m_fX(rhs.m_fX), m_fY(rhs.m_fY), m_fSizeX(rhs.m_fSizeX), m_fSizeY(rhs.m_fSizeY),
 	m_WorldMatrix(rhs.m_WorldMatrix), m_ViewMatrix(rhs.m_ViewMatrix), m_ProjMatrix(rhs.m_ProjMatrix)
 
@@ -33,6 +33,7 @@ HRESULT CUITEXT::Initialize(void* pArg)
 	m_TextTag = pDesc->TextTag;
 	m_TextPosition = pDesc->TextPosition;
 	m_Font = pDesc->Font;
+	m_Color = pDesc->Color;
 	//m_pTransformCom->Set_State_Matrix(XMLoadFloat4x4(&pDesc->vPrePosition));
 	//ºä,Åõ¿µÇà·Ä
 	//XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
@@ -58,8 +59,9 @@ void CUITEXT::Late_Tick(_float fTimeDelta)
 
 HRESULT CUITEXT::Render()
 {
-	m_pGameInstance->Render_Font(m_Font, m_TextTag, m_TextPosition, XMVectorSet(1.f, 1.f, 1.f, 1.f));
+	
 
+	m_pGameInstance->Render_Font(m_Font, m_TextTag, m_TextPosition, XMLoadFloat4(&m_Color));
 	return S_OK;
 }
 

@@ -61,6 +61,21 @@ void CState_UnEquip::Update(CPlayer* Player, _float fTimeDelta)
 		Player->Set_UnEquip();
 		Player->End_Change();
 	}
+
+
+	_long		MouseMoveX = { 0 };
+	if (MouseMoveX = m_pGameInstance->Get_DIMouseMove(DIMS_X))
+	{
+		Player->Player_Turn(fTimeDelta, MouseMoveX);
+	}
+
+	_long		MouseMoveY = { 0 };
+	if (MouseMoveY = m_pGameInstance->Get_DIMouseMove(DIMS_Y))
+	{
+		Player->Cam_Turn(fTimeDelta, MouseMoveY);
+	}
+
+	Player->Mouse_Fix();
 }
 
 void CState_UnEquip::Exit(CPlayer* Player)

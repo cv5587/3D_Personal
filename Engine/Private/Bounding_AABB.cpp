@@ -34,7 +34,8 @@ _bool CBounding_AABB::Intersect(CCollider::TYPE eTargetType, CBounding* pTargetB
 	switch (eTargetType)
 	{
 	case CCollider::TYPE_AABB:
-		isColl = Intersect_AABB(static_cast<BoundingBox*>(pTargetBounding->Get_Desc()));
+		
+		isColl = m_pDesc->Intersects(*(static_cast<BoundingBox*>(pTargetBounding->Get_Desc())));
 		break;
 	case CCollider::TYPE_OBB:
 		isColl = m_pDesc->Intersects(*(static_cast<BoundingOrientedBox*>(pTargetBounding->Get_Desc())));
@@ -43,6 +44,18 @@ _bool CBounding_AABB::Intersect(CCollider::TYPE eTargetType, CBounding* pTargetB
 		isColl = m_pDesc->Intersects(*(static_cast<BoundingSphere*>(pTargetBounding->Get_Desc())));
 		break;
 	}
+
+	return isColl;
+}
+
+_bool CBounding_AABB::IntersectRay(_vector* pRayArray, _float* fDist)
+{
+	_bool			isColl{ false };
+
+	_vector Origin = pRayArray[0];
+	_vector Ray = pRayArray[1];
+
+	isColl = m_pDesc->Intersects(Origin, Ray, *fDist);
 
 	return isColl;
 }

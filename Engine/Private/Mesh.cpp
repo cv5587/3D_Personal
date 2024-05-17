@@ -183,6 +183,15 @@ void CMesh::Fill_Matrices(vector<class CBone*>& Bones, _float4x4* pMeshBoneMatri
 	}
 }
 
+void CMesh::Fill_BulletMatrices(vector<class CBone*>& Bones, _float4x4* pMeshBoneMatrices)
+{
+	//XMLoadFloat4x4(&m_OffsetMatrices[0]) * XMLoadFloat4x4(Bones[m_BoneIndices[0]]->Get_TransformationMatrix()
+	for (size_t i = 0; i < m_iNumBones; i++)
+	{
+	XMStoreFloat4x4(&pMeshBoneMatrices[i], XMMatrixIdentity());
+	}
+}
+
 HRESULT CMesh::Ready_Vertices_For_NonAnimMesh(const aiMesh* pAIMesh, _fmatrix PreTransformMatrix)
 {
 	m_iVertexStride = sizeof(VTXMESH);

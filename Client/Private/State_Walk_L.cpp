@@ -17,13 +17,18 @@ void CState_Walk_L::Update(CPlayer* Player, _float fTimeDelta)
 		if (m_pGameInstance->Get_DIKeyState(DIK_W))
 		{
 			if (m_pGameInstance->Get_DIKeyState(DIK_A))
-				Player->Go_LeftStraight(fTimeDelta);
+			{
+				if (Player->isEquip() == PLAYEREQUIP::EQUIP_STONE)
+					Player->Set_State(PLAYERSTATE::PLAYER_WALK_LE);
+				else if (Player->isEquip() == PLAYEREQUIP::EQUIP_REVOLVER)
+					Player->Set_State(PLAYERSTATE::PLAYER_WALK_FB);
+			}
 			else if (m_pGameInstance->Get_DIKeyState(DIK_D))
 			{
 				if (Player->isEquip() == PLAYEREQUIP::EQUIP_STONE)
 					Player->Set_State(PLAYERSTATE::PLAYER_WALK_LE);
 				else if (Player->isEquip() == PLAYEREQUIP::EQUIP_REVOLVER)
-					Player->Set_State(PLAYERSTATE::PLAYER_WALK_R);
+					Player->Set_State(PLAYERSTATE::PLAYER_WALK_FB);
 			}
 			else
 				Player->Set_State(PLAYERSTATE::PLAYER_WALK_FB);
@@ -31,13 +36,18 @@ void CState_Walk_L::Update(CPlayer* Player, _float fTimeDelta)
 		else 	if (m_pGameInstance->Get_DIKeyState(DIK_S))
 		{
 			if (m_pGameInstance->Get_DIKeyState(DIK_A))
-				Player->Go_LeftBackward(fTimeDelta);	
+			{
+				if (Player->isEquip() == PLAYEREQUIP::EQUIP_STONE)
+					Player->Set_State(PLAYERSTATE::PLAYER_WALK_LE);
+				else if (Player->isEquip() == PLAYEREQUIP::EQUIP_REVOLVER)
+					Player->Set_State(PLAYERSTATE::PLAYER_WALK_FB);
+			}
 			else if (m_pGameInstance->Get_DIKeyState(DIK_D))
 			{
 				if (Player->isEquip() == PLAYEREQUIP::EQUIP_STONE)
 					Player->Set_State(PLAYERSTATE::PLAYER_WALK_LE);
 				else if (Player->isEquip() == PLAYEREQUIP::EQUIP_REVOLVER)
-					Player->Set_State(PLAYERSTATE::PLAYER_WALK_R);
+					Player->Set_State(PLAYERSTATE::PLAYER_WALK_FB);
 			}
 			else
 				Player->Set_State(PLAYERSTATE::PLAYER_WALK_FB);
@@ -66,6 +76,20 @@ void CState_Walk_L::Update(CPlayer* Player, _float fTimeDelta)
 	{
 		Player->Set_State(PLAYERSTATE::PLAYER_AIM_E);
 	}
+
+	_long		MouseMoveX = { 0 };
+	if (MouseMoveX = m_pGameInstance->Get_DIMouseMove(DIMS_X))
+	{
+		Player->Player_Turn(fTimeDelta, MouseMoveX);
+	}
+
+	_long		MouseMoveY = { 0 };
+	if (MouseMoveY = m_pGameInstance->Get_DIMouseMove(DIMS_Y))
+	{
+		Player->Cam_Turn(fTimeDelta, MouseMoveY);
+	}
+
+	Player->Mouse_Fix();
 }
 
 void CState_Walk_L::Exit(CPlayer* Player)

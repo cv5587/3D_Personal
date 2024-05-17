@@ -25,7 +25,8 @@ public:
 	HRESULT Initialize(const _float3* pPoints, _int iIndex);
 	HRESULT Initialize_Data(const _float3* pPoints, _int iIndex, _int* Neighbor);
 	_bool Compare_Points(_fvector vSourPoint, _fvector vDestPoint);
-	_bool isIn(_fvector vPoint, _int* pNeighborIndex);
+	_bool isIn(_fvector vPoint, _int* pNeighborIndex, _float4* LineDir =nullptr);
+
 	void SetUp_Neighbor(LINE eNeighbor, CCell* pCell) {
 		m_iNeighborIndices[eNeighbor] = pCell->m_iIndex;
 	}

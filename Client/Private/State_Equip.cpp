@@ -31,6 +31,23 @@ void CState_Equip::Update(CPlayer* Player, _float fTimeDelta)
 		Player->Go_Right(fTimeDelta);
 	}
 
+	//_uint Equip = Player->isEquip();
+	//_bool ChangeFinish= false;
+	//switch (Equip)	
+	//{
+	//case PLAYEREQUIP::EQUIP_STONE:
+	//	ChangeFinish=Player->isAnimFinished();
+	//	break;
+	//case PLAYEREQUIP::EQUIP_REVOLVER:
+	//	ChangeFinish = Player->isRevolver_AnimFin();
+	//	break;
+	//case PLAYEREQUIP::EQUIP_RABBIT:
+	//	ChangeFinish = Player->isRabbit_AnimFin();
+	//	break;
+	//default:
+	//	break;
+	//}
+
 	if(Player->isAnimFinished())
 	{
 		if (m_pGameInstance->Get_DIKeyState(DIK_W))
@@ -62,6 +79,19 @@ void CState_Equip::Update(CPlayer* Player, _float fTimeDelta)
 		}
 		Player->End_Change();
 	}
+	_long		MouseMoveX = { 0 };
+	if (MouseMoveX = m_pGameInstance->Get_DIMouseMove(DIMS_X))
+	{
+		Player->Player_Turn(fTimeDelta, MouseMoveX);
+	}
+
+	_long		MouseMoveY = { 0 };
+	if (MouseMoveY = m_pGameInstance->Get_DIMouseMove(DIMS_Y))
+	{
+		Player->Cam_Turn(fTimeDelta, MouseMoveY);
+	}
+
+	Player->Mouse_Fix();
 }
 
 void CState_Equip::Exit(CPlayer* Player)

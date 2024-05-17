@@ -1,5 +1,6 @@
 #include "..\Public\Object_Manager.h"
 #include "GameObject.h"
+#include "UIBase.h"
 #include "Layer.h"
 
 CObject_Manager::CObject_Manager()
@@ -39,7 +40,7 @@ HRESULT CObject_Manager::Add_Prototype(const wstring & strPrototypeTag, CGameObj
 
 	return S_OK;
 }
-
+//몬스터는 일로 생성하지 말것
 HRESULT CObject_Manager::Add_CloneObject(_uint iLevelIndex, const wstring& strLayerTag, const wstring& strPrototypeTag, void* pArg)
 {
 
@@ -229,6 +230,26 @@ CGameObject* CObject_Manager::Clone_Object(const wstring& strPrototypeTag, void*
 	pCloneObject->Set_ID(m_ObjectID++);
 
 	return pCloneObject;
+}
+
+_bool CObject_Manager::Intersect(_uint iLevelIndex, const wstring& strLayerTag, CCollider* pTargetCollider)
+{
+	CLayer* pLayer = Find_Layer(iLevelIndex, strLayerTag);
+
+	if (nullptr == pLayer)
+		return nullptr;
+	else
+		return pLayer->Intersect(pTargetCollider);
+}
+
+CUIBase* CObject_Manager::FindUIID_CloneObject(_uint iLevelIndex, const wstring& strLayerTag, _int UIID)
+{
+	CLayer* pLayer = Find_Layer(iLevelIndex, strLayerTag);	
+
+	if (nullptr == pLayer)
+		return nullptr;
+	else
+		return pLayer->Find_UI(UIID);
 }
 
 void CObject_Manager::Render_UI(_uint iLevelIndex, wstring LayerName)

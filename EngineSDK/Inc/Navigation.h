@@ -27,7 +27,7 @@ public:
 
 public:
 	void Update(const _float4x4* pWorldMatrix);
-	_bool isMove(_fvector vPosition);
+	_bool isMove(_fvector vPosition, _float4* LineDir=nullptr);
 	HRESULT Make_Cell(const _float3* vPoint);
 	void Snap_Point(_vector vPoint,_float3* StorePoint,_float SnapReach);
 	//툴용
@@ -44,16 +44,22 @@ public:
 	//네비 올라타기
 public://월드 받아와서 계산하기. 트랜스폼 가져와서 바로 적용.
 	HRESULT Set_OnNavigation(class CTransform* pTransform);
-
+	_bool Compare_Height(class CTransform* pTransform);
+	//네비 반사 벡터
+public:
+	_bool Cell_Reflect(_fvector* vDirection, _fvector vPosition);
 #ifdef _DEBUG
 public:
 	HRESULT Render();
 #endif
-
+	void Reset_CellIndex() {
+		m_iCurrentCellIndex = -1;
+	}
 private:
 	vector<class CCell*>		m_Cells;
 	static _float4x4			m_WorldMatrix;
 	_int						m_iCurrentCellIndex = { -1 };
+
 
 #ifdef _DEBUG
 	class CShader* m_pShader = { nullptr };

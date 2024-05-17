@@ -27,8 +27,11 @@ public:
 	/* HitScreen을 지운다. */
 	HRESULT Clear_HitScreenBuffer_View();
 
-	/* HitScreen을 지운다. */
+	/* HitIDScreen을 지운다. */
 	HRESULT Clear_IDScreenBuffer_View();
+
+	/* HitUIScreen을 지운다. */
+	HRESULT Clear_UIIDScreenBuffer_View();
 
 	template<typename T>
 	HRESULT Clear_Texture(TextureType eTextureType, T* data);
@@ -42,6 +45,7 @@ public:
 public:
 	_float Compute_ProjZ(const POINT& ptWindowPos, ID3D11Texture2D* pHitScreenTexture);
 	_int	Compute_ID(const POINT& ptWindowPos, ID3D11Texture2D* pIDScreenTexture);
+	_int	Compute_UIID(const POINT& ptWindowPos, ID3D11Texture2D* pIDScreenTexture);
 private:	
 	// IDirect3DDevice9* == LPDIRECT3DDEVICE9 == ID3D11Device + ID3D11DeviceContext 
 
@@ -59,6 +63,8 @@ private:
 
 	ID3D11Texture2D* m_pIDScreenTexture = { nullptr };
 
+	ID3D11Texture2D* m_pUIIDScreenTexture = { nullptr };
+
 
 
 	/* IDirect3DTexture9 */
@@ -71,9 +77,11 @@ private:
 	ID3D11RenderTargetView*		m_pBackBufferRTV = { nullptr };
 	ID3D11RenderTargetView*		m_pHitScreenRTV = { nullptr };
 	ID3D11RenderTargetView*		m_pIDScreenRTV = { nullptr };
+	ID3D11RenderTargetView*		m_pUIIDScreenRTV = { nullptr };
 	ID3D11DepthStencilView*		m_pDepthStencilView = { nullptr };
 	D3D11_TEXTURE2D_DESC		m_HitTextureDesc{};
 	D3D11_TEXTURE2D_DESC		m_IDTextureDesc{};
+	D3D11_TEXTURE2D_DESC		m_UIIDTextureDesc{};
 private:
 	/* 스왑체인에게 필수적으로 필요한 데이터는 백버퍼가 필요하여 백버퍼를 생성하기위한 정보를 던져준다. */
 	/* 스왑체인을 만들었다 == 백버퍼(텍스쳐)가 생성된다. */
@@ -81,6 +89,7 @@ private:
 	HRESULT Ready_BackBufferRenderTargetView();
 	HRESULT Ready_HitScreenRenderTargetView(_uint iWinCX, _uint iWinCY);
 	HRESULT Ready_IDScreenRenderTargetView(_uint iWinCX, _uint iWinCY);
+	HRESULT Ready_UIIDScreenRenderTargetView(_uint iWinCX, _uint iWinCY);
 	HRESULT Ready_DepthStencilRenderTargetView(_uint iWinCX, _uint iWinCY);
 
 public:
@@ -107,6 +116,11 @@ HRESULT CGraphic_Device::Clear_Texture(TextureType eTextureType, T* data)
 	{
 		pTextureDesc = &m_IDTextureDesc;
 		pTexture = m_pIDScreenTexture;
+	}
+	else if (eTextureType == TextureType::HitUIIDTexture)
+	{
+		pTextureDesc = &m_UIIDTextureDesc;
+		pTexture = m_pUIIDScreenTexture;
 	}
 
 
@@ -137,6 +151,19 @@ HRESULT CGraphic_Device::Clear_Texture(TextureType eTextureType, T* data)
 			delete[] pData;
 		}
 		else if (eTextureType == TextureType::HitIDTexture && constexpr(std::is_same<T, int>::value))	
+		{
+			int* pData = new int[(*pTextureDesc).Width * (*pTextureDesc).Height];
+			int val = *reinterpret_cast<int*>(data);
+			for (_uint i = 0; i < (*pTextureDesc).Width * (*pTextureDesc).Height; i++)
+			{
+				pData[i] = val;
+			}
+
+			m_pDeviceContext->UpdateSubresource(pTexture, 0, &box, pData, (*pTextureDesc).Width * sizeof(int), 0);
+
+			delete[] pData;
+		}
+		else if (eTextureType == TextureType::HitUIIDTexture && constexpr(std::is_same<T, int>::value))
 		{
 			int* pData = new int[(*pTextureDesc).Width * (*pTextureDesc).Height];
 			int val = *reinterpret_cast<int*>(data);

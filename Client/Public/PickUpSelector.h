@@ -11,9 +11,10 @@ BEGIN(Client)
 class CPickUpSelector :
     public CBase
 {
+public:
     typedef struct {
-        //_float fSensor;
-        
+        void* PlayerInventory;
+        void* UImanager;
     }SELECTOR_DESC;
 private:
     CPickUpSelector(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -30,6 +31,9 @@ public:
     HRESULT Late_Tick(_float fTimeDelta);
     HRESULT Render();
 
+public:
+    void Add_Item();
+    void Drop_Item();
 private:
     _bool* m_pAcquire = { false };
     class CGameObject* m_PickObject = { nullptr };

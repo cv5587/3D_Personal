@@ -19,11 +19,11 @@ void CState_Aim::Update(CPlayer* Player, _float fTimeDelta)
 		{
 			if (m_pGameInstance->Get_DIKeyState(DIK_A))
 			{
-					Player->Set_State(PLAYERSTATE::PLAYER_WALK_L);
+					Player->Set_State(PLAYERSTATE::PLAYER_WALK_FB);
 			}
 			else if (m_pGameInstance->Get_DIKeyState(DIK_D))
 			{
-					Player->Set_State(PLAYERSTATE::PLAYER_WALK_R);
+					Player->Set_State(PLAYERSTATE::PLAYER_WALK_FB);
 			}
 			else
 				Player->Set_State(PLAYERSTATE::PLAYER_WALK_FB);
@@ -32,11 +32,11 @@ void CState_Aim::Update(CPlayer* Player, _float fTimeDelta)
 		{
 			if (m_pGameInstance->Get_DIKeyState(DIK_A))
 			{
-					Player->Set_State(PLAYERSTATE::PLAYER_WALK_L);
+					Player->Set_State(PLAYERSTATE::PLAYER_WALK_FB);
 			}
 			else if (m_pGameInstance->Get_DIKeyState(DIK_D))
 			{
-					Player->Set_State(PLAYERSTATE::PLAYER_WALK_R);
+					Player->Set_State(PLAYERSTATE::PLAYER_WALK_FB);
 			}
 			else
 				Player->Set_State(PLAYERSTATE::PLAYER_WALK_FB);
@@ -65,6 +65,19 @@ void CState_Aim::Update(CPlayer* Player, _float fTimeDelta)
 		Player->Set_State(PLAYERSTATE::PLAYER_AIM_E);
 	}
 
+	_long		MouseMoveX = { 0 };
+	if (MouseMoveX = m_pGameInstance->Get_DIMouseMove(DIMS_X))
+	{
+		Player->Player_Turn(fTimeDelta, MouseMoveX);
+	}
+
+	_long		MouseMoveY = { 0 };
+	if (MouseMoveY = m_pGameInstance->Get_DIMouseMove(DIMS_Y))
+	{
+		Player->Cam_Turn(fTimeDelta, MouseMoveY);
+	}
+
+	Player->Mouse_Fix();
 }
 
 void CState_Aim::Exit(CPlayer* Player)

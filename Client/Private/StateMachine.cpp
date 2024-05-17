@@ -25,7 +25,12 @@
 #include "State_Hipfire.h"
 #include "State_Reload_S.h"
 #include "State_Reload.h"
+#include "State_Reload_Loop.h"
 #include "State_Reload_E.h"
+#include "State_PickUp.h"
+#include "State_Inventory.h"
+#include "State_Kill.h"
+#include "State_Release.h"
 #pragma endregion
 
 IMPLEMENT_SINGLETON(CStateMachine)
@@ -104,8 +109,24 @@ HRESULT CStateMachine::Initialize()
 	pState = CState_Reload::Create();
 	m_vecStates.push_back(pState);
 
+	pState = CState_Reload_Loop::Create();
+	m_vecStates.push_back(pState);
+
 	pState = CState_Reload_E::Create();
 	m_vecStates.push_back(pState);
+
+	pState = CState_PickUp::Create();
+	m_vecStates.push_back(pState);
+
+	pState = CState_Inventory::Create();	
+	m_vecStates.push_back(pState);
+	
+	pState = CState_Kill::Create();
+	m_vecStates.push_back(pState);
+
+	pState = CState_Release::Create();
+	m_vecStates.push_back(pState);
+
 	//m_eCurrentState = m_vecStates[(_uint)PLAYERSTATE::PLAYER_IDLE];
 
 	return S_OK;

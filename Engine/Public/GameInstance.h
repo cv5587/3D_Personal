@@ -26,10 +26,13 @@ public: /* For.Graphic_Device */
 	HRESULT Clear_BackBuffer_View(_float4 vClearColor);
 	HRESULT Clear_HitScreenBuffer_View();	
 	HRESULT Clear_IDScreenBuffer_View();
+	HRESULT Clear_UIIDScreenBuffer_View();
 	HRESULT Clear_DepthStencil_View();
 	HRESULT Present();
 	_float Compute_ProjZ(const POINT& ptWindowPos, ID3D11Texture2D* pHitScreenTexture);
 	_int	Compute_ID(const POINT& ptWindowPos, ID3D11Texture2D* pIDScreenTexture);
+	_int	Compute_UIID(const POINT& ptWindowPos, ID3D11Texture2D* pIDScreenTexture);
+
 	template<typename T>
 	HRESULT Clear_Texture(TextureType eTextureType, T* data);
 
@@ -66,6 +69,10 @@ public: /* For.Object_Manager */
 	class CComponent* Get_Component(_uint iLevelIndex, const wstring& strLayerTag, const wstring& strComponentTag, _uint iIndex = 0);
 	//레이어 렌더용
 	HRESULT Render_UI(_uint iLevelIndex, wstring LayerName);
+	//UI 용
+	class CUIBase* FindUIID_CloneObject(_uint iLevelIndex, const wstring& strLayerTag, _int UIID);
+	_bool Intersect(_uint iLevelIndex, const wstring& strLayerTag, class CCollider* pTargetCollider);
+
 
 public: /* For.Component_Manager */
 	HRESULT Add_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag, CComponent* pPrototype);
@@ -88,7 +95,10 @@ public:/*For.Calculator*/
 	_vector Picking_on_Terrain(HWND hWnd, _matrix TerrainWorldMatrixInverse, _matrix mViewMatrixInverse, _matrix mProjMatrixInverse, _float4* pVtxPos, _int* pTerrainUV, _float* pWinSize);
 	_vector Picking_HitScreen();
 	_int Picking_IDScreen();
+	_int Picking_UIIDScreen();
 	_bool Compare_Float4(_float4 f1, _float4 f2);
+	_vector Picking_UI(_fmatrix ProjM);
+	void World_MouseRay(_vector* RayArray);
 
 public: /* For.Font_Manager */
 	HRESULT Add_Font(const wstring& strFontTag, const wstring& strFontFilePath);

@@ -43,6 +43,12 @@ public:
 	_matrix Get_WorldMatrix_Inverse() {
 		return XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_WorldMatrix));
 	}
+	_float Get_SpeedValue() {
+		return m_fSpeedPerSec;
+	}
+	_float Get_RotateValue() {
+		return m_fRotationPerSec;
+	}
 public:
 	void Set_State(STATE eState, _fvector vState);
 	void Set_State_Matrix(_fmatrix mState);
@@ -68,15 +74,20 @@ public:
 	HRESULT Go_LeftBackward(_float fTimeDelta, class  CNavigation* pNavigation = nullptr);
 	HRESULT Go_RightBackward(_float fTimeDelta, class  CNavigation* pNavigation = nullptr);
 
-
 	HRESULT LookAt(_fvector vTargetPosition);
 	HRESULT LookAt_For_LandObject(_fvector vTargetPosition);
 	HRESULT Turn(_fvector vAxis, _float fTimeDelta);
 	HRESULT Rotation(_fvector vAxis, _float fRadian);
-
+	HRESULT Rotaion_Reset();
 
 	HRESULT Rotate(_uint _rot, _float fTimeDelta);
 
+	HRESULT Rotate_Radian(_uint _rot, _float fRadian);
+
+	HRESULT Throw(_float4* fDir, _float fTimeDelta);
+
+	HRESULT Patrol(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
+	HRESULT Escape(_fmatrix mPlayer , _float fTimeDelta, class  CNavigation* pNavigation = nullptr);
 public:
 	HRESULT Bind_ShaderResource(class CShader* pShader, const _char* pConstantName);
 

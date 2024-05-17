@@ -74,6 +74,31 @@ HRESULT CCalculator::Initialize(HWND hWnd)
 	 if (FAILED(m_pDevice->CreateTexture2D(&textureDesc, nullptr, &m_pIDScreenTexture)))
 		 return E_FAIL;
 
+
+	 textureDesc;
+	 ZeroMemory(&textureDesc, sizeof(D3D11_TEXTURE2D_DESC));
+
+	 m_hWnd = hWnd;
+
+	 textureDesc.Width = m_iWinSizeX;
+	 textureDesc.Height = m_iWinSizeY;
+	 textureDesc.MipLevels = 1;
+	 textureDesc.ArraySize = 1;
+	 //DXGI_FORMAT_R32_FLOAT : GPU에서 CPU로의 데이터 전송(복사)을 지원하는 리소스입니다.
+	 textureDesc.Format = DXGI_FORMAT_R32_SINT;
+
+
+	 textureDesc.SampleDesc.Quality = 0;
+	 textureDesc.SampleDesc.Count = 1;
+
+	 textureDesc.Usage = D3D11_USAGE_STAGING;
+	 textureDesc.BindFlags = 0;
+	 textureDesc.CPUAccessFlags = D3D10_CPU_ACCESS_READ;
+	 textureDesc.MiscFlags = 0;
+
+
+	 if (FAILED(m_pDevice->CreateTexture2D(&textureDesc, nullptr, &m_pUIIDScreenTexture)))
+		 return E_FAIL;
 	return S_OK;
 }
 
@@ -261,6 +286,78 @@ _int CCalculator::Picking_IDScreen()
 	return iID;
 }
 
+_int CCalculator::Picking_UIIDScreen()
+{
+	POINT ptMouse = {};
+	GetCursorPos(&ptMouse);
+	ScreenToClient(m_hWnd, &ptMouse);
+
+
+	//뷰포트-투영-뷰스페이스-월드
+	_vector	MousePos = {};
+
+	//투영으로 내림
+	MousePos = XMVectorSetX(MousePos, ptMouse.x / (m_iWinSizeX * 0.5f) - 1.f);
+	MousePos = XMVectorSetY(MousePos, ptMouse.y / -(m_iWinSizeY * 0.5f) + 1.f);
+
+	_int iID = m_pGameInstance->Compute_UIID(ptMouse, m_pUIIDScreenTexture);
+
+	return iID;
+}
+
+_vector CCalculator::Picking_UI(_fmatrix ProjM)
+{
+	POINT ptMouse = {};
+	GetCursorPos(&ptMouse);
+	ScreenToClient(m_hWnd, &ptMouse);
+
+
+	//뷰포트-투영-뷰스페이스-월드
+	_vector	MousePos = {};
+
+	//투영으로 내림
+	MousePos = XMVectorSetX(MousePos, ptMouse.x / (m_iWinSizeX * 0.5f) - 1.f);
+	MousePos = XMVectorSetY(MousePos, ptMouse.y / -(m_iWinSizeY * 0.5f) + 1.f);
+
+	//뷰는 항등이기 때문
+	_matrix  VPInverse = XMMatrixInverse(nullptr, ProjM);
+
+	//월드로 내려옴
+	MousePos = XMVector3TransformCoord(MousePos, VPInverse);
+
+	//직교 투영으로 월드 까지 내린 마우스 포인터를 넘겨준다.
+	return MousePos;
+}
+
+void CCalculator::World_MouseRay(_vector* RayArray)
+{
+	POINT ptMouse = {};
+	GetCursorPos(&ptMouse);
+	ScreenToClient(m_hWnd, &ptMouse);
+
+
+	//뷰포트-투영-뷰스페이스-월드
+	_vector	MousePos = {};
+
+	//투영으로 내림
+	MousePos = XMVectorSetX(MousePos, ptMouse.x / (m_iWinSizeX * 0.5f) - 1.f);
+	MousePos = XMVectorSetY(MousePos, ptMouse.y / -(m_iWinSizeY * 0.5f) + 1.f);
+
+	//뷰스페이스로 내려줌
+	MousePos = XMVector3TransformCoord(MousePos, m_pGameInstance->Get_Transform_Matrix_Inverse(CPipeLine::TS_PROJ));
+
+	_vector Raypos, Raydir;
+	Raypos = { 0.f,0.f,0.f };
+	Raydir = MousePos - Raypos;
+
+	//월드로 내려줌
+	Raypos = XMVector3TransformCoord(Raypos, m_pGameInstance->Get_Transform_Matrix_Inverse(CPipeLine::TS_VIEW));
+	Raydir = XMVector3TransformNormal(Raydir, m_pGameInstance->Get_Transform_Matrix_Inverse(CPipeLine::TS_VIEW));
+
+	RayArray[0] = Raypos;
+	RayArray[1] = XMVector3Normalize(Raydir);
+}
+
 _bool CCalculator::Compare_Float4(_float4 f1, _float4 f2)
 {
 	_vector v1 = XMLoadFloat4(&f1);
@@ -293,6 +390,7 @@ void CCalculator::Free()
 {
 	Safe_Release(m_pHitScreenTexture);
 	Safe_Release(m_pIDScreenTexture);
+	Safe_Release(m_pUIIDScreenTexture);
 	Safe_Release(m_pGameInstance);
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);
