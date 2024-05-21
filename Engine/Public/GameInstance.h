@@ -72,6 +72,7 @@ public: /* For.Object_Manager */
 	//UI ¿ë
 	class CUIBase* FindUIID_CloneObject(_uint iLevelIndex, const wstring& strLayerTag, _int UIID);
 	_bool Intersect(_uint iLevelIndex, const wstring& strLayerTag, class CCollider* pTargetCollider);
+	CGameObject* IntersectRay(_uint iLevelIndex, const wstring& strLayerTag, _vector* pRayArray, _float* fDist);
 
 
 public: /* For.Component_Manager */

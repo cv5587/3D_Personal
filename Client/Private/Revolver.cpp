@@ -227,10 +227,6 @@ void CRevolver::Set_AnimationState()
 		AnimDesc.isLoop = false;
 		break;
 	
-	case Client::PLAYER_RELOAD_LOOP:
-		AnimDesc.iAnimIndex = 2;
-		AnimDesc.isLoop = true;
-		break;
 	case Client::PLAYER_RELOAD_E://9,10,11,12,13,14
 		AnimDesc.iAnimIndex = 9;
 		AnimDesc.isLoop = false;

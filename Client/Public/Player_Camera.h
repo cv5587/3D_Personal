@@ -32,7 +32,7 @@ public:
 	virtual HRESULT Render() override;
 public:
 	_vector Get_CamLook();
-	void Set_CamMatrix();
+	void Set_CamMatrix(_float fTimeDelta);
 public:
 	static CPlayer_Camera* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;

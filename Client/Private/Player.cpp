@@ -14,6 +14,8 @@
 #include "GEAR.h"
 #include "PickRabbit.h"
 #include "Monster.h"
+#include "InteractiveObject.h"	
+#include "LoadingBar.h"
 
 CPlayer::CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLandObject{ pDevice, pContext }
@@ -66,6 +68,11 @@ HRESULT CPlayer::Initialize(void* pArg)
 	pInventoryDesc.UImanager = m_pUImanager;
 	m_pUIInventory = CUIInventory::Create(m_pDevice,m_pContext,&pInventoryDesc);
 
+	CLoadingBar::LOADINGBAR_DESC LoadingBarDesc{};
+	LoadingBarDesc.pCurrentLoadingBar = &m_fCurrentLoadingBar;
+	LoadingBarDesc.pUImanager = m_pUImanager;
+	m_pLoadingBar = CLoadingBar::Create(m_pDevice, m_pContext, &LoadingBarDesc);
+
 	m_fSensor = 0.02f;
 
 	if (FAILED(Add_PartObjects()))
@@ -96,8 +103,6 @@ void CPlayer::Priority_Tick(_float fTimeDelta)
 
 void CPlayer::Tick(_float fTimeDelta)
 {
-
-
 	m_pStateMachine->Update(this, fTimeDelta);
 
 	m_pNavigationCom->Set_OnNavigation(m_pTransformCom);
@@ -413,25 +418,58 @@ _bool CPlayer::Pick_up()
 	CGameObject* pPickObject = m_pGameInstance->FindID_CloneObject(LEVEL_GAMEPLAY, m_pGameInstance->Picking_IDScreen());
 	if (nullptr != pPickObject)
 	{
+		m_fCurrentLoadingBar = 0.f;
+
 		m_bAcquire = true;
 		m_pPickUpSelector->Pick_up(pPickObject, &m_bAcquire);
 		return true;
 	}
 
-	if(m_bRabbitCatch)//여기서 콜리전 레이 픽업을 사용하자. 몬스터는 이걸로 사용
+
+	//내가 id랑 피킹이 안되면 콜라이더랑 피킹을 한다 어떤? (monster,portal 이랑)
+
+	_vector vMouseRay[2] = {};
+	_float fDist = 0.f;
+	m_pGameInstance->World_MouseRay(vMouseRay);
+	pPickObject= m_pGameInstance->IntersectRay(LEVEL_GAMEPLAY , TEXT("Layer_Monster"), vMouseRay, &fDist);
+
+	if(nullptr !=pPickObject)
 	{
-		if (dynamic_cast<CMonster*>(m_pRabbit)->Get_isItem())
+		if (TEXT("Prototype_Component_Model_Rabbit") == pPickObject->Get_ModelTag())
 		{
-			Add_Rabbit();
-			m_pRabbit->Set_Live(false);
-			return false;
-		}
-		else
-		{
-			m_pRabbit->Set_Live(false);
-			return true;
+			m_fCurrentLoadingBar = 0.f;
+
+			if (dynamic_cast<CMonster*>(pPickObject)->Get_isItem())
+			{
+				Add_Rabbit();
+				pPickObject->Set_Live(false);
+				return false;
+			}
+			else
+			{
+				m_bRabbitCatch = true;
+				pPickObject->Set_Live(false);
+				return true;
+			}
 		}
 	}
+	//여기부터 상호작용 오브젝트 레이피킹
+	pPickObject = m_pGameInstance->IntersectRay(LEVEL_GAMEPLAY, TEXT("Layer_InteractiveObject"), vMouseRay, &fDist);
+
+	if (nullptr != pPickObject)
+	{
+		m_bEnter = true;
+
+		if(m_fCurrentLoadingBar>= m_fMaxLoadingBar)
+		{
+			dynamic_cast<CInteractiveObject*>(pPickObject)->Action();
+			m_bEnter = false;
+		}
+
+		return false;
+	}
+
+	return false;
 }
 
 void CPlayer::Puck_up_Update(_float fTimeDelta)
@@ -494,6 +532,24 @@ HRESULT CPlayer::Inventory_DropRabbit(wstring ItemName)
 	return S_OK;
 }
 
+HRESULT CPlayer::Release_Rabbit(wstring ItemName)
+{
+	CMonster::MOSTER_DESC MonsterDesc{};
+
+	MonsterDesc.ProtoTypeTag = TEXT("Prototype_GameObject_Monster");
+	MonsterDesc.ModelTag = TEXT("Prototype_Component_Model_Rabbit");
+	MonsterDesc.pPlayerMatrix = m_pTransformCom->Get_WorldFloat4x4();
+	MonsterDesc.isItem = false;
+	MonsterDesc.CellIndex = m_iCellIndex;
+	_vector pos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+	XMStoreFloat4x4(&MonsterDesc.vPrePosition, XMMatrixIdentity() * XMMatrixTranslation(XMVectorGetX(pos), 0.f, XMVectorGetZ(pos)));
+
+	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, TEXT("Layer_Monster"), MonsterDesc.ProtoTypeTag, &MonsterDesc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 
 void CPlayer::Cam_Turn(_float fTimeDelta, _long MouseMove)
 {
@@ -503,7 +559,7 @@ void CPlayer::Cam_Turn(_float fTimeDelta, _long MouseMove)
 	_vector		vUp = Socket.r[1];
 	_vector		vLook = Socket.r[2];
 
-	_matrix		RotationMatrix = XMMatrixRotationAxis(vRight, -0.02 * fTimeDelta * MouseMove);
+	_matrix		RotationMatrix = XMMatrixRotationAxis(vRight, -0.02f * fTimeDelta * MouseMove);
 
 	vRight = XMVector3TransformNormal(vRight, RotationMatrix);
 	vUp = XMVector3TransformNormal(vUp, RotationMatrix);
@@ -516,12 +572,17 @@ void CPlayer::Cam_Turn(_float fTimeDelta, _long MouseMove)
 	m_pCamBone->Set_TransformationMatrix(Socket);
 
 	//이거하면 카메라 2번 움직는 꼴
-	//m_pCamera->Set_CamMatrix();
+	//m_pCamera->Set_CamMatrix(fTimeDelta);
 }
 
 void CPlayer::Pick_UI()
 {
 	m_pUIInventory->Pick_UIToggle();
+}
+
+void CPlayer::Loading_UI(_float fTimeDelta)
+{
+	m_pLoadingBar->Tick(fTimeDelta);
 }
 
 void CPlayer::Inventory_Update(_float fTimeDelta)
@@ -546,6 +607,21 @@ void CPlayer::Set_SceneSelect(_uint iSceneIndex)
 	m_pUIInventory->Set_CurrentScene(iSceneIndex);
 }
 
+HRESULT CPlayer::Set_Portal(_int iGoalCellIndex, _float4 vGoalPosition)
+{
+	m_pNavigationCom->Set_CellIndex(iGoalCellIndex);
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&vGoalPosition));
+	if (FAILED(m_pNavigationCom->Set_OnNavigation(m_pTransformCom)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+
+void CPlayer::Add_EnterTime(_float fTimeDelta)
+{
+	m_fCurrentLoadingBar += 5.f * fTimeDelta;
+}
 
 void CPlayer::isReload()
 {

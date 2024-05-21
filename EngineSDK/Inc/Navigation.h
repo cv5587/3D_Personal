@@ -28,6 +28,7 @@ public:
 public:
 	void Update(const _float4x4* pWorldMatrix);
 	_bool isMove(_fvector vPosition, _float4* LineDir=nullptr);
+	_bool isReflect(_fvector vPosition, _float4* LineDir=nullptr);
 	HRESULT Make_Cell(const _float3* vPoint);
 	void Snap_Point(_vector vPoint,_float3* StorePoint,_float SnapReach);
 	//Åø¿ë
@@ -52,6 +53,7 @@ public:
 public:
 	HRESULT Render();
 #endif
+	void Set_CellIndex(_int Index) { m_iCurrentCellIndex = Index; }
 	void Reset_CellIndex() {
 		m_iCurrentCellIndex = -1;
 	}

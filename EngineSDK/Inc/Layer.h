@@ -32,6 +32,7 @@ public:
 	class CUIBase* Find_UI(const _int& UIID);
 	//충돌체크용
 	_bool Intersect( class CCollider* pTargetCollider);
+	CGameObject* IntersectRay(_vector* pRayArray, _float* fDist);
 public:
 	//UI렌더
 	void Render_UI();

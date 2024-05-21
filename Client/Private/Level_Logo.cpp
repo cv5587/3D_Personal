@@ -5,10 +5,13 @@
 
 
 #include "Level_Loading.h"
+#include "Data_Manager.h"
 
-CLevel_Logo::CLevel_Logo(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
+CLevel_Logo::CLevel_Logo(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, CData_Manager* pDataManager)
 	: CLevel(pDevice, pContext)
+	,m_pDataManager{pDataManager}
 {
+	Safe_AddRef(m_pDataManager);
 }
 
 HRESULT CLevel_Logo::Initialize()
@@ -20,7 +23,7 @@ void CLevel_Logo::Tick(_float fTimeDelta)
 {
 	if (GetKeyState(VK_SPACE) & 0x8000)
 	{
-		if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_GAMEPLAY))))
+		if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_GAMEPLAY, m_pDataManager))))
 			return;
 	}
 
@@ -29,9 +32,9 @@ void CLevel_Logo::Tick(_float fTimeDelta)
 #endif
 }
 
-CLevel_Logo * CLevel_Logo::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
+CLevel_Logo * CLevel_Logo::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, CData_Manager* pDataManager)
 {
-	CLevel_Logo*		pInstance = new CLevel_Logo(pDevice, pContext);
+	CLevel_Logo*		pInstance = new CLevel_Logo(pDevice, pContext, pDataManager);
 
 	if (FAILED(pInstance->Initialize()))
 	{
@@ -45,6 +48,6 @@ CLevel_Logo * CLevel_Logo::Create(ID3D11Device * pDevice, ID3D11DeviceContext * 
 void CLevel_Logo::Free()
 {
 	__super::Free();
-
+	Safe_Release(m_pDataManager);
 
 }

@@ -13,6 +13,7 @@
 #include "UIItemToggle.h"
 #include "UIStateCloth.h"
 #include "UIClothToggle.h"
+#include "UILoadingBar.h"
 
 BEGIN(Engine)
 class CGameInstance;
@@ -32,7 +33,8 @@ public:
         Layer_InvenButton,  Layer_Item, Layer_StateBody,
         Layer_StateShoes, Layer_StatePant, Layer_StateSleeve,Layer_StateHat
         , Layer_StateInfoback, Layer_StateInfo,
-        Layer_StateInfoText, Layer_Stateback, Layer_ClothCase, Layer_ClothText, Layer_ClothToggle,  Layer_END
+        Layer_StateInfoText, Layer_Stateback, Layer_ClothCase, Layer_ClothText, Layer_ClothToggle,
+        Layer_LoadingBar, Layer_END
     };
 public:
     enum KEYID{ KEY_LEFTCLICK, KEY_RIGHTCLICK, KEY_END };
@@ -77,6 +79,7 @@ public:
      HRESULT Ready_Itemcase();
      HRESULT Ready_State();
      HRESULT Ready_Cloth();
+     HRESULT Ready_LoadingBar();
 
      void Set_SortMode(_uint SortIndex);
      _uint Get_SortMode() { return m_SortMode; }

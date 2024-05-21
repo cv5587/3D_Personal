@@ -138,6 +138,41 @@ _bool CNavigation::isMove(_fvector vPosition, _float4* LineDir)
 	}
 }
 
+_bool CNavigation::isReflect(_fvector vPosition, _float4* LineDir)
+{
+	//월드를 가져와서 로컬로 내려준다음 계산한다.
+	_vector		vLocalPos = XMVector3TransformCoord(vPosition, XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_WorldMatrix)));
+
+
+	_int			iNeighborIndex = { -1 };
+
+	/* 셀 안에서 움직였다. */
+	if (true == m_Cells[m_iCurrentCellIndex]->isIn(vLocalPos, &iNeighborIndex, LineDir))
+		return true;
+
+	/* 셀 밖으로 움직였다. */
+	else
+	{
+		if (-1 != iNeighborIndex)
+		{
+			while (true)
+			{
+				if (-1 == iNeighborIndex)
+					return false;
+
+				if (true == m_Cells[iNeighborIndex]->isIn(vLocalPos, &iNeighborIndex, LineDir))
+				{
+					m_iCurrentCellIndex = iNeighborIndex;
+					return true;
+				}
+			}
+
+		}
+		else
+			return false;
+	}
+}
+
 HRESULT CNavigation::Make_Cell(const _float3* vPoint)
 {
 	CCell* pCell = CCell::Create(m_pDevice, m_pContext, vPoint, m_Cells.size());

@@ -13,7 +13,7 @@ namespace Client
 #define SPEED_EX_RUN 3.f
 #define SPEED_RUN 5.f
 
-	enum LEVEL { LEVEL_STATIC, LEVEL_LOADING, LEVEL_LOGO, LEVEL_GAMEPLAY, LEVEL_END };
+	enum LEVEL { LEVEL_STATIC, LEVEL_LOADING, LEVEL_LOGO, LEVEL_GAMEPLAY, LEVEL_BASEMENT,  LEVEL_END };
 	//애니메이션 분기기준
 	enum PLAYERSTATE {
 		PLAYER_IDLE,//기본
@@ -42,7 +42,7 @@ namespace Client
 		PLAYER_HIPFIRE,//그냥 총쏘기
 		PLAYER_RELOAD_S,//이건 조금 만져야 되는데 일단 클래스로 만들어 놓자.
 		PLAYER_RELOAD,//장전중 움직일수 잇음 근데 장전키,마우스 클릭 하면 끊김
-		PLAYER_RELOAD_LOOP,
+		PLAYER_ENTER,
 		PLAYER_RELOAD_E,
 
 		PLAYER_PICKUP,

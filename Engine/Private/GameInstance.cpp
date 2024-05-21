@@ -339,6 +339,11 @@ _bool CGameInstance::Intersect(_uint iLevelIndex, const wstring& strLayerTag, CC
 	return m_pObject_Manager->Intersect(iLevelIndex, strLayerTag, pTargetCollider);
 }
 
+CGameObject* CGameInstance::IntersectRay(_uint iLevelIndex, const wstring& strLayerTag, _vector* pRayArray, _float* fDist)
+{
+	return m_pObject_Manager->IntersectRay(iLevelIndex, strLayerTag, pRayArray,fDist);
+}
+
 
 HRESULT CGameInstance::Add_Prototype(_uint iLevelIndex, const wstring & strPrototypeTag, CComponent * pPrototype)
 {

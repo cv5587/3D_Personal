@@ -250,7 +250,7 @@ _bool  CUIItemToggle::Intersect( )
                     else if (TEXT("Rabbit") == m_ItemName)
                     {
 
-                        pPlayer->Set_State(PLAYERSTATE::PLAYER_EQUIP);
+                       // pPlayer->Set_State(PLAYERSTATE::PLAYER_EQUIP);
                         break;
                     }
 

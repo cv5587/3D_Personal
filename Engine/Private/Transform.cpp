@@ -500,15 +500,26 @@ HRESULT CTransform::Patrol(_float fTimeDelta, CNavigation* pNavigation)
 	_vector vPosition = Get_State(STATE_POSITION);
 	_vector vLook = Get_State(STATE_LOOK);
 
-	vPosition += XMVector3Normalize(vLook) * m_fSpeedPerSec * fTimeDelta;
-
-	_float4 SlideDir{};
-	if (nullptr == pNavigation ? true : pNavigation->isMove(vPosition, &SlideDir))
-		Set_State(STATE_POSITION, vPosition);
+	_vector vCalPosition = Get_State(STATE_POSITION);
+	vCalPosition += XMVector3Normalize(vLook) * m_fSpeedPerSec * fTimeDelta;
+	_float4 NorDir{};
+	if (nullptr == pNavigation ? true : pNavigation->isMove(vCalPosition, &NorDir))
+		Set_State(STATE_POSITION, vCalPosition);
 	else
 	{
-		//이거 내비게이션에 cell_reflect 쓸거임
-		Rotate_Radian(STATE_UP, XMConvertToRadians(180.f));
+
+		_vector ReflectDir = XMVector3Normalize(vLook) - 2.f*XMVector3Dot(XMVector3Normalize(vLook), XMVector3Normalize(XMLoadFloat4(&NorDir))) * XMVector3Normalize(XMLoadFloat4(&NorDir));
+		_vector	 ReflectPosition = Get_State(STATE_POSITION);
+		ReflectPosition += XMVector3Normalize(ReflectDir) * m_fSpeedPerSec * fTimeDelta;
+
+
+		if (pNavigation->isMove(ReflectPosition))
+		{
+			_float Rotate = acosf(XMVectorGetX(XMVector3Dot(XMVector3Normalize(vLook), XMVector3Normalize(ReflectDir))));	
+			Rotate_Radian(ROT_Y, XMConvertToDegrees(Rotate));	
+			//Set_State(STATE_LOOK, ReflectDir);
+			Set_State(STATE_POSITION, ReflectPosition);
+		}
 	}
 
 	return S_OK;
@@ -516,27 +527,40 @@ HRESULT CTransform::Patrol(_float fTimeDelta, CNavigation* pNavigation)
 
 HRESULT CTransform::Escape(_fmatrix mPlayer, _float fTimeDelta,   CNavigation* pNavigation)
 {
-
 	_vector vPosition = Get_State(CTransform::STATE_POSITION);
-
+	_vector vLook = Get_State(STATE_LOOK);//토깽이 정면 벡터
 	_vector vTargetPos, vScale, vRotation;
-	if (XMMatrixDecompose(&vScale, &vRotation, &vTargetPos, mPlayer))
-	{
-		_vector vDir = vPosition - vTargetPos;
+	XMMatrixDecompose(&vScale, &vRotation, &vTargetPos, mPlayer);
 
-		vPosition += XMVector3Normalize(vDir) * m_fSpeedPerSec * fTimeDelta;
+	_vector vDir = vPosition - vTargetPos;	//플레이어의 반대 방향 벡터
+	
+	_float Rotate = acosf(XMVectorGetX(XMVector3Dot(XMVector3Normalize(vLook), XMVector3Normalize(vDir))));
 
-		_float4 SlideDir{};
-		if (nullptr == pNavigation ? true : pNavigation->isMove(vPosition, &SlideDir))
-			Set_State(STATE_POSITION, vPosition);
-		else
-		{
-			//이거 내비게이션에 cell_reflect 쓸거임
-			Rotate_Radian(STATE_UP, XMConvertToRadians(180.f));
-		}
-	}
+	Rotate_Radian(ROT_Y, XMConvertToDegrees(Rotate));
 
 	return S_OK;
+
+
+	//_vector vPosition = Get_State(CTransform::STATE_POSITION);
+
+	//_vector vTargetPos, vScale, vRotation;
+	//if (XMMatrixDecompose(&vScale, &vRotation, &vTargetPos, mPlayer))
+	//{
+	//	_vector vDir = vPosition - vTargetPos;
+
+	//	vPosition += XMVector3Normalize(vDir) * m_fSpeedPerSec * fTimeDelta;
+
+	//	_float4 SlideDir{};
+	//	if (nullptr == pNavigation ? true : pNavigation->isMove(vPosition, &SlideDir))
+	//		Set_State(STATE_POSITION, vPosition);
+	//	else
+	//	{
+	//		//이거 내비게이션에 cell_reflect 쓸거임
+	//		Rotate_Radian(STATE_UP, XMConvertToRadians(180.f));
+	//	}
+	//}
+
+	//return S_OK;
 }
 
 

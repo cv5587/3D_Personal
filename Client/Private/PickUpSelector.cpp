@@ -77,8 +77,7 @@ HRESULT CPickUpSelector::Pick_up(CGameObject* pPickObject, _bool* Acquire)
 
 	return S_OK;
 }
-//pickupselector 에 아이템이 들어오면 인벤으로 넣을지 말지를 선택하는 클래스임.
-//모든 아이콘과 
+//추후에 아이템을 틱 드로리는걸 원근투형으로 그리지말고 직교 투영으로 그리게 하자.(3d도 가능하다)
 HRESULT CPickUpSelector::Tick( _float fTimeDelta)
 {
 	if (nullptr == m_PickObject)

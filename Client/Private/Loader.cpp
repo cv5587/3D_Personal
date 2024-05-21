@@ -16,6 +16,7 @@
 #include "UImanager.h"
 #include "PickRabbit.h"
 #include"UIClothToggle.h"
+#include "Portal.h"
 
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -329,6 +330,18 @@ HRESULT CLoader::Loading_For_GamePlayLevel()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/Item/ico_GearItem_Rabbit.dds")))))
 		return E_FAIL;
 
+	/**************************************로딩바*******************************************/
+
+	/* For.Prototype_Component_Texture_LoadingBar_Back*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_LoadingBar_Back"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/LoadingBar/LoadingBar_Back.dds")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_LoadingBar_Current*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_LoadingBar_Current"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/LoadingBar/LoadingBar_Current.dds")))))
+		return E_FAIL;
+
 		/********************************************눈 텍스처***********************************************************/
 	/*For. Ground_Snow*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Snow_Ground_B"),
@@ -502,6 +515,11 @@ HRESULT CLoader::Loading_For_GamePlayLevel()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_FarmHouseBasementDoor"),
 		CModel::Create(m_pDevice, m_pContext, "../Bin/bin/Prototype_Component_Model_FarmHouseBasementDoor.bin"))))
 		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_FarmHouseBasement"),
+		CModel::Create(m_pDevice, m_pContext, "../Bin/bin/Prototype_Component_Model_FarmHouseBasement.bin"))))
+		return E_FAIL;
+
 	//******************************************쉐이더********************
 
 	lstrcpy(m_szLoadingText, TEXT("셰이더를(을) 로딩 중 입니다."));
@@ -539,6 +557,8 @@ HRESULT CLoader::Loading_For_GamePlayLevel()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxAnimMeshMonster"),
 		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxAnimMesh.hlsl"), VTXANIMMESH::Elements, VTXANIMMESH::iNumElements))))
 		return E_FAIL;
+
+
 
 	lstrcpy(m_szLoadingText, TEXT("충돌체 원형을 로딩 중 입니다."));
 
@@ -617,6 +637,13 @@ HRESULT CLoader::Loading_For_GamePlayLevel()
 		CUIStateCloth::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+
+	/* For.Prototype_GameObject_UILoadingBar*/
+	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_UILoadingBar"),
+		CUILoadingBar::Create(m_pDevice, m_pContext))))	
+		return E_FAIL;
+
+
 	/* For.Prototype_GameObject_Terrain*/
 	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Terrain"),
 		CTerrain::Create(m_pDevice, m_pContext))))
@@ -675,6 +702,11 @@ HRESULT CLoader::Loading_For_GamePlayLevel()
 	/* For.Prototype_GameObject_CLTH */
 	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_CLTH"),
 		CCLTH::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Portal*/
+	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Portal"),
+		CPortal::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));

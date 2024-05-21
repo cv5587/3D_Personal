@@ -30,7 +30,7 @@ public:
 	virtual void Choice_Render();
 	virtual void UI_Render(_uint IconID);
 	virtual _bool Intersect(class CCollider* pTargetCollider) ;
-	virtual _bool IntersectRay(_vector* pRayArray) ;
+	virtual _bool IntersectRay(_vector* pRayArray, _float* fDist) ;
 
 	virtual wstring Get_Prototype() {
 		return m_ProtoTypeTag;

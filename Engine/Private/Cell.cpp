@@ -96,6 +96,7 @@ _bool CCell::isIn(_fvector vPoint, _int* pNeighborIndex, _float4* LineDir)
 
 	return true;
 }
+
 _bool CCell::Check_Points(_vector vPoint, _float3* StorePoint, _float SnapReach)
 {
 	_vector Length = { SnapReach,SnapReach,SnapReach,SnapReach };

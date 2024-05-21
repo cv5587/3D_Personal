@@ -45,7 +45,10 @@ _bool CBounding_Sphere::IntersectRay(_vector* pRayArray, _float* fDist)
 {
 	_bool			isColl{ false };
 
-	isColl = m_pDesc->Intersects(pRayArray[0], pRayArray[1], *fDist);
+	_vector Origin = pRayArray[0];
+	_vector Ray = pRayArray[1];
+
+	isColl = m_pDesc->Intersects(Origin, Ray, *fDist);
 
 	return isColl;
 }

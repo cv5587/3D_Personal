@@ -179,12 +179,14 @@
     <ClInclude Include="..\Public\EnvironmentObject.h" />
     <ClInclude Include="..\Public\FreeCamera.h" />
     <ClInclude Include="..\Public\GEAR.h" />
+    <ClInclude Include="..\Public\InteractiveObject.h" />
     <ClInclude Include="..\Public\LandObject.h" />
     <ClInclude Include="..\Public\Level_Basement.h" />
     <ClInclude Include="..\Public\Level_GamePlay.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
     <ClInclude Include="..\public\Level_Logo.h" />
     <ClInclude Include="..\public\Loader.h" />
+    <ClInclude Include="..\Public\LoadingBar.h" />
     <ClInclude Include="..\public\MainApp.h" />
     <ClInclude Include="..\Public\Monster.h" />
     <ClInclude Include="..\Public\PartObject.h" />
@@ -192,6 +194,7 @@
     <ClInclude Include="..\Public\PickUpSelector.h" />
     <ClInclude Include="..\Public\Player.h" />
     <ClInclude Include="..\Public\Player_Camera.h" />
+    <ClInclude Include="..\Public\Portal.h" />
     <ClInclude Include="..\Public\Revolver.h" />
     <ClInclude Include="..\Public\State.h" />
     <ClInclude Include="..\Public\StateMachine.h" />
@@ -209,7 +212,7 @@
     <ClInclude Include="..\Public\State_PickUp.h" />
     <ClInclude Include="..\Public\State_Release.h" />
     <ClInclude Include="..\Public\State_Reload.h" />
-    <ClInclude Include="..\Public\State_Reload_Loop.h" />
+    <ClInclude Include="..\Public\State_Enter.h" />
     <ClInclude Include="..\Public\State_Reload_E.h" />
     <ClInclude Include="..\Public\State_Reload_S.h" />
     <ClInclude Include="..\Public\State_Run.h" />
@@ -233,6 +236,7 @@
     <ClInclude Include="..\Public\UIItemIcon.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\Public\UILoadingBar.h" />
     <ClInclude Include="..\Public\UIStateCloth.h" />
     <ClInclude Include="..\Public\UIItemToggle.h" />
     <ClInclude Include="..\Public\UImanager.h" />
@@ -251,7 +255,10 @@
     <ClCompile Include="..\Private\Body_Player.cpp" />
     <ClCompile Include="..\Private\Bullet.cpp" />
     <ClCompile Include="..\Private\CLTH.cpp" />
+    <ClCompile Include="..\Private\InteractiveObject.cpp" />
     <ClCompile Include="..\Private\Level_Basement.cpp" />
+    <ClCompile Include="..\Private\LoadingBar.cpp" />
+    <ClCompile Include="..\Private\Portal.cpp" />
     <ClCompile Include="..\Private\State_Kill.cpp" />
     <ClCompile Include="..\Private\Data_Manager.cpp" />
     <ClCompile Include="..\Private\EnvironmentObject.cpp" />
@@ -285,7 +292,7 @@
     <ClCompile Include="..\Private\State_PickUp.cpp" />
     <ClCompile Include="..\Private\State_Release.cpp" />
     <ClCompile Include="..\Private\State_Reload.cpp" />
-    <ClCompile Include="..\Private\State_Reload_Loop.cpp" />
+    <ClCompile Include="..\Private\State_Enter.cpp" />
     <ClCompile Include="..\Private\State_Reload_E.cpp" />
     <ClCompile Include="..\Private\State_Reload_S.cpp" />
     <ClCompile Include="..\Private\State_Run.cpp" />
@@ -309,6 +316,7 @@
     <ClCompile Include="..\Private\UIItemIcon.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\Private\UILoadingBar.cpp" />
     <ClCompile Include="..\Private\UIStateCloth.cpp" />
     <ClCompile Include="..\Private\UIItemToggle.cpp" />
     <ClCompile Include="..\Private\UImanager.cpp" />
@@ -333,6 +341,7 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_LoadingBar.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimMesh.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimMeshMonster.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMesh.hlsl" />

@@ -165,6 +165,15 @@ _bool CLayer::Intersect( CCollider* pTargetCollider)
 	return false;
 }
 
+CGameObject* CLayer::IntersectRay(_vector* pRayArray, _float* fDist)
+{
+	for (auto& pGameObject : m_GameObjects)
+		if (pGameObject->IntersectRay(pRayArray, fDist))
+			return pGameObject;
+
+	return nullptr;
+}
+
 void CLayer::Render_UI()
 {
 	for (auto& pGameObject : m_GameObjects)

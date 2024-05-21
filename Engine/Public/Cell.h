@@ -27,6 +27,7 @@ public:
 	_bool Compare_Points(_fvector vSourPoint, _fvector vDestPoint);
 	_bool isIn(_fvector vPoint, _int* pNeighborIndex, _float4* LineDir =nullptr);
 
+
 	void SetUp_Neighbor(LINE eNeighbor, CCell* pCell) {
 		m_iNeighborIndices[eNeighbor] = pCell->m_iIndex;
 	}

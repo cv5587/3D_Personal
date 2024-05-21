@@ -48,8 +48,10 @@ _bool CBounding_OBB::IntersectRay(_vector* pRayArray, _float* fDist)
 {
 	_bool			isColl{ false };
 
+	_vector Origin = pRayArray[0];
+	_vector Ray = pRayArray[1];
 
-	isColl = m_pDesc->Intersects(pRayArray[0], pRayArray[1], *fDist);
+	isColl = m_pDesc->Intersects(Origin, Ray, *fDist);
 
 	return isColl;
 }

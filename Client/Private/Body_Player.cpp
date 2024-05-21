@@ -276,10 +276,6 @@ void CBody_Player::Set_AnimationState()
 			AnimDesc.iAnimIndex = 305;
 			AnimDesc.isLoop = false;
 			break;
-		case Client::PLAYER_RELOAD_LOOP://총알 갯수 받아서 횟수만큼 진행 예정
-			AnimDesc.iAnimIndex = 305;
-			AnimDesc.isLoop = false;
-			break;
 		case Client::PLAYER_RELOAD_E:
 			AnimDesc.iAnimIndex = 304;
 			AnimDesc.isLoop = false;

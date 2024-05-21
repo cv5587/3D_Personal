@@ -48,7 +48,7 @@ public:
 	virtual void Late_Tick(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 	virtual _bool Intersect(class CCollider* pTargetCollider) override;
-
+	virtual _bool IntersectRay(_vector* pRayArray);
 public:
 	wstring Get_ItemName() { return m_ItemName; }
 
@@ -87,6 +87,8 @@ public:
 		return m_Durability;
 	}
 protected:
+	//intersectRay를 만들고 오버라이딩 해서 아래쪽애들을 불러오게 하는것도 좋을듯 IntersectRay는 클라에 제작하고
+	//각 애들마다 다르게 작용.
 	class CNavigation* m_pNavigationCom = { nullptr };
 	class CCollider* m_pColliderCom = { nullptr };
 	vector<_uint> m_ItemType;

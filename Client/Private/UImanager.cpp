@@ -41,6 +41,9 @@ HRESULT CUImanager::Initialize()
 	if (FAILED(Ready_Cloth()))
 		return E_FAIL;
 
+	if (FAILED(Ready_LoadingBar()))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -1260,6 +1263,35 @@ HRESULT CUImanager::Ready_Cloth()
 
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIClothToggle"), &m_ClothToggle[15], &ClothIconDesc)))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CUImanager::Ready_LoadingBar()
+{
+	wstring LayerName = TEXT("Layer_LoadingBar");
+
+	m_UISelector.push_back(LayerName);	
+
+	CUIObject::UI_OBJECT_DESC UIDesc{};
+	UIDesc.TextureTag = TEXT("Prototype_Component_Texture_LoadingBar_Back");
+	UIDesc.Icon_ID =0;
+	XMStoreFloat4x4(&UIDesc.vPrePosition,
+		XMMatrixIdentity() * XMMatrixScaling(200.f, 200.f, 1.f) * XMMatrixTranslation(m_fX * 0.0f, m_fY * 0.0f, 0.f));
+
+	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIObject"), &UIDesc)))
+		return E_FAIL;
+
+	CUILoadingBar::UI_LOADINGBAR_DESC LoadingDesc{};
+
+	LoadingDesc.TextureTag = TEXT("Prototype_Component_Texture_LoadingBar_Current");
+	LoadingDesc.Icon_ID = 0;
+	XMStoreFloat4x4(&LoadingDesc.vPrePosition,
+		XMMatrixIdentity() * XMMatrixScaling(200.f, 200.f, 1.f)* XMMatrixTranslation(m_fX * 0.0f, m_fY * 0.0f, 0.f));
+	
+	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UILoadingBar"), &LoadingDesc)))
+		return E_FAIL;
+
 
 	return S_OK;
 }

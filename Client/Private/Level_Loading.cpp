@@ -14,9 +14,11 @@
 #include "Data_Manager.h"
 #include "TerrainManager.h"
 
-CLevel_Loading::CLevel_Loading(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CLevel_Loading::CLevel_Loading(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, class CData_Manager* pDataManager)
 	: CLevel(pDevice, pContext)
+	, m_pDataManager{ pDataManager }
 {
+	Safe_AddRef(m_pDataManager);
 }
 
 /*
@@ -54,10 +56,10 @@ void CLevel_Loading::Tick(_float fTimeDelta)
 			switch (m_eNextLevel)
 			{
 			case LEVEL_LOGO:
-				pNewLevel = CLevel_Logo::Create(m_pDevice, m_pContext);
+				pNewLevel = CLevel_Logo::Create(m_pDevice, m_pContext, m_pDataManager);
 				break;
 			case LEVEL_GAMEPLAY:
-				pNewLevel = CLevel_GamePlay::Create(m_pDevice, m_pContext);
+				pNewLevel = CLevel_GamePlay::Create(m_pDevice, m_pContext, m_pDataManager);
 				break;
 			}
 
@@ -90,9 +92,9 @@ HRESULT CLevel_Loading::Ready_Layer_BackGround(const wstring& strLayerTag)
 	return S_OK;
 }
 
-CLevel_Loading* CLevel_Loading::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevel)
+CLevel_Loading* CLevel_Loading::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevel, class CData_Manager* pDataManager)
 {
-	CLevel_Loading* pInstance = new CLevel_Loading(pDevice, pContext);
+	CLevel_Loading* pInstance = new CLevel_Loading(pDevice, pContext, pDataManager);
 
 	if (FAILED(pInstance->Initialize(eNextLevel)))
 	{
@@ -106,6 +108,6 @@ CLevel_Loading* CLevel_Loading::Create(ID3D11Device* pDevice, ID3D11DeviceContex
 void CLevel_Loading::Free()
 {
 	__super::Free();
-
+	Safe_Release(m_pDataManager);
 	Safe_Release(m_pLoader);
 }

@@ -70,6 +70,11 @@ _bool CItem::Intersect(CCollider* pTargetCollider)
 	}
 }
 
+_bool CItem::IntersectRay(_vector* pRayArray)
+{
+	return true;
+}
+
 void CItem::Make_Description(void* pArg)
 {
 	ITEM_DESC* pDesc = static_cast<ITEM_DESC*>(pArg);

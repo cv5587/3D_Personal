@@ -25,7 +25,7 @@
 #include "State_Hipfire.h"
 #include "State_Reload_S.h"
 #include "State_Reload.h"
-#include "State_Reload_Loop.h"
+#include "State_Enter.h"
 #include "State_Reload_E.h"
 #include "State_PickUp.h"
 #include "State_Inventory.h"
@@ -109,7 +109,7 @@ HRESULT CStateMachine::Initialize()
 	pState = CState_Reload::Create();
 	m_vecStates.push_back(pState);
 
-	pState = CState_Reload_Loop::Create();
+	pState = CState_Enter::Create();
 	m_vecStates.push_back(pState);
 
 	pState = CState_Reload_E::Create();

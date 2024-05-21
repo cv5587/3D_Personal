@@ -13,7 +13,7 @@ void CState_Release::Update(CPlayer* Player, _float fTimeDelta)
 {
 	if (Player->isAnimFinished())
 	{
-		
+		Player->Release_Rabbit(TEXT("Rabbit"));
 
 		if (CON_NORMAL == Player->isCondition())
 		{

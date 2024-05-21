@@ -8,34 +8,22 @@
 #include "GEAR.h"	
 #include "CLTH.h"
 #include "Monster.h"
+#include"Data_Manager.h"
 
-CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CLevel(pDevice, pContext)
+CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CData_Manager* pDataManager)
+	: CLevel{	pDevice, pContext}
+	, m_pDataManager{ pDataManager }
 {
+	Safe_AddRef(m_pDataManager);
 }
 
 HRESULT CLevel_GamePlay::Initialize()
 {
-	m_pTerrainMgr = CTerrainManager::Create();
 
 
 
-	//if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
-	//	return E_FAIL;
-
-	//if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
-	//	return E_FAIL;
-
-	//if (FAILED(Ready_Layer_Environment(TEXT("Layer_EnvironmentObject"))))
-	//	return E_FAIL;
-	if (FAILED(Load_GameData(TEXT("LEVEL_GAMEPLAY_GAMEDATA"))))
+	if (FAILED(m_pDataManager->Load_Data(LEVEL_GAMEPLAY)))
 		return E_FAIL;
-
-	if (FAILED(Readt_Layer_SelectorIcon(TEXT("Layer_SelectorIcon"))))
-		return E_FAIL;
-
-	//if (FAILED(Ready_LandObjects()))
-	//	return E_FAIL;
 
 	return S_OK;
 }
@@ -48,7 +36,8 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 }
 
 HRESULT CLevel_GamePlay::Ready_Layer_Camera(const wstring& strLayerTag)
-{/*
+{
+	/*
 	CFreeCamera::FREE_CAMERA_DESC		CameraDesc{};
 
 	CameraDesc.fSensor = 0.05f;
@@ -87,10 +76,6 @@ HRESULT CLevel_GamePlay::Ready_LandObjects()
 {
 	CLandObject::LANDOBJ_DESC		LandObjDesc{};
 
-	LandObjDesc.pTerrainTransform = dynamic_cast<CTransform*>(m_pGameInstance->Get_Component(LEVEL_GAMEPLAY, TEXT("Layer_BackGround"), TEXT("Com_Transform")));
-	LandObjDesc.pTerrainVIBuffer = dynamic_cast<CVIBuffer*>(m_pGameInstance->Get_Component(LEVEL_GAMEPLAY, TEXT("Layer_BackGround"), TEXT("Com_VIBuffer")));
-
-
 	if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"), &LandObjDesc)))
 		return E_FAIL;
 
@@ -119,7 +104,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const wstring& strLayerTag, CLandOb
 	return S_OK;
 }
 
-HRESULT CLevel_GamePlay::Load_GameData(const wstring& strLayerTag)
+HRESULT CLevel_GamePlay::Load_GameData()
 {
 
 	char FileRoute[MAX_PATH] = "../Bin/bin/Save_Data/";
@@ -172,7 +157,7 @@ HRESULT CLevel_GamePlay::Load_GameData(const wstring& strLayerTag)
 					_int iTerrain[2] = { 0,0 };
 					fin.read((char*)iTerrain, sizeof(_int) * 2);
 
-					m_pTerrainMgr->Clone_Terrain(iTerrain);
+					//m_pTerrainMgr->Clone_Terrain(iTerrain);
 				}
 				else if (TEXT("Layer_EnvironmentObject") == wLayer)
 				{
@@ -191,8 +176,6 @@ HRESULT CLevel_GamePlay::Load_GameData(const wstring& strLayerTag)
 
 					CLandObject::LANDOBJ_DESC		LandObjDesc{};
 
-					LandObjDesc.pTerrainTransform = dynamic_cast<CTransform*>(m_pGameInstance->Get_Component(LEVEL_GAMEPLAY, TEXT("Layer_BackGround"), TEXT("Com_Transform")));
-					LandObjDesc.pTerrainVIBuffer = dynamic_cast<CVIBuffer*>(m_pGameInstance->Get_Component(LEVEL_GAMEPLAY, TEXT("Layer_BackGround"), TEXT("Com_VIBuffer")));
 					LandObjDesc.ProtoTypeTag = strPrototypeTag;
 					LandObjDesc.ModelTag = strModelTag;
 					LandObjDesc.vPrePosition = fWorldPosition;
@@ -240,7 +223,7 @@ HRESULT CLevel_GamePlay::Load_GameData(const wstring& strLayerTag)
 						if (FAILED(m_pGameInstance->Add_CloneObject(iReadLevel, wLayer, strPrototypeTag, &CLTHItemDESC)))
 							return E_FAIL;
 					}
-									}
+				}
 				else if (TEXT("Layer_Monster") == wLayer)
 				{
 					_int CellIndex = { -1 };
@@ -248,8 +231,6 @@ HRESULT CLevel_GamePlay::Load_GameData(const wstring& strLayerTag)
 
 					CMonster::MOSTER_DESC		MOSTER_DESC{};
 
-					MOSTER_DESC.pTerrainTransform = dynamic_cast<CTransform*>(m_pGameInstance->Get_Component(LEVEL_GAMEPLAY, TEXT("Layer_BackGround"), TEXT("Com_Transform")));
-					MOSTER_DESC.pTerrainVIBuffer = dynamic_cast<CVIBuffer*>(m_pGameInstance->Get_Component(LEVEL_GAMEPLAY, TEXT("Layer_BackGround"), TEXT("Com_VIBuffer")));
 					MOSTER_DESC.ProtoTypeTag = strPrototypeTag;
 					MOSTER_DESC.ModelTag = strModelTag;
 					MOSTER_DESC.vPrePosition = fWorldPosition;
@@ -264,15 +245,6 @@ HRESULT CLevel_GamePlay::Load_GameData(const wstring& strLayerTag)
 
 	fin.close();
 
-
-	return S_OK;
-}
-
-HRESULT CLevel_GamePlay::Readt_Layer_SelectorIcon(const wstring& strLayerTag)
-{
-
-	//if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, strLayerTag, TEXT("Prototype_GameObject_SelectorIcon"))))
-	//	return E_FAIL;
 
 	return S_OK;
 }
@@ -292,9 +264,9 @@ HRESULT CLevel_GamePlay::Ready_Layer_Player(const wstring& strLayerTag, CLandObj
 	return S_OK;
 }
 
-CLevel_GamePlay* CLevel_GamePlay::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CLevel_GamePlay* CLevel_GamePlay::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, class CData_Manager* pDataManager)
 {
-	CLevel_GamePlay* pInstance = new CLevel_GamePlay(pDevice, pContext);
+	CLevel_GamePlay* pInstance = new CLevel_GamePlay(pDevice, pContext, pDataManager);
 
 	if (FAILED(pInstance->Initialize()))
 	{
@@ -308,6 +280,6 @@ CLevel_GamePlay* CLevel_GamePlay::Create(ID3D11Device* pDevice, ID3D11DeviceCont
 void CLevel_GamePlay::Free()
 {
 	__super::Free();
-	Safe_Release(m_pTerrainMgr);
+	Safe_Release(m_pDataManager);
 
 }

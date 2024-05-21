@@ -1,21 +1,20 @@
 #pragma once
-
 #include "Client_Defines.h"
 #include "GameObject.h"
-
+#include "Player.h"
 BEGIN(Client)
-
-class CLandObject abstract : public CGameObject
+class CInteractiveObject abstract :
+    public CGameObject
 {
 public:
 	typedef struct : public CGameObject::GAMEOBJECT_DESC
 	{
 
-	}LANDOBJ_DESC;
+	}INTERACTIVEOBJECT_DESC;
 protected:
-	CLandObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CLandObject(const CLandObject& rhs);
-	virtual ~CLandObject() = default;
+	CInteractiveObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CInteractiveObject(const CGameObject& rhs);
+	virtual ~CInteractiveObject() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -24,11 +23,9 @@ public:
 	virtual void Tick(_float fTimeDelta) override;
 	virtual void Late_Tick(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
+	virtual _bool IntersectRay(_vector* pRayArray, _float* fDist) override;
 
-
-protected:
-	/* 태우고자하는 객체의 월드위치. * 지형월드역*/
-	/* 지형버퍼의 정점들의 로컬위치. */
+	virtual HRESULT Action() = 0;
 
 
 public:

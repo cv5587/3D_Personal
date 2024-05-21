@@ -80,7 +80,7 @@ _bool CGameObject::Intersect(CCollider* pTargetCollider)
 	return true;
 }
 
-_bool CGameObject::IntersectRay(_vector* pRayArray)
+_bool CGameObject::IntersectRay(_vector* pRayArray, _float* fDist)
 {
 	return true;
 }

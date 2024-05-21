@@ -242,6 +242,16 @@ _bool CObject_Manager::Intersect(_uint iLevelIndex, const wstring& strLayerTag, 
 		return pLayer->Intersect(pTargetCollider);
 }
 
+CGameObject* CObject_Manager::IntersectRay(_uint iLevelIndex, const wstring& strLayerTag, _vector* pRayArray, _float* fDist)
+{
+	CLayer* pLayer = Find_Layer(iLevelIndex, strLayerTag);
+
+	if (nullptr == pLayer)
+		return nullptr;
+	else
+		return pLayer->IntersectRay(pRayArray, fDist);
+}
+
 CUIBase* CObject_Manager::FindUIID_CloneObject(_uint iLevelIndex, const wstring& strLayerTag, _int UIID)
 {
 	CLayer* pLayer = Find_Layer(iLevelIndex, strLayerTag);	

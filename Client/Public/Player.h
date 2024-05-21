@@ -70,11 +70,13 @@ public:
 	void Drop_Item();
 	HRESULT Inventory_Drop(wstring ItemName);
 	HRESULT Inventory_DropRabbit(wstring ItemName);
+	HRESULT Release_Rabbit(wstring ItemName);
 
 	void Cam_Turn(_float fTimeDelta, _long MouseMove);
 	
 public:
 	void Pick_UI();
+	void Loading_UI(_float fTimeDelta);
 public:
 	void Inventory_Update(_float fTimeDelta);
 	const PLAYERCONDITION isCondition() { return m_eCondition; }
@@ -85,12 +87,20 @@ public:
 	const _bool						isRevolver_AnimFin() { return m_bRevolver_AnimFin; }
 	const _bool						isRabbit_AnimFin() { return m_bRabbit_AnimFin; }
 	const _bool						isRabbitCatch() { return m_bRabbitCatch; }
+	const _bool						isEnter() { 	return m_bEnter; }
 
 	void Set_Reload_Reset();
 
 public:
 	void Set_SceneSelect(_uint iSceneIndex);
 	void Set_RabbitCatch(_bool isCatch) { m_bRabbitCatch = isCatch; }
+	void Set_Enter(_bool isEnter) { 
+			m_fCurrentLoadingBar = 0.f; 
+			m_bEnter = isEnter; 
+	}
+
+public:
+	HRESULT Set_Portal(_int iGoalCellIndex, _float4 vGoalPosition);
 private:
 	vector<class CGameObject*>		m_PartObjects;
 	PLAYERSTATE								m_eState = { PLAYERSTATE::PLAYER_IDLE };
@@ -107,6 +117,7 @@ private:
 	//pickupselector 돌릴지 말지 확인용 
 	_bool											m_bAcquire = {false};
 	_bool											m_bRabbitCatch = { false };
+	_bool											m_bEnter = { false };
 
 	CGameObject*									m_pRabbit = {nullptr};
 
@@ -116,11 +127,18 @@ private:
 	class CPickUpSelector* m_pPickUpSelector = { nullptr };
 	class CUIInventory* m_pUIInventory = { nullptr };
 	class CUImanager* m_pUImanager = { nullptr };
+	class CLoadingBar* m_pLoadingBar = { nullptr };
 private:
 	class CBone* m_pCamBone = { nullptr };
 	class CPlayer_Camera* m_pCamera = { nullptr };
 	public:
 		void Set_Cloth(_uint Index) { m_eCloth = (PLAYERCLOTH)Index; }
+
+public:
+	void Add_EnterTime(_float fTimeDelta);
+private:
+	_float m_fMaxLoadingBar = { 10.f };
+	_float m_fCurrentLoadingBar = { 0.f };
 public:
 	void isFire() { m_iBulletsLeft = --m_iBulletsLeft; }
 	void isReload();

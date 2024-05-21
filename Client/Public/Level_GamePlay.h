@@ -8,7 +8,7 @@ BEGIN(Client)
 class CLevel_GamePlay final : public CLevel
 {
 private:
-	CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, class CData_Manager* pDataManager);
 	virtual ~CLevel_GamePlay() = default;
 
 public:
@@ -23,14 +23,14 @@ private:
 	HRESULT Ready_LandObjects();
 	HRESULT Ready_Layer_Player(const wstring& strLayerTag, CLandObject::LANDOBJ_DESC* pLandObjDesc);
 	HRESULT Ready_Layer_Monster(const wstring& strLayerTag, CLandObject::LANDOBJ_DESC* pLandObjDesc);
-	HRESULT Load_GameData(const wstring& strLayerTag);
-	HRESULT Readt_Layer_SelectorIcon(const wstring& strLayerTag);
+	HRESULT Load_GameData();
+
 
 private:
-	class CTerrainManager* m_pTerrainMgr = { nullptr };
-
+	//class CTerrainManager* m_pTerrainMgr = { nullptr };
+	class CData_Manager* m_pDataManager = { nullptr };
 public:
-	static CLevel_GamePlay* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CLevel_GamePlay* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, class CData_Manager* pDataManager);
 	virtual void Free() override;
 };
 

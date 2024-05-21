@@ -1,12 +1,12 @@
 #pragma once
 #include "State.h"
 BEGIN(Client)
-class CState_Reload_Loop final:
+class CState_Enter final:
     public CState
 {
 protected:
-    CState_Reload_Loop();
-    virtual ~CState_Reload_Loop() = default;
+    CState_Enter();
+    virtual ~CState_Enter() = default;
 
 public:
     virtual void Enter(class CPlayer* Player) override;

@@ -235,6 +235,18 @@
     <Filter Include="01.Levels\03.Basement">
       <UniqueIdentifier>{5a0d3adb-3cc7-4917-933f-4a58650f971b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\05.InteractiveObject">
+      <UniqueIdentifier>{f17945c0-e7c2-4bdb-8cef-69d1c7e24f47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05.InteractiveObject\Portal">
+      <UniqueIdentifier>{2db2ca49-97c8-477f-b3c3-66215a64c0bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="91.LoadingBar">
+      <UniqueIdentifier>{94f00d19-af24-49ed-8567-d834b1d6c21f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\UILoadingBar">
+      <UniqueIdentifier>{6de6b71b-0409-4b4d-9487-29440a56cf81}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -450,11 +462,23 @@
     <ClInclude Include="..\Public\UIClothToggle.h">
       <Filter>02.GameObjects\00.UI\UIClothToggle</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\State_Reload_Loop.h">
+    <ClInclude Include="..\Public\State_Enter.h">
       <Filter>94. StateMachine\State\Player\State_Reload_Loop</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Level_Basement.h">
       <Filter>01.Levels\03.Basement</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\InteractiveObject.h">
+      <Filter>02.GameObjects\05.InteractiveObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Portal.h">
+      <Filter>02.GameObjects\05.InteractiveObject\Portal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\LoadingBar.h">
+      <Filter>91.LoadingBar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UILoadingBar.h">
+      <Filter>02.GameObjects\00.UI\UILoadingBar</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -662,11 +686,23 @@
     <ClCompile Include="..\Private\UIClothToggle.cpp">
       <Filter>02.GameObjects\00.UI\UIClothToggle</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\State_Reload_Loop.cpp">
+    <ClCompile Include="..\Private\State_Enter.cpp">
       <Filter>94. StateMachine\State\Player\State_Reload_Loop</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Level_Basement.cpp">
       <Filter>01.Levels\03.Basement</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\InteractiveObject.cpp">
+      <Filter>02.GameObjects\05.InteractiveObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Portal.cpp">
+      <Filter>02.GameObjects\05.InteractiveObject\Portal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\LoadingBar.cpp">
+      <Filter>91.LoadingBar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UILoadingBar.cpp">
+      <Filter>02.GameObjects\00.UI\UILoadingBar</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -725,6 +761,9 @@
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimMeshMonster.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_LoadingBar.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

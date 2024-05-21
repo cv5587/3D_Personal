@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "..\Public\MainApp.h"
 
-
+#include "Data_Manager.h"
 
 #include "GameInstance.h"
 #include "Level_Loading.h"
@@ -41,6 +41,9 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(Ready_Prototype_GameObject()))
 		return E_FAIL;
 
+	if (FAILED(Ready_DataManager()))
+		return E_FAIL;
+
 	if (FAILED(Open_Level(LEVEL_LOGO)))
 		return E_FAIL;
 	
@@ -70,7 +73,7 @@ HRESULT CMainApp::Render()
 
 HRESULT CMainApp::Open_Level(LEVEL eLevelID)
 {
-	if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, eLevelID))))
+	if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, eLevelID, m_pDataManager))))
 		return E_FAIL;
 
 
@@ -128,11 +131,15 @@ HRESULT CMainApp::Ready_Prototype_Component()
 		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxPosTexBrightnessToggleID.hlsl"), VTXPOSTEX::Elements, VTXPOSTEX::iNumElements))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Shader_LoadingBar */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_LoadingBar"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_LoadingBar.hlsl"), VTXPOSTEX::Elements, VTXPOSTEX::iNumElements))))
+		return E_FAIL;
+
 	/* For.Prototype_Component_Texture_Loading */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Loading"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Default%d.jpg"), 2))))
 		return E_FAIL;
-
 
 
 	return S_OK;
@@ -162,6 +169,14 @@ HRESULT CMainApp::Ready_Font()
 	return S_OK;
 }
 
+HRESULT CMainApp::Ready_DataManager()
+{
+
+	m_pDataManager = CData_Manager::Create(m_pDevice,m_pContext);
+
+	return S_OK;
+}
+
 
 
 
@@ -181,6 +196,7 @@ CMainApp * CMainApp::Create()
 void CMainApp::Free()
 {
 
+	Safe_Release(m_pDataManager);
 	Safe_Release(m_pContext);
 	Safe_Release(m_pDevice);
 

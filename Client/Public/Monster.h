@@ -37,7 +37,7 @@ public:
 	virtual void Tick(_float fTimeDelta) override;
 	virtual void Late_Tick(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
-	
+	virtual _bool IntersectRay(_vector* pRayArray, _float* fDist) override;
 	void AnimControl();
 	void Reset_Timer();
 	_bool Get_isItem() {
@@ -59,6 +59,7 @@ private:
 	_bool						m_bisStunned = { false };
 	_bool						m_isItem = { false };
 	wstring						m_wUIName = { TEXT("") };
+	_bool						m_bEscapeRotate = { false };
 private:
 	random_device				m_RandomDevice;
 	mt19937_64					m_RandomNumber;

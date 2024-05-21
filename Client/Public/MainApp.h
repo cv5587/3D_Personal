@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Client_Defines.h"
+
 #include "Base.h"
 
 BEGIN(Engine)
@@ -25,13 +26,15 @@ private:
 	ID3D11DeviceContext*	m_pContext = { nullptr };
 	CGameInstance*			m_pGameInstance = { nullptr };
 
-
+	class CData_Manager* m_pDataManager = { nullptr };
+	
 
 public:
 	HRESULT Open_Level(LEVEL eLevelID);
 	HRESULT Ready_Prototype_GameObject();
 	HRESULT Ready_Prototype_Component();
 	HRESULT Ready_Font();
+	HRESULT Ready_DataManager();
 
 public:
 	static CMainApp* Create();

@@ -26,7 +26,7 @@ CMonster::CMonster(const CMonster& rhs)
 
 HRESULT CMonster::Initialize_Prototype()
 {
-    m_RandomNumber = mt19937_64(m_RandomDevice());
+    
     return S_OK;
 }
 
@@ -166,7 +166,13 @@ void CMonster::Tick(_float fTimeDelta)
 
        case Client::CMonster::STATE_RUN:
        {
-           m_pTransformCom->Escape(XMLoadFloat4x4(m_pPlayerMatrix), fTimeDelta, m_pNavigationCom);
+           if (!m_bEscapeRotate)
+           {
+               m_pTransformCom->Escape(XMLoadFloat4x4(m_pPlayerMatrix), fTimeDelta, m_pNavigationCom);
+               m_bEscapeRotate = true;
+           }
+
+           m_pTransformCom->Go_Straight(fTimeDelta, m_pNavigationCom);
        }
        break;
 
@@ -238,7 +244,11 @@ void CMonster::Late_Tick(_float fTimeDelta)
         {
             m_iState = STATE_DEATH;
         }
+        //플레이어 레이와 충돌(언제? 플레이어 상태가 fire, hipfire일때.)
+
     }
+   
+   /*
    else
    {
        _vector vMouseRay[2] = {};
@@ -259,7 +269,7 @@ void CMonster::Late_Tick(_float fTimeDelta)
            pPlayer->Set_RabbitCatch(false);
        }
 
-   }
+   }*/
 
     m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 }
@@ -292,6 +302,18 @@ HRESULT CMonster::Render()
 
 
     return S_OK;
+}
+
+_bool CMonster::IntersectRay(_vector* pRayArray, _float* fDist)
+{
+
+    if (m_bisStunned)
+    {
+        if (m_pColliderCom->IntersectRay(pRayArray, fDist))
+            return true;
+    }
+
+    return false;
 }
 
 void CMonster::AnimControl()
@@ -346,6 +368,9 @@ void CMonster::AnimControl()
 
 void CMonster::Reset_Timer()
 {
+
+    m_RandomNumber = mt19937_64(m_RandomDevice());
+
     uniform_int_distribution<unsigned int> RandState(STATE_WALK, STATE_IDLE);
     uniform_real_distribution<float> RandPatternTime(3.f, 7.f);
 
@@ -418,11 +443,14 @@ _bool CMonster::Detected()
             return true;
         }
         else
+        {
+            m_bEscapeRotate = false;
             return false;
-
+        }
     }
     else
     {
+        m_bEscapeRotate = false;
         return false;
     }
 

@@ -66,10 +66,11 @@ void CPlayer_Camera::Tick(_float fTimeDelta)
 	//	m_pCamBone->Set_TransformationMatrix(Socket);
 	//}
 	
-	m_pTransformCom->Set_State_Matrix(XMLoadFloat4x4(&m_fixWorld)*XMLoadFloat4x4(m_pCamBone->Get_CombinedTransformationMatrix()) * XMLoadFloat4x4(m_pParentMatrix));	
 
 
 	
+	m_pTransformCom->Set_State_Matrix(XMLoadFloat4x4(&m_fixWorld)*XMLoadFloat4x4(m_pCamBone->Get_CombinedTransformationMatrix()) * XMLoadFloat4x4(m_pParentMatrix));	
+
     __super::Tick(fTimeDelta);
 
 }
@@ -89,7 +90,7 @@ _vector CPlayer_Camera::Get_CamLook()
 	return 	m_pTransformCom->Get_State(CTransform::STATE_LOOK);
 }
 
-void CPlayer_Camera::Set_CamMatrix()
+void CPlayer_Camera::Set_CamMatrix(_float fTimeDelta)
 {
 	m_pTransformCom->Set_State_Matrix(XMLoadFloat4x4(&m_fixWorld) * XMLoadFloat4x4(m_pCamBone->Get_CombinedTransformationMatrix()) * XMLoadFloat4x4(m_pParentMatrix));
 
