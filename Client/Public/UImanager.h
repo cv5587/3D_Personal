@@ -107,8 +107,8 @@ public://raycoll 정보 넣기
      HRESULT RayColl_SetInfo(const wstring ObjName);
 private:
     class CGameInstance*             m_pGameInstance = { nullptr };
-    class ID3D11Device*             m_pDevice = { nullptr };
-    class ID3D11DeviceContext* m_pContext = { nullptr };
+     ID3D11Device*             m_pDevice = { nullptr };
+     ID3D11DeviceContext* m_pContext = { nullptr };
     //ui를 정보 표시에 대한 것들(아이템타입), 기본 구성품(가방,무게,내구도)
     //마우좌우 클릭나누자
     vector<wstring> m_UISelector;

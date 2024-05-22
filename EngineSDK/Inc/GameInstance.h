@@ -24,17 +24,8 @@ public:
 
 public: /* For.Graphic_Device */	
 	HRESULT Clear_BackBuffer_View(_float4 vClearColor);
-	HRESULT Clear_HitScreenBuffer_View();	
-	HRESULT Clear_IDScreenBuffer_View();
-	HRESULT Clear_UIIDScreenBuffer_View();
 	HRESULT Clear_DepthStencil_View();
 	HRESULT Present();
-	_float Compute_ProjZ(const POINT& ptWindowPos, ID3D11Texture2D* pHitScreenTexture);
-	_int	Compute_ID(const POINT& ptWindowPos, ID3D11Texture2D* pIDScreenTexture);
-	_int	Compute_UIID(const POINT& ptWindowPos, ID3D11Texture2D* pIDScreenTexture);
-
-	template<typename T>
-	HRESULT Clear_Texture(TextureType eTextureType, T* data);
 
 public: /* For.Input_Device */
 	_byte	Get_DIKeyState(_ubyte byKeyID);
@@ -82,6 +73,10 @@ public: /* For.Component_Manager */
 
 public: /* For.Renderer */
 	HRESULT Add_RenderObject(CRenderer::RENDERGROUP eRenderGroup, class CGameObject* pRenderObject);
+#ifdef _DEBUG
+public:
+	HRESULT Add_DebugComponent(class CComponent* pComponent);
+#endif
 
 public: /* For.PipeLine */
 	const _float4x4* Get_Transform_float4x4(CPipeLine::TRANSFORMSTATE eState);
@@ -105,6 +100,26 @@ public: /* For.Font_Manager */
 	HRESULT Add_Font(const wstring& strFontTag, const wstring& strFontFilePath);
 	HRESULT Render_Font(const wstring& strFontTag, const wstring& strText, const _float2& vPosition, _fvector vColor);
 
+public: /* For.Light_Manager */
+	const LIGHT_DESC* Get_LightDesc(_uint iIndex) const;
+	HRESULT Add_Light(const LIGHT_DESC& LightDesc);
+	HRESULT Render_Lights(class CShader* pShader, class CVIBuffer_Rect* pVIBuffer);
+
+public: /* For.Target_Manager */
+	HRESULT Add_RenderTarget(const wstring& strTargetTag, _uint iSizeX, _uint iSizeY, DXGI_FORMAT ePixelFormat, const _float4& vClearColor);
+	HRESULT Add_MRT(const wstring& strMRTTag, const wstring& strTargetTag);
+	HRESULT Begin_MRT(const wstring& strMRTTag);
+	HRESULT Begin_UIMRT(const wstring& strMRTTag);
+	HRESULT End_MRT();
+	HRESULT Bind_RenderTargetSRV(const wstring& strTargetTag, class CShader* pShader, const _char* pConstantName);
+	HRESULT Copy_Resource(const wstring& strTargetTag, ID3D11Texture2D* pDesc);
+
+#ifdef _DEBUG
+public:
+	HRESULT Ready_RTDebug(const wstring& strTargetTag, _float fX, _float fY, _float fSizeX, _float fSizeY);
+	HRESULT Render_RTDebug(const wstring& strMRTTag, class CShader* pShader, class CVIBuffer_Rect* pVIBuffer);
+#endif
+
 private:
 	class CGraphic_Device*				m_pGraphic_Device = { nullptr };
 	class CInput_Device*					m_pInput_Device = { nullptr };
@@ -116,15 +131,12 @@ private:
 	class CPipeLine*							m_pPipeLine = { nullptr };
 	class CCalculator*						m_pCalculator = { nullptr };
 	class CFont_Manager*					m_pFont_Manager = { nullptr };
+	class CLight_Manager*				m_pLight_Manager = { nullptr };
+	class CTarget_Manager*				m_pTarget_Manager = { nullptr };
+
 public:	
 	static void Release_Engine();
 	virtual void Free() override;
 };
 
 END
-
-template<typename T>
-inline HRESULT CGameInstance::Clear_Texture(TextureType eTextureType, T* data)
-{
-	return m_pGraphic_Device->Clear_Texture(eTextureType, data);
-}

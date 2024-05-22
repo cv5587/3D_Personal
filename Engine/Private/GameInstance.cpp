@@ -9,6 +9,8 @@
 #include "Renderer.h"
 #include "Calculator.h"
 #include "Font_Manager.h"
+#include "Light_Manager.h"
+#include "Target_Manager.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -52,6 +54,11 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, cons
 	if (nullptr == m_pComponent_Manager)
 		return E_FAIL;
 
+	/*타겟 매니저 생성*/
+	m_pTarget_Manager = CTarget_Manager::Create(*ppDevice, *ppContext);
+	if (nullptr == m_pTarget_Manager)
+		return E_FAIL;
+
 	/* 렌더러 생성. */
 	m_pRenderer = CRenderer::Create(*ppDevice, *ppContext);
 	if (nullptr == m_pRenderer)
@@ -71,6 +78,13 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, cons
 	m_pFont_Manager = CFont_Manager::Create(*ppDevice, *ppContext);
 	if (nullptr == m_pFont_Manager)
 		return E_FAIL;
+
+	/*라이트 매니저 생성*/
+	m_pLight_Manager = CLight_Manager::Create();
+	if (nullptr == m_pLight_Manager)
+		return E_FAIL;
+
+
 
 	return S_OK;
 }
@@ -95,26 +109,6 @@ void CGameInstance::Tick_Engine(_float fTimeDelta)
 
 HRESULT CGameInstance::Draw(const _float4 & vClearColor)
 {
-	if (FAILED(Clear_BackBuffer_View(vClearColor)))
-		return E_FAIL;
-	if (FAILED(Clear_HitScreenBuffer_View()))
-		return E_FAIL;
-	if (FAILED(Clear_IDScreenBuffer_View()))
-		return E_FAIL;
-	if (FAILED(Clear_UIIDScreenBuffer_View()))
-		return E_FAIL;
-	if (FAILED(Clear_DepthStencil_View()))
-		return E_FAIL;
-	_float pfloat = -1.f;
-	if (FAILED(Clear_Texture(TextureType::HitPosTexture,&pfloat)))
-		return E_FAIL;
-	_int pint = -1;
-	if (FAILED(Clear_Texture(TextureType::HitIDTexture, &pint)))
-		return E_FAIL;
-
-	if (FAILED(Clear_Texture(TextureType::HitUIIDTexture, &pint)))
-		return E_FAIL;
-
 	m_pRenderer->Draw();	
 
 	return S_OK;
@@ -144,21 +138,6 @@ HRESULT CGameInstance::Clear_BackBuffer_View(_float4 vClearColor)
 	return m_pGraphic_Device->Clear_BackBuffer_View(vClearColor);
 }
 
-HRESULT CGameInstance::Clear_HitScreenBuffer_View()
-{
-	return m_pGraphic_Device->Clear_HitScreenBuffer_View();
-}
-
-HRESULT CGameInstance::Clear_IDScreenBuffer_View()
-{ 
-	return m_pGraphic_Device->Clear_IDScreenBuffer_View();
-}
-
-HRESULT CGameInstance::Clear_UIIDScreenBuffer_View()
-{
-	return m_pGraphic_Device->Clear_UIIDScreenBuffer_View();
-}
-
 HRESULT CGameInstance::Clear_DepthStencil_View()
 {
 	return m_pGraphic_Device->Clear_DepthStencil_View();
@@ -167,22 +146,6 @@ HRESULT CGameInstance::Clear_DepthStencil_View()
 HRESULT CGameInstance::Present()
 {
 	return m_pGraphic_Device->Present();
-}
-
-_float CGameInstance::Compute_ProjZ(const POINT& ptWindowPos, ID3D11Texture2D* pHitScreenTexture)
-{
-	return m_pGraphic_Device->Compute_ProjZ(ptWindowPos, pHitScreenTexture);
-}
-
-_int CGameInstance::Compute_ID(const POINT& ptWindowPos, ID3D11Texture2D* pIDScreenTexture)
-{
-	return m_pGraphic_Device->Compute_ID(ptWindowPos, pIDScreenTexture);
-}
-
-_int CGameInstance::Compute_UIID(const POINT& ptWindowPos, ID3D11Texture2D* pIDScreenTexture)
-{
-	return m_pGraphic_Device->Compute_UIID(ptWindowPos, pIDScreenTexture);
-
 }
 
 _byte CGameInstance::Get_DIKeyState(_ubyte byKeyID)
@@ -368,6 +331,11 @@ HRESULT CGameInstance::Add_RenderObject(CRenderer::RENDERGROUP eRenderGroup, CGa
 	return m_pRenderer->Add_RenderObject(eRenderGroup, pRenderObject);	
 }
 
+HRESULT CGameInstance::Add_DebugComponent(CComponent* pComponent)
+{
+	return m_pRenderer->Add_DebugComponent(pComponent);
+}
+
 const _float4x4* CGameInstance::Get_Transform_float4x4(CPipeLine::TRANSFORMSTATE eState)
 {
 	return m_pPipeLine->Get_Transform_float4x4(eState);
@@ -450,6 +418,77 @@ HRESULT CGameInstance::Render_Font(const wstring& strFontTag, const wstring& str
 	return m_pFont_Manager->Render_Font(strFontTag, strText, vPosition, vColor);
 }
 
+const LIGHT_DESC* CGameInstance::Get_LightDesc(_uint iIndex) const
+{
+	if (nullptr == m_pLight_Manager)
+		return nullptr;
+
+	return m_pLight_Manager->Get_LightDesc(iIndex);
+}
+
+HRESULT CGameInstance::Add_Light(const LIGHT_DESC& LightDesc)
+{
+	if (nullptr == m_pLight_Manager)
+		return E_FAIL;
+
+	return m_pLight_Manager->Add_Light(LightDesc);
+}
+
+HRESULT CGameInstance::Render_Lights(CShader* pShader, CVIBuffer_Rect* pVIBuffer)
+{
+	if (nullptr == m_pLight_Manager)
+		return E_FAIL;
+
+	return m_pLight_Manager->Render(pShader, pVIBuffer);
+}
+
+HRESULT CGameInstance::Add_RenderTarget(const wstring& strTargetTag, _uint iSizeX, _uint iSizeY, DXGI_FORMAT ePixelFormat, const _float4& vClearColor)
+{
+	return m_pTarget_Manager->Add_RenderTarget(strTargetTag, iSizeX, iSizeY, ePixelFormat, vClearColor);
+}
+
+HRESULT CGameInstance::Add_MRT(const wstring& strMRTTag, const wstring& strTargetTag)
+{
+	return m_pTarget_Manager->Add_MRT(strMRTTag, strTargetTag);
+}
+
+HRESULT CGameInstance::Begin_MRT(const wstring& strMRTTag)
+{
+	return m_pTarget_Manager->Begin_MRT(strMRTTag);
+}
+
+HRESULT CGameInstance::Begin_UIMRT(const wstring& strMRTTag)
+{
+	return m_pTarget_Manager->Begin_UIMRT(strMRTTag);
+}
+
+HRESULT CGameInstance::End_MRT()
+{
+	return m_pTarget_Manager->End_MRT();
+}
+
+HRESULT CGameInstance::Bind_RenderTargetSRV(const wstring& strTargetTag, CShader* pShader, const _char* pConstantName)
+{
+	return m_pTarget_Manager->Bind_RenderTargetSRV(strTargetTag, pShader, pConstantName);
+}
+
+HRESULT CGameInstance::Copy_Resource(const wstring& strTargetTag, ID3D11Texture2D* pDesc)
+{
+	return m_pTarget_Manager->Copy_Resource(strTargetTag, pDesc);
+}
+
+#ifdef _DEBUG
+HRESULT CGameInstance::Ready_RTDebug(const wstring& strTargetTag, _float fX, _float fY, _float fSizeX, _float fSizeY)
+{
+	return m_pTarget_Manager->Ready_Debug(strTargetTag, fX, fY, fSizeX, fSizeY);
+}
+
+HRESULT CGameInstance::Render_RTDebug(const wstring& strMRTTag, CShader* pShader, CVIBuffer_Rect* pVIBuffer)
+{
+	return m_pTarget_Manager->Render_Debug(strMRTTag, pShader, pVIBuffer);
+}
+#endif
+
 void CGameInstance::Release_Engine()
 {	
 	CGameInstance::GetInstance()->Free();
@@ -459,6 +498,9 @@ void CGameInstance::Release_Engine()
 
 void CGameInstance::Free()
 {
+	Safe_Release(m_pTarget_Manager);
+	Safe_Release(m_pLight_Manager);
+	Safe_Release(m_pFont_Manager);
 	Safe_Release(m_pCalculator);
 	Safe_Release(m_pPipeLine);
 	Safe_Release(m_pComponent_Manager);
@@ -466,7 +508,6 @@ void CGameInstance::Free()
 	Safe_Release(m_pRenderer);
 	Safe_Release(m_pObject_Manager);
 	Safe_Release(m_pLevel_Manager);
-	Safe_Release(m_pFont_Manager);
 	Safe_Release(m_pInput_Device);
 	Safe_Release(m_pGraphic_Device);
 }

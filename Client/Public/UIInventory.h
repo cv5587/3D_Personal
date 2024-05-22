@@ -42,8 +42,8 @@ public:
 
 private:
     class CGameInstance* m_pGameInstance = { nullptr };
-    class ID3D11Device* m_pDevice = { nullptr };
-    class ID3D11DeviceContext* m_pContext = { nullptr };
+     ID3D11Device* m_pDevice = { nullptr };
+     ID3D11DeviceContext* m_pContext = { nullptr };
 
     //레이어 이름을 가지고 있음
     class CInventory* m_pPlayerInventory = { nullptr };

@@ -16,7 +16,7 @@ CComponent::CComponent(const CComponent& rhs)
 	: m_pDevice{ rhs.m_pDevice }
 	, m_pContext{ rhs.m_pContext }
 	, m_isCloned{ true }
-	, m_pGameInstance{ CGameInstance::GetInstance() }
+	, m_pGameInstance{ rhs.m_pGameInstance }
 {
 	Safe_AddRef(m_pDevice);
 	Safe_AddRef(m_pContext);

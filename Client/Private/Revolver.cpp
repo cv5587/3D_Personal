@@ -166,7 +166,7 @@ HRESULT CRevolver::Normal_Render(_uint BulletIndex)
 {
 	m_pModelCom->Bind_BoneMatrices(m_pShaderCom, "g_BoneMatrices", BulletIndex);
 
-	if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_Texture", BulletIndex, aiTextureType_DIFFUSE)))
+	if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", BulletIndex, aiTextureType_DIFFUSE)))
 		return E_FAIL;
 
 	m_pShaderCom->Begin(0);
@@ -179,7 +179,7 @@ HRESULT CRevolver::Bullet_Render(_uint BulletIndex)
 {
 	m_pModelCom->Bind_BulletBoneMatrices(m_pShaderCom, "g_BoneMatrices", BulletIndex);
 
-	if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_Texture", BulletIndex, aiTextureType_DIFFUSE)))
+	if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", BulletIndex, aiTextureType_DIFFUSE)))
 		return E_FAIL;
 
 	m_pShaderCom->Begin(0);

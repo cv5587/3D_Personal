@@ -47,6 +47,11 @@ void CTerrain::Late_Tick(_float fTimeDelta)
 
 
     m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
+
+#ifdef _DEBUG	
+    m_pGameInstance->Add_DebugComponent(m_pNavigationCom);
+#endif
+
 }
 
 HRESULT CTerrain::Render()
@@ -58,11 +63,7 @@ HRESULT CTerrain::Render()
     m_pVIBufferCom->Bind_Buffers();
     m_pVIBufferCom->Render();
 
-#ifdef _DEBUG
 
-    m_pNavigationCom->Render();
-
-#endif
 
     return S_OK;
 }
@@ -105,7 +106,7 @@ HRESULT CTerrain::Bind_ShaderResources()
     if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_float4x4(CPipeLine::TS_PROJ))))
         return E_FAIL;
 
-    if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", 0)))
+    if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_DiffuseTexture", 0)))
         return E_FAIL;
 
     return S_OK;
@@ -142,7 +143,9 @@ void CTerrain::Free()
 
     Safe_Release(m_pNavigationCom);
     Safe_Release(m_pShaderCom);
+
     Safe_Release(m_pTextureCom);
+
     Safe_Release(m_pVIBufferCom);
 }
 

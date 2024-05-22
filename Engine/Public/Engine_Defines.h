@@ -42,9 +42,8 @@ namespace Engine
 	enum MOUSEMOVESTATE { DIMS_X, DIMS_Y, DIMS_Z, DIMS_END };
 	enum class TextureType
 	{
-		HitPosTexture=0,
-		HitIDTexture=1,
-		HitUIIDTexture =2,
+		HitIDTexture=0,
+
 	};
 }
 

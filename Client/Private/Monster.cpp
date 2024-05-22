@@ -272,6 +272,12 @@ void CMonster::Late_Tick(_float fTimeDelta)
    }*/
 
     m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
+
+#ifdef _DEBUG
+
+      m_pGameInstance->Add_DebugComponent(m_pColliderCom);
+      m_pGameInstance->Add_DebugComponent(m_pNavigationCom);
+#endif
 }
 
 HRESULT CMonster::Render()
@@ -287,18 +293,13 @@ HRESULT CMonster::Render()
     {
         m_pModelCom->Bind_BoneMatrices(m_pShaderCom, "g_BoneMatrices", i);  
 
-        if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_Texture", i, aiTextureType_DIFFUSE)))
+        if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
             return E_FAIL;
 
         m_pShaderCom->Begin(0);
 
         m_pModelCom->Render(i);
     }
-
-#ifdef _DEBUG
-    m_pColliderCom->Render();
-    m_pNavigationCom->Render();
-#endif
 
 
     return S_OK;

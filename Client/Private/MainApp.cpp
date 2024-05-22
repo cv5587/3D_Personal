@@ -58,6 +58,8 @@ void CMainApp::Tick(float fTimeDelta)
 
 HRESULT CMainApp::Render()
 {
+	m_pGameInstance->Clear_BackBuffer_View(_float4(0.f, 0.f, 1.f, 1.f));
+	m_pGameInstance->Clear_DepthStencil_View();
 
 	/* ±×¸°´Ù. */
 	if (FAILED(m_pGameInstance->Draw(_float4(0.f, 0.f, 1.f, 1.f))))
@@ -196,6 +198,7 @@ CMainApp * CMainApp::Create()
 void CMainApp::Free()
 {
 
+	Safe_Release(m_pDataManager);
 	Safe_Release(m_pDataManager);
 	Safe_Release(m_pContext);
 	Safe_Release(m_pDevice);

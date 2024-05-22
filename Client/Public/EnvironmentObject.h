@@ -26,7 +26,7 @@ public:
 private:
 	CShader* m_pShaderCom = { nullptr };
 	CModel* m_pModelCom = { nullptr };
-
+	_uint			m_iPassIndex = { 0 };
 public:
 	HRESULT Add_Components();
 	HRESULT Bind_ShaderResources();

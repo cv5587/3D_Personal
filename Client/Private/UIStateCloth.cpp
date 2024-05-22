@@ -115,7 +115,7 @@ HRESULT CUIStateCloth::Bind_ShaderResources()
         return E_FAIL;
 
     //아이콘 여러개 넣을려고 생각해서 만듬 (이게 몇번째 텍스처에 접근할지에 대한 것임)
-    if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", m_iIconID)))
+    if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_DiffuseTexture", m_iIconID)))
         return E_FAIL;
 
     return S_OK;

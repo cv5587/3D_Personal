@@ -31,10 +31,9 @@ private:
 	_uint										m_iWinSizeX = { 0 };
 	_uint										m_iWinSizeY = { 0 };
 
-	//비워져있는 텍스처
-	ID3D11Texture2D* m_pHitScreenTexture = { nullptr };
-	ID3D11Texture2D* m_pIDScreenTexture = { nullptr };
-	ID3D11Texture2D* m_pUIIDScreenTexture = { nullptr };
+
+
+	ID3D11Texture2D* m_pTexture2D = { nullptr };
 
 
 

@@ -29,18 +29,42 @@ public:
 	void Draw();
 	void Clear();
 
+#ifdef _DEBUG
+public:
+	HRESULT Add_DebugComponent(class CComponent* pComponent);
+#endif
+
 private:
-	ID3D11Device*						m_pDevice = { nullptr };
+	ID3D11Device*							m_pDevice = { nullptr };
 	ID3D11DeviceContext*				m_pContext = { nullptr };
+	class CGameInstance*					m_pGameInstance = { nullptr };
 	list<class CGameObject*>			m_RenderGroup[RENDER_END];
+
+
+private:
+	class CShader*								m_pShader = { nullptr };
+	class CVIBuffer_Rect*					m_pVIBuffer = { nullptr };
+
+	_float4x4										m_WorldMatrix = {};
+	_float4x4										m_ViewMatrix = {};
+	_float4x4										m_ProjMatrix = {};
 
 private:
 	void  Render_Priority();
 	void  Render_NonBlend();
+	void Render_LightAcc();
+	void Render_DeferredResult();
 	void  Render_NonLight();
 	void  Render_Blend();
 	void  Render_UI();
 
+#ifdef _DEBUG
+private:
+	list<class CComponent*>				m_DebugComponents;
+
+private:
+	void Render_Debug();
+#endif
 
 public:
 	static CRenderer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

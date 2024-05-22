@@ -28,6 +28,11 @@ HRESULT CEnvironmentObject::Initialize(void* pArg)
     if (FAILED(Add_Components()))
         return E_FAIL;
 
+    /* For.Com_Shader *///나무 검사
+    wstring CompareName = TEXT("Pin");
+    if (m_ModelTag.substr(26, 3) == CompareName)
+        m_iPassIndex = 1;
+
     return S_OK;
 }
 
@@ -54,12 +59,16 @@ HRESULT CEnvironmentObject::Render()
 
     _uint	iNumMeshes = m_pModelCom->Get_NumMeshes();
 
+
+
+
     for (size_t i = 0; i < iNumMeshes; i++)
     {
-        if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_Texture", i, aiTextureType_DIFFUSE)))
+        if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
             return E_FAIL;
 
-        m_pShaderCom->Begin(0);
+
+        m_pShaderCom->Begin(m_iPassIndex);
 
         m_pModelCom->Render(i);
     }
@@ -75,22 +84,22 @@ HRESULT CEnvironmentObject::Add_Components()
         TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
         return E_FAIL;
 
+    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxMesh"),
+        TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
+        return E_FAIL;
 
-
-    /* For.Com_Shader *///나무 검사
-    wstring CompareName = TEXT("Pin");
-    if (m_ModelTag.substr(26, 3) == CompareName)
-    {
-        if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxMeshTree"),
-            TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
-            return E_FAIL;
-    }
-    else
-    {
-        if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxMesh"),
-            TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
-            return E_FAIL;
-    }
+    ///* For.Com_Shader *///나무 검사
+    //wstring CompareName = TEXT("Pin");
+    //if (m_ModelTag.substr(26, 3) == CompareName)
+    //{
+    //    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxMeshTree"),
+    //        TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
+    //        return E_FAIL;
+    //}
+    //else
+    //{
+    //  
+    //}
 
     return S_OK;
 }

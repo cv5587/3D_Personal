@@ -181,7 +181,6 @@
     <ClInclude Include="..\Public\GEAR.h" />
     <ClInclude Include="..\Public\InteractiveObject.h" />
     <ClInclude Include="..\Public\LandObject.h" />
-    <ClInclude Include="..\Public\Level_Basement.h" />
     <ClInclude Include="..\Public\Level_GamePlay.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
     <ClInclude Include="..\public\Level_Logo.h" />
@@ -256,7 +255,6 @@
     <ClCompile Include="..\Private\Bullet.cpp" />
     <ClCompile Include="..\Private\CLTH.cpp" />
     <ClCompile Include="..\Private\InteractiveObject.cpp" />
-    <ClCompile Include="..\Private\Level_Basement.cpp" />
     <ClCompile Include="..\Private\LoadingBar.cpp" />
     <ClCompile Include="..\Private\Portal.cpp" />
     <ClCompile Include="..\Private\State_Kill.cpp" />
@@ -346,8 +344,6 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimMeshMonster.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMesh.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMeshID.hlsl" />
-    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMeshTree.hlsl" />
-    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMeshTreeID.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosColor.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl" />

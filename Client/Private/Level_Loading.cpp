@@ -14,18 +14,12 @@
 #include "Data_Manager.h"
 #include "TerrainManager.h"
 
-CLevel_Loading::CLevel_Loading(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, class CData_Manager* pDataManager)
+CLevel_Loading::CLevel_Loading(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CData_Manager* pDataManager)
 	: CLevel(pDevice, pContext)
 	, m_pDataManager{ pDataManager }
 {
 	Safe_AddRef(m_pDataManager);
 }
-
-/*
-typedef unsigned (__stdcall* _beginthreadex_proc_type)(void*);
-*/
-
-
 
 HRESULT CLevel_Loading::Initialize(LEVEL eNextLevel)
 {

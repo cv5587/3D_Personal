@@ -163,7 +163,7 @@ void CUImanager::Scene_Change( _uint iUIIndex)
 
 void CUImanager::Sort_IconChange(_uint iSortIndex)
 {
-	for (size_t i = 0; i < SORT_END; i++)
+	for (_uint i = 0; i < SORT_END; i++)
 	{
 		if (i != iSortIndex)
 		{
@@ -1322,6 +1322,7 @@ _uint CUImanager::Pick_UISortToggle(_uint UIID)
 	if (nullptr != pUISortToggle)
 		return pUISortToggle->Get_SortIndex();
 
+	return 0;
 }
 
 void CUImanager::Pick_InvenItem(_uint UIID)

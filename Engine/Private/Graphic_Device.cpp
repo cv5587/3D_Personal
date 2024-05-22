@@ -30,28 +30,16 @@ HRESULT CGraphic_Device::Initialize(const ENGINE_DESC& EngineDesc, _Inout_ ID3D1
 	if (FAILED(Ready_BackBufferRenderTargetView()))
 		return E_FAIL;
 
-	if (FAILED(Ready_HitScreenRenderTargetView(EngineDesc.iWinSizeX, EngineDesc.iWinSizeY)))
-		return E_FAIL;
-
-	if (FAILED(Ready_IDScreenRenderTargetView(EngineDesc.iWinSizeX, EngineDesc.iWinSizeY)))
-		return E_FAIL;
-
-	if (FAILED(Ready_UIIDScreenRenderTargetView(EngineDesc.iWinSizeX, EngineDesc.iWinSizeY)))
-		return E_FAIL;
-
 	if (FAILED(Ready_DepthStencilRenderTargetView(EngineDesc.iWinSizeX, EngineDesc.iWinSizeY)))
 		return E_FAIL;
 
 	/* 장치에 바인드해놓을 렌더타겟들과 뎁스스텐실뷰를 세팅한다. */
 	/* 장치는 동시에 최대 8개의 렌더타겟을 들고 있을 수 있다. */
-	ID3D11RenderTargetView*		pRTVs[4] = {
-		m_pBackBufferRTV, 
-		m_pHitScreenRTV,
-		m_pIDScreenRTV,
-		m_pUIIDScreenRTV
+	ID3D11RenderTargetView* pRTVs[1] = {
+		m_pBackBufferRTV,
 	};
 
-	m_pDeviceContext->OMSetRenderTargets(4, pRTVs,
+	m_pDeviceContext->OMSetRenderTargets(1, pRTVs,
 		m_pDepthStencilView);		
 	
 	D3D11_VIEWPORT			ViewPortDesc;
@@ -89,44 +77,6 @@ HRESULT CGraphic_Device::Clear_BackBuffer_View(_float4 vClearColor)
  	return S_OK;
 }
 
-HRESULT CGraphic_Device::Clear_HitScreenBuffer_View()
-{
-	if (nullptr == m_pDeviceContext)
-		return E_FAIL;
-
-	_float4 vClearValue = { 0.f,0.f,1.f,1.f };
-
-	m_pDeviceContext->ClearRenderTargetView(m_pHitScreenRTV, (_float*)&vClearValue);
-
-	return S_OK;
-}
-
-HRESULT CGraphic_Device::Clear_IDScreenBuffer_View()
-{
-	if (nullptr == m_pDeviceContext)
-		return E_FAIL;
-	 
-	_float4 vClearValue = { 0.f,0.f,1.f,1.f };
-
-	m_pDeviceContext->ClearRenderTargetView(m_pIDScreenRTV, (_float*)&vClearValue);
-
-	
-	return S_OK;
-}
-
-HRESULT CGraphic_Device::Clear_UIIDScreenBuffer_View()
-{
-	if (nullptr == m_pDeviceContext)
-		return E_FAIL;
-
-	_float4 vClearValue = { 0.f,0.f,1.f,1.f };
-
-	m_pDeviceContext->ClearRenderTargetView(m_pUIIDScreenRTV, (_float*)&vClearValue);
-
-
-	return S_OK;
-}
-
 HRESULT CGraphic_Device::Clear_DepthStencil_View()
 {
 	if (nullptr == m_pDeviceContext)
@@ -148,95 +98,6 @@ HRESULT CGraphic_Device::Present()
 	/* 후면 버퍼를 직접 화면에 보여줄게. */	
 	return m_pSwapChain->Present(0, 0);	
 }
-
-_float CGraphic_Device::Compute_ProjZ(const POINT& ptWindowPos, ID3D11Texture2D* pHitScreenTexture)
-{
-	D3D11_VIEWPORT			ViewPortDesc;	
-	_uint numViewport(1);
-
-	m_pDeviceContext->RSGetViewports(&numViewport, &ViewPortDesc);
-
-	D3D11_MAPPED_SUBRESOURCE		SubResources{};	
-
-	m_pDeviceContext->CopyResource(pHitScreenTexture, m_pHitScreenTexture);	
-
-	//lock 같은 개념
-	if (FAILED(m_pDeviceContext->Map(pHitScreenTexture, 0, D3D11_MAP_READ, 0, &SubResources)))
-		return E_FAIL;
-
-	_float fProjZ(-1.f);
-
-	_uint		iIndex = ptWindowPos.y * ViewPortDesc.Width + ptWindowPos.x;
-
-	if (ptWindowPos.x >= 0 && ptWindowPos.x < ViewPortDesc.Width && ptWindowPos.y >= 0 && ptWindowPos.y < ViewPortDesc.Height)
-	{
-		fProjZ = ((_float*)SubResources.pData)[iIndex];	
-	}
-	//unlock 같은 개념
-	m_pDeviceContext->Unmap(pHitScreenTexture, 0);	
-
-	return fProjZ;	
-}
-
-_int CGraphic_Device::Compute_ID(const POINT& ptWindowPos, ID3D11Texture2D* pIDScreenTexture)
-{
-	D3D11_VIEWPORT			ViewPortDesc;
-	_uint numViewport(1);
-
-	m_pDeviceContext->RSGetViewports(&numViewport, &ViewPortDesc);
-
-	D3D11_MAPPED_SUBRESOURCE		SubResources{};
-
-	m_pDeviceContext->CopyResource(pIDScreenTexture, m_pIDScreenTexture);
-
-	//lock 같은 개념
-	if (FAILED(m_pDeviceContext->Map(pIDScreenTexture, 0, D3D11_MAP_READ, 0, &SubResources)))
-		return E_FAIL;
-
-	_int fProjZ(-1);
-
-	_uint		iIndex = ptWindowPos.y * ViewPortDesc.Width + ptWindowPos.x;
-
-	if (ptWindowPos.x >= 0 && ptWindowPos.x < ViewPortDesc.Width && ptWindowPos.y >= 0 && ptWindowPos.y < ViewPortDesc.Height)
-	{
-		fProjZ = ((_int*)SubResources.pData)[iIndex];
-	}
-	//unlock 같은 개념
-	m_pDeviceContext->Unmap(pIDScreenTexture, 0);
-
-	return fProjZ;
-}
-
-_int CGraphic_Device::Compute_UIID(const POINT& ptWindowPos, ID3D11Texture2D* pIDScreenTexture)
-{
-
-	D3D11_VIEWPORT			ViewPortDesc;
-	_uint numViewport(1);
-
-	m_pDeviceContext->RSGetViewports(&numViewport, &ViewPortDesc);
-
-	D3D11_MAPPED_SUBRESOURCE		SubResources{};
-
-	m_pDeviceContext->CopyResource(pIDScreenTexture, m_pUIIDScreenTexture);
-
-	//lock 같은 개념
-	if (FAILED(m_pDeviceContext->Map(pIDScreenTexture, 0, D3D11_MAP_READ, 0, &SubResources)))
-		return E_FAIL;
-
-	_int fProjZ(-1);
-
-	_uint		iIndex = ptWindowPos.y * ViewPortDesc.Width + ptWindowPos.x;
-
-	if (ptWindowPos.x >= 0 && ptWindowPos.x < ViewPortDesc.Width && ptWindowPos.y >= 0 && ptWindowPos.y < ViewPortDesc.Height)
-	{
-		fProjZ = ((_int*)SubResources.pData)[iIndex];
-	}
-	//unlock 같은 개념
-	m_pDeviceContext->Unmap(pIDScreenTexture, 0);
-
-	return fProjZ;
-}
-
 
 HRESULT CGraphic_Device::Ready_SwapChain(HWND hWnd, _bool isWindowed, _uint iWinCX, _uint iWinCY)
 {
@@ -311,101 +172,6 @@ HRESULT CGraphic_Device::Ready_BackBufferRenderTargetView()
 	return S_OK;
 }
 
-HRESULT CGraphic_Device::Ready_HitScreenRenderTargetView(_uint iWinCX, _uint iWinCY)
-{
-	if (nullptr == m_pDevice)
-		return E_FAIL;
-
-	ZeroMemory(&m_HitTextureDesc, sizeof(D3D11_TEXTURE2D_DESC));
-
-	m_HitTextureDesc.Width = iWinCX;
-	m_HitTextureDesc.Height = iWinCY;
-	m_HitTextureDesc.MipLevels = 1;
-	m_HitTextureDesc.ArraySize = 1;
-	m_HitTextureDesc.Format = DXGI_FORMAT_R32_FLOAT;
-
-	m_HitTextureDesc.SampleDesc.Quality = 0;
-	m_HitTextureDesc.SampleDesc.Count = 1;
-
-	m_HitTextureDesc.Usage = D3D11_USAGE_DEFAULT;
-	m_HitTextureDesc.BindFlags = D3D11_BIND_RENDER_TARGET /*| D3D11_BIND_SHADER_RESOURCE*/;
-	/*| D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE*/
-	m_HitTextureDesc.CPUAccessFlags = 0;
-	m_HitTextureDesc.MiscFlags = 0;
-
-	if (FAILED(m_pDevice->CreateTexture2D(&m_HitTextureDesc, nullptr, &m_pHitScreenTexture)))
-		return E_FAIL;
-
-	if (FAILED(m_pDevice->CreateRenderTargetView(m_pHitScreenTexture, nullptr, &m_pHitScreenRTV)))
-		return E_FAIL;	
-
-	return S_OK;
-}
-
-HRESULT CGraphic_Device::Ready_IDScreenRenderTargetView(_uint iWinCX, _uint iWinCY)
-{
-
-	if (nullptr == m_pDevice)
-		return E_FAIL;
-
-	ZeroMemory(&m_IDTextureDesc, sizeof(D3D11_TEXTURE2D_DESC));
-
-	m_IDTextureDesc.Width = iWinCX;
-	m_IDTextureDesc.Height = iWinCY;
-	m_IDTextureDesc.MipLevels = 1;
-	m_IDTextureDesc.ArraySize = 1;
-	m_IDTextureDesc.Format = DXGI_FORMAT_R32_SINT;
-
-	m_IDTextureDesc.SampleDesc.Quality = 0;
-	m_IDTextureDesc.SampleDesc.Count = 1;
-
-	m_IDTextureDesc.Usage = D3D11_USAGE_DEFAULT;
-	m_IDTextureDesc.BindFlags = D3D11_BIND_RENDER_TARGET /*| D3D11_BIND_SHADER_RESOURCE*/;
-	/*| D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE*/
-	m_IDTextureDesc.CPUAccessFlags = 0;
-	m_IDTextureDesc.MiscFlags = 0;
-
-	if (FAILED(m_pDevice->CreateTexture2D(&m_IDTextureDesc, nullptr, &m_pIDScreenTexture)))
-		return E_FAIL;
-
-	if (FAILED(m_pDevice->CreateRenderTargetView(m_pIDScreenTexture, nullptr, &m_pIDScreenRTV)))
-		return E_FAIL;
-
-	return S_OK;
-}
-
-HRESULT CGraphic_Device::Ready_UIIDScreenRenderTargetView(_uint iWinCX, _uint iWinCY)
-{
-
-	if (nullptr == m_pDevice)
-		return E_FAIL;
-
-	ZeroMemory(&m_UIIDTextureDesc, sizeof(D3D11_TEXTURE2D_DESC));
-
-	m_UIIDTextureDesc.Width = iWinCX;
-	m_UIIDTextureDesc.Height = iWinCY;
-	m_UIIDTextureDesc.MipLevels = 1;
-	m_UIIDTextureDesc.ArraySize = 1;
-	m_UIIDTextureDesc.Format = DXGI_FORMAT_R32_SINT;
-
-	m_UIIDTextureDesc.SampleDesc.Quality = 0;
-	m_UIIDTextureDesc.SampleDesc.Count = 1;
-
-	m_UIIDTextureDesc.Usage = D3D11_USAGE_DEFAULT;
-	m_UIIDTextureDesc.BindFlags = D3D11_BIND_RENDER_TARGET /*| D3D11_BIND_SHADER_RESOURCE*/;
-	/*| D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE*/
-	m_UIIDTextureDesc.CPUAccessFlags = 0;
-	m_UIIDTextureDesc.MiscFlags = 0;
-
-	if (FAILED(m_pDevice->CreateTexture2D(&m_UIIDTextureDesc, nullptr, &m_pUIIDScreenTexture)))
-		return E_FAIL;
-
-	if (FAILED(m_pDevice->CreateRenderTargetView(m_pUIIDScreenTexture, nullptr, &m_pUIIDScreenRTV)))
-		return E_FAIL;
-
-	return S_OK;
-}
-
 HRESULT CGraphic_Device::Ready_DepthStencilRenderTargetView(_uint iWinCX, _uint iWinCY)
 {
 	if (nullptr == m_pDevice)
@@ -463,32 +229,26 @@ void CGraphic_Device::Free()
 {
 	Safe_Release(m_pSwapChain);
 	Safe_Release(m_pDepthStencilView);
-	Safe_Release(m_pHitScreenTexture);
-	Safe_Release(m_pIDScreenTexture);
-	Safe_Release(m_pUIIDScreenTexture);	
-	Safe_Release(m_pIDScreenRTV);
-	Safe_Release(m_pUIIDScreenRTV);
-	Safe_Release(m_pHitScreenRTV);
 	Safe_Release(m_pBackBufferRTV);
 	Safe_Release(m_pDeviceContext);
 
-//#if defined(DEBUG) || defined(_DEBUG)
-//	ID3D11Debug* d3dDebug;
-//	HRESULT hr = m_pDevice->QueryInterface(__uuidof(ID3D11Debug), reinterpret_cast<void**>(&d3dDebug));
-//	if (SUCCEEDED(hr))
-//	{
-//		OutputDebugStringW(L"----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- \r ");
-//		OutputDebugStringW(L"                                                                    D3D11 Live Object ref Count Checker \r ");
-//		OutputDebugStringW(L"----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- \r ");
-//
-//		hr = d3dDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
-//
-//		OutputDebugStringW(L"----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- \r ");
-//		OutputDebugStringW(L"                                                                    D3D11 Live Object ref Count Checker END \r ");
-//		OutputDebugStringW(L"----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- \r ");
-//	}
-//	if (d3dDebug != nullptr)            d3dDebug->Release();
-//#endif
+#if defined(DEBUG) || defined(_DEBUG)
+	ID3D11Debug* d3dDebug;
+	HRESULT hr = m_pDevice->QueryInterface(__uuidof(ID3D11Debug), reinterpret_cast<void**>(&d3dDebug));
+	if (SUCCEEDED(hr))
+	{
+		OutputDebugStringW(L"----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- \r ");
+		OutputDebugStringW(L"                                                                    D3D11 Live Object ref Count Checker \r ");
+		OutputDebugStringW(L"----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- \r ");
+
+		hr = d3dDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
+
+		OutputDebugStringW(L"----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- \r ");
+		OutputDebugStringW(L"                                                                    D3D11 Live Object ref Count Checker END \r ");
+		OutputDebugStringW(L"----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- \r ");
+	}
+	if (d3dDebug != nullptr)            d3dDebug->Release();
+#endif
 
 
 	Safe_Release(m_pDevice);

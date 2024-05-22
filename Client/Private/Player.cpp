@@ -50,7 +50,7 @@ HRESULT CPlayer::Initialize(void* pArg)
 
 
 	m_pStateMachine = CStateMachine::GetInstance();
-	Safe_AddRef(m_pStateMachine);
+
 	m_pStateMachine->Initialize();
 
 	m_pStateMachine->Set_CurrentState(this, PLAYERSTATE::PLAYER_IDLE);
@@ -147,15 +147,15 @@ void CPlayer::Late_Tick(_float fTimeDelta)
 		break;
 	}
 	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
+
+#ifdef _DEBUG
+	m_pGameInstance->Add_DebugComponent(m_pColliderCom);
+	m_pGameInstance->Add_DebugComponent(m_pNavigationCom);
+#endif
 }
 
 HRESULT CPlayer::Render()
 {
-
-#ifdef _DEBUG
-	m_pColliderCom->Render();
-	m_pNavigationCom->Render();
-#endif
 
 	return S_OK;
 }
@@ -506,7 +506,7 @@ HRESULT CPlayer::Inventory_Drop(wstring ItemName)
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, TEXT("Layer_Item"), ItemDesc.ProtoTypeTag, &ItemDesc)))
 		return E_FAIL;
 
-
+	return S_OK;
 }
 
 HRESULT CPlayer::Inventory_DropRabbit(wstring ItemName)
@@ -694,6 +694,8 @@ void CPlayer::Free()
 	Safe_Release(m_pUImanager);
 
 	Safe_Release(m_pInventory);
+
+	Safe_Release(m_pLoadingBar);
 
 	CStateMachine::DestroyInstance();
 

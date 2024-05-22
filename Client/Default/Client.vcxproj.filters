@@ -232,9 +232,6 @@
     <Filter Include="94. StateMachine\State\Player\State_Reload_Loop">
       <UniqueIdentifier>{d8ab09a0-8e34-45c3-a0aa-ae0d9df9d501}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Levels\03.Basement">
-      <UniqueIdentifier>{5a0d3adb-3cc7-4917-933f-4a58650f971b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\05.InteractiveObject">
       <UniqueIdentifier>{f17945c0-e7c2-4bdb-8cef-69d1c7e24f47}</UniqueIdentifier>
     </Filter>
@@ -465,9 +462,6 @@
     <ClInclude Include="..\Public\State_Enter.h">
       <Filter>94. StateMachine\State\Player\State_Reload_Loop</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Level_Basement.h">
-      <Filter>01.Levels\03.Basement</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\InteractiveObject.h">
       <Filter>02.GameObjects\05.InteractiveObject</Filter>
     </ClInclude>
@@ -689,9 +683,6 @@
     <ClCompile Include="..\Private\State_Enter.cpp">
       <Filter>94. StateMachine\State\Player\State_Reload_Loop</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Level_Basement.cpp">
-      <Filter>01.Levels\03.Basement</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\InteractiveObject.cpp">
       <Filter>02.GameObjects\05.InteractiveObject</Filter>
     </ClCompile>
@@ -733,16 +724,10 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMeshID.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
-    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMeshTreeID.hlsl">
-      <Filter>97.ShaderFiles</Filter>
-    </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl">
-      <Filter>97.ShaderFiles</Filter>
-    </FxCompile>
-    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMeshTree.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTexBack.hlsl">

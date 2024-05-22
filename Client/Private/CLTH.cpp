@@ -48,6 +48,7 @@ void CCLTH::Tick(_float fTimeDelta)
 void CCLTH::Late_Tick(_float fTimeDelta)
 {
 	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
+
 }
 
 HRESULT CCLTH::Render()
@@ -59,7 +60,7 @@ HRESULT CCLTH::Render()
 
 	for (size_t i = 0; i < iNumMeshes; i++)
 	{
-		if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_Texture", i, aiTextureType_DIFFUSE)))
+		if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 			return E_FAIL;
 
 		m_pShaderCom->Begin(0);

@@ -22,8 +22,8 @@ private:
 
 private:
     class CGameInstance* m_pGameInstance = { nullptr };
-    class ID3D11Device* m_pDevice;
-    class ID3D11DeviceContext* m_pContext;
+     ID3D11Device* m_pDevice;
+     ID3D11DeviceContext* m_pContext;
 public:
     HRESULT Initialize(void* pArg=nullptr);
     HRESULT Pick_up(class CGameObject* pPickObject, _bool* Acquire);

@@ -103,7 +103,7 @@ HRESULT CBody_Player::Render()
 	{
 		m_pModelCom->Bind_BoneMatrices(m_pShaderCom, "g_BoneMatrices", i);
 
-		if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_Texture", i, aiTextureType_DIFFUSE)))
+		if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 			return E_FAIL;
 
 		m_pShaderCom->Begin(0);
@@ -332,7 +332,7 @@ HRESULT CBody_Player::Mesh_Render(_uint MeshIndex)
 {
 	m_pModelCom->Bind_BoneMatrices(m_pShaderCom, "g_BoneMatrices", MeshIndex);
 
-	if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_Texture", MeshIndex, aiTextureType_DIFFUSE)))
+	if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", MeshIndex, aiTextureType_DIFFUSE)))
 		return E_FAIL;
 
 	m_pShaderCom->Begin(0);

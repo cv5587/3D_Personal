@@ -151,6 +151,18 @@
     <Filter Include="01.Utility\02.GameObjects\UI">
       <UniqueIdentifier>{5dfc68e9-437b-43e0-8030-d663bc8c2feb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\07.Lights">
+      <UniqueIdentifier>{86512ee6-b7f4-4e9d-80bb-a1413dfb7637}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\07.Lights\Manager">
+      <UniqueIdentifier>{36dca4e8-5448-4ab1-bdbc-182a12ce71b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\08.RenderTargets">
+      <UniqueIdentifier>{de6b5d57-35a0-47dc-8d17-1d3db93bd3cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\08.RenderTargets\Manager">
+      <UniqueIdentifier>{a84590f5-7f64-4ca0-a474-9d63a3058d85}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -300,6 +312,18 @@
     <ClInclude Include="..\Public\UIBase.h">
       <Filter>01.Utility\02.GameObjects\UI</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Light.h">
+      <Filter>01.Utility\07.Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Light_Manager.h">
+      <Filter>01.Utility\07.Lights\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderTarget.h">
+      <Filter>01.Utility\08.RenderTargets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Target_Manager.h">
+      <Filter>01.Utility\08.RenderTargets\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -436,6 +460,18 @@
     </ClCompile>
     <ClCompile Include="..\Private\UIBase.cpp">
       <Filter>01.Utility\02.GameObjects\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Light.cpp">
+      <Filter>01.Utility\07.Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Light_Manager.cpp">
+      <Filter>01.Utility\07.Lights\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderTarget.cpp">
+      <Filter>01.Utility\08.RenderTargets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Target_Manager.cpp">
+      <Filter>01.Utility\08.RenderTargets\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
