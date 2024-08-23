@@ -56,6 +56,8 @@ _bool CBounding_AABB::IntersectRay(_vector* pRayArray, _float* fDist)
 	_vector Ray = pRayArray[1];
 
 	isColl = m_pDesc->Intersects(Origin, Ray, *fDist);
+	if (isColl)
+		int a = 10;
 
 	return isColl;
 }

@@ -16,7 +16,7 @@ class CUIItemIcon :
 	public CUIBase
 {
 public:
-	typedef struct :public CUIBase::UI_BASE_DESC {
+	typedef struct UI_ITEMICON_DESC :public CUIBase::UI_BASE_DESC {
 
 	}UI_ITEMICON_DESC;
 

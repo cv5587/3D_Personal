@@ -14,7 +14,7 @@ BEGIN(Client)
 class CBackGround final : public CGameObject
 {
 public:
-	typedef struct :public CGameObject::GAMEOBJECT_DESC
+	typedef struct BACKGROUND_DESC :public CGameObject::GAMEOBJECT_DESC
 	{
 		_float		fData;
 	}BACKGROUND_DESC;

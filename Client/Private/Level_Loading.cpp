@@ -43,8 +43,8 @@ void CLevel_Loading::Tick(_float fTimeDelta)
 {
 	if (true == m_pLoader->is_Finished())
 	{
-		if (GetKeyState(VK_RETURN) & 0x8000)
-		{
+	//	if (GetKeyState(VK_RETURN) & 0x8000)
+	//	{
 			CLevel* pNewLevel = { nullptr };
 
 			switch (m_eNextLevel)
@@ -62,7 +62,7 @@ void CLevel_Loading::Tick(_float fTimeDelta)
 
  			if (FAILED(m_pGameInstance->Open_Level(m_eNextLevel, pNewLevel)))
 				return;
-		}
+//		}
 	}
 
 
@@ -73,12 +73,13 @@ void CLevel_Loading::Tick(_float fTimeDelta)
 
 HRESULT CLevel_Loading::Ready_Layer_BackGround(const wstring& strLayerTag)
 {
-	/*CBackGround::BACKGROUND_DESC		ObjectDesc{};
+	/*CBackGround::BACKGROUND_DESC		ObjectDesc={};
 
 	ObjectDesc.fData = 10.f;
 	ObjectDesc.iData = 5;
 	ObjectDesc.fSpeedPerSec = 10.f;
 	ObjectDesc.fRotationPerSec = XMConvertToRadians(90.0f);*/
+	m_pGameInstance->Play_BGM(TEXT("Loading.wav"),  0.8f);
 
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_LOADING, strLayerTag, TEXT("Prototype_GameObject_BackGround"))))
 		return E_FAIL;

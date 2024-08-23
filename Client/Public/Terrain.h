@@ -14,7 +14,7 @@ class CTerrain :
     public CGameObject
 {
 public:
-	typedef struct :public CGameObject::GAMEOBJECT_DESC
+	typedef struct TERRAIN_DESC :public CGameObject::GAMEOBJECT_DESC
 	{
 		_int TerrainUV[2];
 	}TERRAIN_DESC;

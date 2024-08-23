@@ -75,6 +75,8 @@ public:
 	HRESULT Go_RightBackward(_float fTimeDelta, class  CNavigation* pNavigation = nullptr);
 
 	HRESULT LookAt(_fvector vTargetPosition);
+	HRESULT LookBack(_fvector vTargetPosition);
+	HRESULT LookUp();
 	HRESULT LookAt_For_LandObject(_fvector vTargetPosition);
 	HRESULT Turn(_fvector vAxis, _float fTimeDelta);
 	HRESULT Rotation(_fvector vAxis, _float fRadian);
@@ -88,6 +90,7 @@ public:
 
 	HRESULT Patrol(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
 	HRESULT Escape(_fmatrix mPlayer , _float fTimeDelta, class  CNavigation* pNavigation = nullptr);
+	HRESULT Chase(_fmatrix mPlayer , _float fTimeDelta, class  CNavigation* pNavigation = nullptr);
 public:
 	HRESULT Bind_ShaderResource(class CShader* pShader, const _char* pConstantName);
 

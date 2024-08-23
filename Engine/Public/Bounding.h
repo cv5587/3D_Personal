@@ -7,7 +7,7 @@ BEGIN(Engine)
 class CBounding abstract : public CBase
 {
 public:
-	typedef struct : public CCollider::COLLIDER_DESC
+	typedef struct BOUNDING_DESC : public CCollider::COLLIDER_DESC
 	{
 		_float3		vCenter;
 	}BOUNDING_DESC;

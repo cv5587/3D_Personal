@@ -6,7 +6,7 @@ CPortal::CPortal(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 }
 
 CPortal::CPortal(const CPortal& rhs)
-    :CInteractiveObject{ rhs }
+    :CInteractiveObject( rhs )
 {
 }
 
@@ -19,7 +19,7 @@ HRESULT CPortal::Initialize_Prototype()
 HRESULT CPortal::Initialize(void* pArg)
 {
     CPortal::PORTAL_DESC* pDesc = static_cast<PORTAL_DESC*>(pArg);
-
+    m_ItemUIName = TEXT("문");
     m_iGoalCellIndex = pDesc->iGoalCellIndex;
     m_vGoalPosition = pDesc->vGoalPosition;
 
@@ -46,6 +46,11 @@ void CPortal::Tick(_float fTimeDelta)
 void CPortal::Late_Tick(_float fTimeDelta)
 {
     m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
+
+#ifdef _DEBUG
+    m_pGameInstance->Add_DebugComponent(m_pColliderCom);
+#endif
+
 }
 
 HRESULT CPortal::Render()
@@ -56,10 +61,8 @@ HRESULT CPortal::Render()
 
     _uint	iNumMeshes = m_pModelCom->Get_NumMeshes();
 
-    for (size_t i = 0; i < iNumMeshes; i++)
+    for (_uint i = 0; i < iNumMeshes; i++)
     {
-        m_pModelCom->Bind_BoneMatrices(m_pShaderCom, "g_BoneMatrices", i);
-
         if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
             return E_FAIL;
 
@@ -68,9 +71,9 @@ HRESULT CPortal::Render()
         m_pModelCom->Render(i);
     }
 
-#ifdef _DEBUG
-    m_pColliderCom->Render();
-#endif
+        
+
+
 
 
     return S_OK;
@@ -83,18 +86,38 @@ _bool CPortal::IntersectRay(_vector* pRayArray, _float* fDist)
         return true;
     }
     
-
     return false;
 }
 
 HRESULT CPortal::Action()
 {
-    CGameObject* pPlayer = m_pGameInstance->FindIndex_CloneObject(LEVEL_GAMEPLAY,TEXT("Layer_Player"));
+    _bool Switch = !(m_pGameInstance->Get_LightDesc(0)->bSwitch);
+    m_pGameInstance->Set_LightSwitch(0, Switch);
+    m_pGameInstance->Set_LightSwitch(1, !Switch);
 
+    CGameObject* pPlayer = m_pGameInstance->FindIndex_CloneObject(LEVEL_GAMEPLAY,TEXT("Layer_Player"));
+    
     if (FAILED(dynamic_cast<CPlayer*>(pPlayer)->Set_Portal(m_iGoalCellIndex, m_vGoalPosition)))
         return E_FAIL;
 
+
+
     return S_OK;
+}
+
+_bool CPortal::RayCollInfo(_vector* pRayArray, CGameObject** pGameObject)
+{
+    _float fDist = 0.f;
+    if (m_pColliderCom->IntersectRay(pRayArray, &fDist))
+    {
+        if (3 > fDist)
+        {
+            *pGameObject = this;
+            return true;
+        }
+    }
+
+    return false;
 }
 
 HRESULT CPortal::Add_Components()
@@ -110,7 +133,7 @@ HRESULT CPortal::Add_Components()
         return E_FAIL;
 
     /* For.Com_Collider */
-    CBounding_AABB::BOUNDING_AABB_DESC		ColliderDesc{};
+    CBounding_AABB::BOUNDING_AABB_DESC		ColliderDesc={};
 
     ColliderDesc.eType = CCollider::TYPE_AABB;
     ColliderDesc.vExtents = _float3(1.0f, 1.0f, 1.0f);//aabb 조절가능

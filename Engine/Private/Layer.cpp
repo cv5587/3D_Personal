@@ -174,6 +174,15 @@ CGameObject* CLayer::IntersectRay(_vector* pRayArray, _float* fDist)
 	return nullptr;
 }
 
+_bool CLayer::RayCollInfo(_vector* pRayArray, CGameObject** ppGameObject)
+{
+	for (auto& pGameObject : m_GameObjects)
+		if (pGameObject->RayCollInfo(pRayArray, ppGameObject))
+			return true;
+
+	return false;
+}
+
 void CLayer::Render_UI()
 {
 	for (auto& pGameObject : m_GameObjects)

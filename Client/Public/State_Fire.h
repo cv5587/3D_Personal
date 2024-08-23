@@ -12,7 +12,8 @@ public:
     virtual void Enter(class CPlayer* Player) override;
     virtual void Update(class CPlayer* Player, _float fTimeDelta)override;
     virtual void Exit(class CPlayer* Player)override;
-
+private:
+    _bool isbFire = { false };
 public:
     static CState* Create();
     virtual void Free() override;

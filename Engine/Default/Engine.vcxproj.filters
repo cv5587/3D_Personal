@@ -163,6 +163,30 @@
     <Filter Include="01.Utility\08.RenderTargets\Manager">
       <UniqueIdentifier>{a84590f5-7f64-4ca0-a474-9d63a3058d85}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\03.Components\VIBuffer\Instance">
+      <UniqueIdentifier>{61f00f8f-72bb-4251-9494-a6aee5272c0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Components\VIBuffer\Instance\Point">
+      <UniqueIdentifier>{c8e0ed57-4e25-4e5f-a829-08850d751964}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Components\VIBuffer\Instance\Rect">
+      <UniqueIdentifier>{172b12eb-d29f-4bba-b84c-64afb1384a13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\02.GameObjects\BlendObject">
+      <UniqueIdentifier>{51700dfc-fa44-4d1a-8eb2-f167b3c1f985}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Components\VIBuffer\Trail">
+      <UniqueIdentifier>{0be1488f-f4bc-49c3-a7bb-fb4825266412}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\09.Frustum">
+      <UniqueIdentifier>{bc8088b8-ee9c-4169-a6ca-21141af9ea99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Components\VIBuffer\Terrain\QuadTree">
+      <UniqueIdentifier>{87903519-ea0b-4f2f-8d9d-21a7a73ce7b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Components\VIBuffer\Cube">
+      <UniqueIdentifier>{51ae3a41-2d5e-430a-9f99-1657117532e6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -324,6 +348,33 @@
     <ClInclude Include="..\Public\Target_Manager.h">
       <Filter>01.Utility\08.RenderTargets\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_Instance.h">
+      <Filter>01.Utility\03.Components\VIBuffer\Instance</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_Instance_Point.h">
+      <Filter>01.Utility\03.Components\VIBuffer\Instance\Point</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_Instance_Rect.h">
+      <Filter>01.Utility\03.Components\VIBuffer\Instance\Rect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BlendObject.h">
+      <Filter>01.Utility\02.GameObjects\BlendObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_Trail.h">
+      <Filter>01.Utility\03.Components\VIBuffer\Trail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Frustum.h">
+      <Filter>01.Utility\09.Frustum</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\QuadTree.h">
+      <Filter>01.Utility\03.Components\VIBuffer\Terrain\QuadTree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_Cube.h">
+      <Filter>01.Utility\03.Components\VIBuffer\Cube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SoundMgr.h">
+      <Filter>00.System\00.Device\Sound</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -472,6 +523,33 @@
     </ClCompile>
     <ClCompile Include="..\Private\Target_Manager.cpp">
       <Filter>01.Utility\08.RenderTargets\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_Instance.cpp">
+      <Filter>01.Utility\03.Components\VIBuffer\Instance</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_Instance_Point.cpp">
+      <Filter>01.Utility\03.Components\VIBuffer\Instance\Point</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_Instance_Rect.cpp">
+      <Filter>01.Utility\03.Components\VIBuffer\Instance\Rect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BlendObject.cpp">
+      <Filter>01.Utility\02.GameObjects\BlendObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_Trail.cpp">
+      <Filter>01.Utility\03.Components\VIBuffer\Trail</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Frustum.cpp">
+      <Filter>01.Utility\09.Frustum</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\QuadTree.cpp">
+      <Filter>01.Utility\03.Components\VIBuffer\Terrain\QuadTree</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_Cube.cpp">
+      <Filter>01.Utility\03.Components\VIBuffer\Cube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SoundMgr.cpp">
+      <Filter>00.System\00.Device\Sound</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

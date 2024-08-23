@@ -21,7 +21,7 @@ CMainApp::CMainApp()
 HRESULT CMainApp::Initialize()
 {
 
-	ENGINE_DESC			EngineDesc{};
+	ENGINE_DESC			EngineDesc={};
 
 	EngineDesc.hWnd = g_hWnd;
 	EngineDesc.iWinSizeX = g_iWinSizeX;
@@ -44,7 +44,7 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(Ready_DataManager()))
 		return E_FAIL;
 
-	if (FAILED(Open_Level(LEVEL_LOGO)))
+	if (FAILED(Open_Level(LEVEL_GAMEPLAY)))
 		return E_FAIL;
 	
 
@@ -53,18 +53,41 @@ HRESULT CMainApp::Initialize()
 
 void CMainApp::Tick(float fTimeDelta)
 {
+#ifdef _DEBUG
+	m_fTimeAcc += fTimeDelta;
+
+#endif
 	m_pGameInstance->Tick_Engine(fTimeDelta);
+
+
+
 }
 
 HRESULT CMainApp::Render()
 {
+#ifdef _DEBUG
+	//++m_iNumRender;
+
+	//if (m_fTimeAcc >= 1.f)
+	//{
+	//	wsprintf(m_szFPS, TEXT("FPS : %d"), m_iNumRender);
+
+	//	m_fTimeAcc = 0.f;
+	//	m_iNumRender = 0;
+	//}
+#endif
+
+	/* 그린다. */
 	m_pGameInstance->Clear_BackBuffer_View(_float4(0.f, 0.f, 1.f, 1.f));
 	m_pGameInstance->Clear_DepthStencil_View();
 
-	/* 그린다. */
 	if (FAILED(m_pGameInstance->Draw(_float4(0.f, 0.f, 1.f, 1.f))))
 		return E_FAIL;
 	
+#ifdef _DEBUG
+	//m_pGameInstance->Render_Font(TEXT("Font_Normal14"), m_szFPS, _float2(0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+#endif
+
 	if (FAILED(m_pGameInstance->Present()))
 		return E_FAIL;
 
@@ -97,6 +120,10 @@ HRESULT CMainApp::Ready_Prototype_GameObject()
 HRESULT CMainApp::Ready_Prototype_Component()
 {	
 
+	/* Prototype_Component_Texture_Muzzle */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Muzzle"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/Particle/MuzzleFlash02.dds"), 1))))
+		return E_FAIL;
 
 	/* For.Prototype_Component_VIBuffer_Rect */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"), 
@@ -138,11 +165,20 @@ HRESULT CMainApp::Ready_Prototype_Component()
 		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_LoadingBar.hlsl"), VTXPOSTEX::Elements, VTXPOSTEX::iNumElements))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Shader_LoadingStruggle */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_LoadingStruggle"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_LoadingStruggle.hlsl"), VTXPOSTEX::Elements, VTXPOSTEX::iNumElements))))
+		return E_FAIL;
+
 	/* For.Prototype_Component_Texture_Loading */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Loading"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Default%d.jpg"), 2))))
 		return E_FAIL;
 
+	/* Prototype_Component_Texture_LoadLevel */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_LoadLevel"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Asset2D/Textures/LoadLevel/region_ToC_PleasantValley.dds"), 1))))
+		return E_FAIL;
 
 	return S_OK;
 }

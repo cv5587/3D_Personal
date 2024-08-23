@@ -9,7 +9,7 @@ class ENGINE_DLL CItem :
 	public CGameObject
 {
 public:
-	typedef struct : public CGameObject::GAMEOBJECT_DESC {
+	typedef struct ITEM_DESC : public CGameObject::GAMEOBJECT_DESC {
 		_uint iQuantity;
 		_uint ItemType[2];
 		wstring ItemName;

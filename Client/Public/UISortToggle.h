@@ -14,7 +14,7 @@ class CUISortToggle final :
 	public CUIBase
 {
 public:
-	typedef struct :public CUIBase::UI_BASE_DESC {
+	typedef struct UI_SORT_DESC :public CUIBase::UI_BASE_DESC {
 		_uint UISortIndex;
 		_float UIToggleBrightness;//일단 둬보자
 

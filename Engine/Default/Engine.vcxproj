@@ -109,7 +109,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;dinput8.lib;dxguid.lib;Effects11d.lib;DirectXTKd.lib;assimp-vc143-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;dinput8.lib;dxguid.lib;Effects11d.lib;DirectXTKd.lib;assimp-vc143-mtd.lib;fmod_vc.lib;fmodL_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>../ThirdPartyLib/</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
@@ -177,6 +177,7 @@ call Copy.bat
   <ItemGroup>
     <ClCompile Include="..\Private\Animation.cpp" />
     <ClCompile Include="..\Private\Base.cpp" />
+    <ClCompile Include="..\Private\BlendObject.cpp" />
     <ClCompile Include="..\Private\Bone.cpp" />
     <ClCompile Include="..\Private\Bounding.cpp" />
     <ClCompile Include="..\Private\Bounding_AABB.cpp" />
@@ -191,10 +192,12 @@ call Copy.bat
     <ClCompile Include="..\Private\Collider.cpp" />
     <ClCompile Include="..\private\Component.cpp" />
     <ClCompile Include="..\private\Component_Manager.cpp" />
+    <ClCompile Include="..\Private\QuadTree.cpp" />
     <ClCompile Include="..\Private\CustomFont.cpp" />
     <ClCompile Include="..\Private\DataControl.cpp" />
     <ClCompile Include="..\Private\DebugDraw.cpp" />
     <ClCompile Include="..\Private\Font_Manager.cpp" />
+    <ClCompile Include="..\Private\Frustum.cpp" />
     <ClCompile Include="..\private\GameInstance.cpp" />
     <ClCompile Include="..\private\GameObject.cpp" />
     <ClCompile Include="..\Private\Graphic_Device.cpp" />
@@ -215,6 +218,7 @@ call Copy.bat
     <ClCompile Include="..\private\Renderer.cpp" />
     <ClCompile Include="..\Private\RenderTarget.cpp" />
     <ClCompile Include="..\private\Shader.cpp" />
+    <ClCompile Include="..\Private\SoundMgr.cpp" />
     <ClCompile Include="..\Private\Target_Manager.cpp" />
     <ClCompile Include="..\private\Texture.cpp" />
     <ClCompile Include="..\Private\Timer.cpp" />
@@ -223,13 +227,19 @@ call Copy.bat
     <ClCompile Include="..\Private\UIBase.cpp" />
     <ClCompile Include="..\private\VIBuffer.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Cell.cpp" />
+    <ClCompile Include="..\Private\VIBuffer_Cube.cpp" />
+    <ClCompile Include="..\Private\VIBuffer_Instance.cpp" />
+    <ClCompile Include="..\Private\VIBuffer_Instance_Point.cpp" />
+    <ClCompile Include="..\Private\VIBuffer_Instance_Rect.cpp" />
     <ClCompile Include="..\private\VIBuffer_Rect.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Terrain.cpp" />
+    <ClCompile Include="..\Private\VIBuffer_Trail.cpp" />
     <ClCompile Include="..\Public\Engine_Struct.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Animation.h" />
     <ClInclude Include="..\Public\Base.h" />
+    <ClInclude Include="..\Public\BlendObject.h" />
     <ClInclude Include="..\Public\Bone.h" />
     <ClInclude Include="..\Public\Bounding.h" />
     <ClInclude Include="..\Public\Bounding_AABB.h" />
@@ -253,6 +263,7 @@ call Copy.bat
     <ClInclude Include="..\Public\Engine_Typedef.h" />
     <ClInclude Include="..\Public\DataControl.h" />
     <ClInclude Include="..\Public\Font_Manager.h" />
+    <ClInclude Include="..\Public\Frustum.h" />
     <ClInclude Include="..\public\GameInstance.h" />
     <ClInclude Include="..\public\GameObject.h" />
     <ClInclude Include="..\Public\Graphic_Device.h" />
@@ -270,9 +281,11 @@ call Copy.bat
     <ClInclude Include="..\Public\Navigation.h" />
     <ClInclude Include="..\public\Object_Manager.h" />
     <ClInclude Include="..\Public\PipeLine.h" />
+    <ClInclude Include="..\Public\QuadTree.h" />
     <ClInclude Include="..\public\Renderer.h" />
     <ClInclude Include="..\Public\RenderTarget.h" />
     <ClInclude Include="..\public\Shader.h" />
+    <ClInclude Include="..\Public\SoundMgr.h" />
     <ClInclude Include="..\Public\Target_Manager.h" />
     <ClInclude Include="..\public\Texture.h" />
     <ClInclude Include="..\Public\Timer.h" />
@@ -281,8 +294,13 @@ call Copy.bat
     <ClInclude Include="..\Public\UIBase.h" />
     <ClInclude Include="..\public\VIBuffer.h" />
     <ClInclude Include="..\Public\VIBuffer_Cell.h" />
+    <ClInclude Include="..\Public\VIBuffer_Cube.h" />
+    <ClInclude Include="..\Public\VIBuffer_Instance.h" />
+    <ClInclude Include="..\Public\VIBuffer_Instance_Point.h" />
+    <ClInclude Include="..\Public\VIBuffer_Instance_Rect.h" />
     <ClInclude Include="..\public\VIBuffer_Rect.h" />
     <ClInclude Include="..\Public\VIBuffer_Terrain.h" />
+    <ClInclude Include="..\Public\VIBuffer_Trail.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Cell.hlsl">

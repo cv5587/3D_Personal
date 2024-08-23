@@ -52,6 +52,11 @@ HRESULT CUIBase::Render()
     return S_OK;
 }
 
+_bool CUIBase::IntersectUI()
+{
+    return true;
+}
+
 HRESULT CUIBase::Action()
 {
     return S_OK;

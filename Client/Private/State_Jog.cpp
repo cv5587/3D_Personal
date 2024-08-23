@@ -15,6 +15,17 @@ void CState_Jog::Enter(CPlayer* Player)
 
 void CState_Jog::Update(CPlayer* Player, _float fTimeDelta)
 {
+	m_fFootTime += fTimeDelta;
+	if (m_fFootTime > 0.5f)
+	{
+		Player->Make_FootStep();
+		m_pGameInstance->StopSound(CH_FOOT);
+		m_pGameInstance->Play_Sound(TEXT("Foot.wav"), CH_FOOT, 0.9f);
+		m_fFootTime = 0.f;
+	}
+	if (true == Player->Burn_Out())
+		return;
+
 	if (m_pGameInstance->Get_DIKeyState(DIK_W))
 	{
 		Player->Set_State(PLAYERSTATE::PLAYER_JOG);
@@ -115,7 +126,7 @@ void CState_Jog::Update(CPlayer* Player, _float fTimeDelta)
 
 void CState_Jog::Exit(CPlayer* Player)
 {
-
+	//m_fFootTime = 0.f;
 }
 
 CState* CState_Jog::Create()

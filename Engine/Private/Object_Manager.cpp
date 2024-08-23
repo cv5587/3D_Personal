@@ -1,6 +1,7 @@
 #include "..\Public\Object_Manager.h"
 #include "GameObject.h"
 #include "UIBase.h"
+#include "Item.h"
 #include "Layer.h"
 
 CObject_Manager::CObject_Manager()
@@ -232,6 +233,7 @@ CGameObject* CObject_Manager::Clone_Object(const wstring& strPrototypeTag, void*
 	return pCloneObject;
 }
 
+
 _bool CObject_Manager::Intersect(_uint iLevelIndex, const wstring& strLayerTag, CCollider* pTargetCollider)
 {
 	CLayer* pLayer = Find_Layer(iLevelIndex, strLayerTag);
@@ -250,6 +252,16 @@ CGameObject* CObject_Manager::IntersectRay(_uint iLevelIndex, const wstring& str
 		return nullptr;
 	else
 		return pLayer->IntersectRay(pRayArray, fDist);
+}
+
+_bool CObject_Manager::RayCollInfo(_uint iLevelIndex, const wstring& strLayerTag, _vector* pRayArray, CGameObject** pGameObject)
+{
+	CLayer* pLayer = Find_Layer(iLevelIndex, strLayerTag);
+
+	if (nullptr == pLayer)
+		return nullptr;
+	else
+		return pLayer->RayCollInfo(pRayArray, pGameObject);
 }
 
 CUIBase* CObject_Manager::FindUIID_CloneObject(_uint iLevelIndex, const wstring& strLayerTag, _int UIID)

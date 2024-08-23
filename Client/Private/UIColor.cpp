@@ -3,6 +3,7 @@
 
 #include "GameInstance.h"
 #include "Item.h"
+#include "Player.h"
 
 CUIColor::CUIColor(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CUIBase(pDevice, pContext), m_fX(0.f), m_fY(0.f), m_fSizeX(0), m_fSizeY(0)
@@ -33,6 +34,8 @@ HRESULT CUIColor::Initialize(void* pArg)
 
 
 	m_vColor = pDesc->vColor;
+	m_iShaderPass = pDesc->iShaderPass;
+	m_pCurrentLoad = pDesc->pCurrentLoad;
 	m_pTransformCom->Set_State_Matrix(XMLoadFloat4x4(&pDesc->vPrePosition));
 	//뷰,투영행렬
 	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
@@ -46,10 +49,21 @@ HRESULT CUIColor::Initialize(void* pArg)
 
 void CUIColor::Priority_Tick(_float fTimeDelta)
 {
+	if(nullptr == m_pCurrentLoad)
+	{
+		CPlayer* pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->FindIndex_CloneObject(LEVEL_GAMEPLAY, TEXT("Layer_Player")));
+		m_pCurrentLoad=pPlayer->Get_LoadBar();
+	}
+
 }
 
 void CUIColor::Tick(_float fTimeDelta)
 {
+	//if (1 == m_iShaderPass)
+	//{
+	//	if (3 < *m_pCurrentLoad&& 7> *m_pCurrentLoad)
+	//		XMStoreFloat4(&m_vColor, _vector{ 0.f, 0.f, 0.f, 1.f });
+	//}
 }
 
 void CUIColor::Late_Tick(_float fTimeDelta)
@@ -62,7 +76,7 @@ HRESULT CUIColor::Render()
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 	//이건 쉐이더패스 몇번째꺼 쓸지에 대한 거임;;
-	m_pShaderCom->Begin(0);
+	m_pShaderCom->Begin(m_iShaderPass);
 
 	m_pVIBufferCom->Bind_Buffers();
 
@@ -106,6 +120,11 @@ HRESULT CUIColor::Bind_ShaderResources()
 	if (FAILED(m_pShaderCom->Bind_RawValue("g_vColor", &m_vColor, sizeof(_float4))))
 		return E_FAIL;
 
+	if(1==m_iShaderPass)
+	{
+		if (FAILED(m_pShaderCom->Bind_RawValue("g_fCurrentLoad", m_pCurrentLoad, sizeof(_float))))
+			return E_FAIL;
+	}
 
 	return S_OK;
 }

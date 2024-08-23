@@ -11,7 +11,7 @@ class CUIStateCloth final :
     public CUIBase
 {
 public:
-	typedef struct :public CUIBase::UI_BASE_DESC {
+	typedef struct UI_STATECLOTH_DESC :public CUIBase::UI_BASE_DESC {
 
 	}UI_STATECLOTH_DESC;
 

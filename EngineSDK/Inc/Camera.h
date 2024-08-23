@@ -5,9 +5,9 @@ BEGIN(Engine)
 class ENGINE_DLL CCamera abstract : public CGameObject
 {
 public:
-	typedef struct : CGameObject::GAMEOBJECT_DESC
+	typedef struct CAMERA_DESC : CGameObject::GAMEOBJECT_DESC
 	{
-		_float4x4* pEyeBoneMatrix;
+		const _float4x4* pEyeBoneMatrix;
 		_float4	vEye, vAt;
 		_float	fFovy,fAspect, fNear, fFar;
 	}CAMERA_DESC;
@@ -26,7 +26,8 @@ public:
 
 protected:
 
-	_float4x4*				m_pEyeBoneMatrix;
+	const _float4x4*				m_pEyeBoneMatrix;
+	const _float4x4*				m_pFovBoneMatrix;
 	_float4x4				m_WorldMatrix;
 
 	_float				m_fFovy = { 0.f };

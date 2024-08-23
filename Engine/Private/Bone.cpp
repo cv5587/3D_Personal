@@ -16,6 +16,7 @@ HRESULT CBone::Initialize(const aiNode* pBoneNode, _int iParentIndex)
 
 	memcpy(&m_TransformationMatrix, &pBoneNode->mTransformation, sizeof(_float4x4));
 
+
 	XMStoreFloat4x4(&m_TransformationMatrix, XMMatrixTranspose(XMLoadFloat4x4(&m_TransformationMatrix)));
 
 	XMStoreFloat4x4(&m_CombinedTransformationMatrix, XMMatrixIdentity());

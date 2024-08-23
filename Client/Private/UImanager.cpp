@@ -2,8 +2,10 @@
 #include "GameInstance.h"
 #include "Item.h"
 #include "ItemData.h"
-
-
+#include "UIFadeIn.h"
+#include "Player.h"
+#include "UIBluePrintToggle.h"
+#include "UIBack.h"
 CUImanager::CUImanager(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:m_pGameInstance{CGameInstance::GetInstance()},
 	m_pDevice{pDevice},
@@ -25,6 +27,7 @@ HRESULT CUImanager::Initialize()
 
 	m_ItemToggle.resize(20);
 	m_ClothToggle.resize(16);
+	m_BluePrintToggle.resize(1);
 
 	if (FAILED(Ready_RayColl()))
 		return E_FAIL;
@@ -42,6 +45,18 @@ HRESULT CUImanager::Initialize()
 		return E_FAIL;
 
 	if (FAILED(Ready_LoadingBar()))
+		return E_FAIL;
+
+	if (FAILED(Ready_Quest()))
+		return E_FAIL;
+
+	if (FAILED(Ready_Burn()))
+		return E_FAIL;
+
+	if (FAILED(Ready_FadeIn()))
+		return E_FAIL;
+
+	if (FAILED(Ready_BluePrint()))
 		return E_FAIL;
 
 	return S_OK;
@@ -142,7 +157,7 @@ void CUImanager::Render_Cloth()
 
 void CUImanager::Scene_Change( _uint iUIIndex)
 {
-	for (size_t i = 0; i < SCENE_END; i++)
+	for (_uint i = 0; i < SCENE_END; i++)
 	{
 		if(i!=iUIIndex)
 		{
@@ -219,12 +234,12 @@ HRESULT CUImanager::Ready_RayColl()
 
 	m_UISelector.push_back(LayerName);
 
-	CUITEXT::UI_DESC UITextDesc{};
+	CUITEXT::UI_DESC UITextDesc={};
 
 	//NAME
 	UITextDesc.Font = TEXT("Font_Bold10");
 	UITextDesc.TextTag = TEXT("");
-	UITextDesc.TextPosition = { m_fX + m_fX * -0.025f, m_fY + m_fY * 0.25f };
+	UITextDesc.TextPosition = { m_fX * -0.0f, m_fY * -0.25f };
 	UITextDesc.Color = { 1.f, 1.f, 1.f, 1.f };
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIText"), &UITextDesc)))
 		return E_FAIL;
@@ -242,7 +257,7 @@ HRESULT CUImanager::Ready_PickUpSelecter()
 
 	m_UISelector.push_back(LayerName);
 
-	CUIObject::UI_OBJECT_DESC UIDesc{};
+	CUIObject::UI_OBJECT_DESC UIDesc={};
 	UIDesc.TextureTag = TEXT("Prototype_Component_Texture_KEYSelectorIcon");
 	UIDesc.Icon_ID = (_uint)KEY_LEFTCLICK;
 	XMStoreFloat4x4(&UIDesc.vPrePosition,
@@ -321,12 +336,13 @@ HRESULT CUImanager::Ready_PickUpSelecter()
 
 	m_UISelector.push_back(LayerName);
 
-	CUITEXT::UI_DESC UITextDesc{};
+	CUITEXT::UI_DESC UITextDesc={};
 
 	//NAME
 	UITextDesc.Font = TEXT("Font_Bold18");
 	UITextDesc.TextTag = TEXT("");
-	UITextDesc.TextPosition = { m_fX + m_fX * 0.38f, m_fY - m_fY * 0.42f };
+	//{ m_fX * 0.0f, m_fY * 0.0f };
+	UITextDesc.TextPosition = {  m_fX * 0.38f, m_fY * 0.42f };
 	UITextDesc.Color = { 1.f, 1.f, 1.f, 1.f };
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIText"), &UITextDesc)))
 		return E_FAIL;
@@ -335,7 +351,7 @@ HRESULT CUImanager::Ready_PickUpSelecter()
 	//INFO
 	UITextDesc.Font = TEXT("Font_Normal14");
 	UITextDesc.TextTag = TEXT("");
-	UITextDesc.TextPosition = { m_fX + m_fX * 0.38f, m_fY - m_fY * 0.32f };
+	UITextDesc.TextPosition = { m_fX * 0.3f, m_fY *0.32f };
 	UITextDesc.Color = { 1.f, 1.f, 1.f, 1.f };
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIText"), &UITextDesc)))
 		return E_FAIL;
@@ -343,7 +359,7 @@ HRESULT CUImanager::Ready_PickUpSelecter()
 	//WEIGHT
 	UITextDesc.Font = TEXT("Font_Bold12");
 	UITextDesc.TextTag = TEXT("");
-	UITextDesc.TextPosition = { m_fX + m_fX * 0.42f, m_fY + m_fY * 0.02f };
+	UITextDesc.TextPosition = {  m_fX * 0.55f,  m_fY * -0.03f };
 	UITextDesc.Color = { 1.f, 1.f, 1.f, 1.f };
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIText"), &UITextDesc)))
 		return E_FAIL;
@@ -351,7 +367,7 @@ HRESULT CUImanager::Ready_PickUpSelecter()
 	//DURABILITY
 	UITextDesc.Font = TEXT("Font_Bold12");
 	UITextDesc.TextTag = TEXT("");
-	UITextDesc.TextPosition = { m_fX + m_fX * 0.42f, m_fY - m_fY * 0.06f };
+	UITextDesc.TextPosition = {  m_fX * 0.52f,  m_fY * 0.03f };
 	UITextDesc.Color = { 1.f, 1.f, 1.f, 1.f };
 
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIText"), &UITextDesc)))
@@ -360,7 +376,7 @@ HRESULT CUImanager::Ready_PickUpSelecter()
 	//LCLICK
 	UITextDesc.Font = TEXT("Font_Normal14");
 	UITextDesc.TextTag = TEXT("가져가기");
-	UITextDesc.TextPosition = { m_fX - m_fX * 0.25f, m_fY + m_fY * 0.6f };
+	UITextDesc.TextPosition = {  m_fX * -0.2f, m_fY * -0.6f };
 	UITextDesc.Color = { 1.f, 1.f, 1.f, 1.f };
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIText"), &UITextDesc)))
 		return E_FAIL;
@@ -368,7 +384,7 @@ HRESULT CUImanager::Ready_PickUpSelecter()
 	//RCLICK
 	UITextDesc.Font = TEXT("Font_Normal14");
 	UITextDesc.TextTag = TEXT("놔두기");
-	UITextDesc.TextPosition = { m_fX + m_fX * 0.15f, m_fY + m_fY * 0.6f };
+	UITextDesc.TextPosition = {  m_fX * 0.2f,  m_fY * -0.6f };
 	UITextDesc.Color = { 1.f, 1.f, 1.f, 1.f };
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIText"), &UITextDesc)))
 		return E_FAIL;
@@ -376,7 +392,7 @@ HRESULT CUImanager::Ready_PickUpSelecter()
 	//BAGWEIGHT
 	UITextDesc.Font = TEXT("Font_Bold12");
 	UITextDesc.TextTag = TEXT("/ 30.00 KG");
-	UITextDesc.TextPosition = { m_fX - m_fX * 0.78f, m_fY + m_fY * 0.78f };
+	UITextDesc.TextPosition = { m_fX *-0.65f, m_fY * -0.8f };
 	UITextDesc.Color = { 1.f, 1.f, 1.f, 1.f };
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIText"), &UITextDesc)))
 		return E_FAIL;
@@ -384,7 +400,7 @@ HRESULT CUImanager::Ready_PickUpSelecter()
 	//TOTALWEIGHT
 	UITextDesc.Font = TEXT("Font_Bold12");
 	UITextDesc.TextTag = TEXT("");
-	UITextDesc.TextPosition = { m_fX - m_fX * 0.86f, m_fY + m_fY * 0.78f };
+	UITextDesc.TextPosition = { m_fX * -0.8f, m_fY * -0.8f };
 	UITextDesc.Color = { 1.f, 1.f, 1.f, 1.f };
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIText"), &UITextDesc)))
 		return E_FAIL;
@@ -401,7 +417,7 @@ HRESULT CUImanager::Ready_Inventory()
 
 	m_UISelector.push_back(LayerName);
 
-	CUIColor::UI_COLOR_DESC UIBackColorDesc{};
+	CUIColor::UI_COLOR_DESC UIBackColorDesc={};
 	UIBackColorDesc.Icon_ID = (_uint)BACK_NOTEXTURE;
 	XMStoreFloat4x4(&UIBackColorDesc.vPrePosition,
 		XMMatrixIdentity() * XMMatrixScaling(g_iWinSizeX, g_iWinSizeY, 1.f) * XMMatrixTranslation(0, 0, 0.0f));
@@ -411,7 +427,7 @@ HRESULT CUImanager::Ready_Inventory()
 		return E_FAIL;
 
 
-	CUIBack::UI_BACK_DESC UIBackDesc{};
+	CUIBack::UI_BACK_DESC UIBackDesc={};
 	UIBackDesc.TextureTag = TEXT("Prototype_Component_Texture_Inventoryback");
 	UIBackDesc.Icon_ID = (_uint)BACK_FOCUS;
 	XMStoreFloat4x4(&UIBackDesc.vPrePosition,
@@ -437,7 +453,7 @@ HRESULT CUImanager::Ready_Inventory()
 
 	m_UISelector.push_back(LayerName);
 
-	CUIObject::UI_OBJECT_DESC UIDesc{};
+	CUIObject::UI_OBJECT_DESC UIDesc={};
 
 	UIDesc.TextureTag = TEXT("Prototype_Component_Texture_InventoryCase");
 	UIDesc.Icon_ID = (_uint)CASE_ONE;
@@ -451,14 +467,14 @@ HRESULT CUImanager::Ready_Inventory()
 
 	m_UISelector.push_back(LayerName);
 
-	CUIToggleID::UI_TOGGLE_DESC ToggleDesc{};
+	CUIToggleID::UI_TOGGLE_DESC ToggleDesc={};
 
 	ToggleDesc.TextureTag = TEXT("Prototype_Component_Texture_InventoryToggleState");
 	ToggleDesc.Icon_ID = (_uint)TOGGLE_OFF;
 	ToggleDesc.UIID = m_UIID++;
 	ToggleDesc.UISceneIndex = SCENE_STATE;
 	XMStoreFloat4x4(&ToggleDesc.vPrePosition,
-		XMMatrixIdentity() * XMMatrixScaling(70.f, 70.f, 1.f) * XMMatrixTranslation(-m_fX * 0.2f, m_fY * 0.9, 0.f));
+		XMMatrixIdentity() * XMMatrixScaling(70.f, 70.f, 1.f) * XMMatrixTranslation(-m_fX * 0.2f, m_fY * 0.9f, 0.f));
 
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIToggle"), &ToggleDesc)))
 		return E_FAIL;
@@ -468,7 +484,7 @@ HRESULT CUImanager::Ready_Inventory()
 	ToggleDesc.UIID = m_UIID++;
 	ToggleDesc.UISceneIndex = SCENE_EQUIP;
 	XMStoreFloat4x4(&ToggleDesc.vPrePosition,
-		XMMatrixIdentity() * XMMatrixScaling(70.f, 70.f, 1.f) * XMMatrixTranslation(-m_fX * 0.1f, m_fY * 0.9, 0.f));
+		XMMatrixIdentity() * XMMatrixScaling(70.f, 70.f, 1.f) * XMMatrixTranslation(-m_fX * 0.1f, m_fY * 0.9f, 0.f));
 
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIToggle"), &ToggleDesc)))
 		return E_FAIL;
@@ -478,7 +494,7 @@ HRESULT CUImanager::Ready_Inventory()
 	ToggleDesc.UIID = m_UIID++;
 	ToggleDesc.UISceneIndex = SCENE_INVEN;
 	XMStoreFloat4x4(&ToggleDesc.vPrePosition,
-		XMMatrixIdentity() * XMMatrixScaling(70.f, 70.f, 1.f) * XMMatrixTranslation(-m_fX * 0.f, m_fY * 0.9, 0.f));
+		XMMatrixIdentity() * XMMatrixScaling(70.f, 70.f, 1.f) * XMMatrixTranslation(-m_fX * 0.f, m_fY * 0.9f, 0.f));
 
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIToggle"), &ToggleDesc)))
 		return E_FAIL;
@@ -488,7 +504,7 @@ HRESULT CUImanager::Ready_Inventory()
 	ToggleDesc.UIID = m_UIID++;
 	ToggleDesc.UISceneIndex = SCENE_BLUEPRINT;
 	XMStoreFloat4x4(&ToggleDesc.vPrePosition,
-		XMMatrixIdentity() * XMMatrixScaling(70.f, 70.f, 1.f) * XMMatrixTranslation(m_fX * 0.1f, m_fY * 0.9, 0.f));
+		XMMatrixIdentity() * XMMatrixScaling(70.f, 70.f, 1.f) * XMMatrixTranslation(m_fX * 0.1f, m_fY * 0.9f, 0.f));
 
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIToggle"), &ToggleDesc)))
 		return E_FAIL;
@@ -497,13 +513,13 @@ HRESULT CUImanager::Ready_Inventory()
 
 	m_UISelector.push_back(LayerName);
 
-	CUISortToggle::UI_SORT_DESC UISortDesc{};
+	CUISortToggle::UI_SORT_DESC UISortDesc={};
 	UISortDesc.TextureTag = TEXT("Prototype_Component_Texture_InventorySelect");
 	UISortDesc.Icon_ID = (_uint)SELECT_BASE;
 	UISortDesc.UIID = -1;
 	UISortDesc.UIToggleBrightness = 0.5f;
 	XMStoreFloat4x4(&UISortDesc.vPrePosition,
-		XMMatrixIdentity() * XMMatrixScaling(60.f, 60.f, 1.f) * XMMatrixTranslation(-m_fX * 0.8f, m_fY * 0.45, 0.f));
+		XMMatrixIdentity() * XMMatrixScaling(60.f, 60.f, 1.f) * XMMatrixTranslation(-m_fX * 0.8f, m_fY * 0.45f, 0.f));
 
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UISortToggle"), &UISortDesc)))
 		return E_FAIL;
@@ -578,7 +594,7 @@ HRESULT CUImanager::Ready_Inventory()
 	UISortDesc.UISortIndex = SORT_ALL;
 	UISortDesc.UIToggleBrightness = 0.5f;
 	XMStoreFloat4x4(&UISortDesc.vPrePosition,
-		XMMatrixIdentity() * XMMatrixScaling(60.f, 60.f, 1.f) * XMMatrixTranslation(-m_fX * 0.8f, m_fY * 0.45, 0.f));
+		XMMatrixIdentity() * XMMatrixScaling(60.f, 60.f, 1.f) * XMMatrixTranslation(-m_fX * 0.8f, m_fY * 0.45f, 0.f));
 
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UISortToggle"), &UISortDesc)))
 		return E_FAIL;
@@ -654,12 +670,12 @@ HRESULT CUImanager::Ready_Inventory()
 
 	m_UISelector.push_back(LayerName);	
 
-	CUITEXT::UI_DESC UITextDesc{};	
+	CUITEXT::UI_DESC UITextDesc={};	
 
 	//씬이름
 	UITextDesc.Font = TEXT("Font_Bold18");
 	UITextDesc.TextTag = TEXT("백팩");
-	UITextDesc.TextPosition = { m_fX - m_fX * 0.95f, m_fY - m_fY * 0.95f };
+	UITextDesc.TextPosition = { m_fX * -0.9f, m_fY * 0.9f };
 	UITextDesc.Color = { 1.f, 1.f, 1.f, 1.f };
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIText"), &UITextDesc)))
 		return E_FAIL;
@@ -671,7 +687,7 @@ HRESULT CUImanager::Ready_Inventory()
 	//총 무게
 	UITextDesc.Font = TEXT("Font_Bold12");
 	UITextDesc.TextTag = TEXT("0.00");
-	UITextDesc.TextPosition = { m_fX - m_fX * 0.95f, m_fY - m_fY * 0.8f };
+	UITextDesc.TextPosition = {  m_fX * -0.9f, m_fY * 0.8f };
 	UITextDesc.Color = { 0.8f, 0.8f, 0.8f, 1.f };
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIText"), &UITextDesc)))
 		return E_FAIL;
@@ -679,7 +695,7 @@ HRESULT CUImanager::Ready_Inventory()
 	//가방 무게
 	UITextDesc.Font = TEXT("Font_Bold12");
 	UITextDesc.TextTag = TEXT("/ 30.00 KG");
-	UITextDesc.TextPosition = { m_fX - m_fX * 0.88f, m_fY - m_fY * 0.8f };
+	UITextDesc.TextPosition = { m_fX * -0.75f,  m_fY * 0.8f };
 	UITextDesc.Color = { 0.8f, 0.8f, 0.8f, 1.f };
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIText"), &UITextDesc)))
 		return E_FAIL;
@@ -687,7 +703,7 @@ HRESULT CUImanager::Ready_Inventory()
 	//뒤로
 	UITextDesc.Font = TEXT("Font_Normal14");
 	UITextDesc.TextTag = TEXT("뒤로");
-	UITextDesc.TextPosition = { m_fX + m_fX * 0.87f, m_fY + m_fY * 0.875f };
+	UITextDesc.TextPosition = { m_fX * 0.9f, m_fY * -0.9f };
 	UITextDesc.Color = { 0.6f, 0.6f, 0.6f, 1.f };
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIText"), &UITextDesc)))
 		return E_FAIL;
@@ -697,7 +713,7 @@ HRESULT CUImanager::Ready_Inventory()
 	//정렬 상태
 	UITextDesc.Font = TEXT("Font_Bold18");
 	UITextDesc.TextTag = TEXT("");
-	UITextDesc.TextPosition = { m_fX - m_fX * 0.73f, m_fY - m_fY * 0.65f };
+	UITextDesc.TextPosition = { m_fX * -0.73f, m_fY * 0.65f };
 	UITextDesc.Color = { 0.8f, 0.8f, 0.8f, 1.f };
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIText"), &UITextDesc)))
 		return E_FAIL;
@@ -707,7 +723,7 @@ HRESULT CUImanager::Ready_Inventory()
 
 	m_UISelector.push_back(LayerName);
 
-	CUIButton::UI_BUTTON_DESC ButtonDesc{};
+	CUIButton::UI_BUTTON_DESC ButtonDesc={};
 
 	ButtonDesc.TextureTag = TEXT("Prototype_Component_Texture_Inventorybutton");
 	ButtonDesc.Icon_ID = (_uint)INVENBUTTON_BACK;
@@ -734,7 +750,7 @@ HRESULT CUImanager::Ready_Itemcase()
 
 	m_UISelector.push_back(LayerName);
 
-	CUIItemIcon::UI_ITEMICON_DESC ItemIconDesc{};
+	CUIItemIcon::UI_ITEMICON_DESC ItemIconDesc={};
 
 	for (size_t i = 0; i < 4; i++)
 	{
@@ -761,7 +777,7 @@ HRESULT CUImanager::Ready_State()
 	wstring LayerName = TEXT("Layer_StateBody");
 	m_UISelector.push_back(LayerName);
 	//몸
-	CUIObject::UI_OBJECT_DESC UIDesc{};
+	CUIObject::UI_OBJECT_DESC UIDesc={};
 	UIDesc.TextureTag = TEXT("Prototype_Component_Texture_PaperDoll_Fullbody");
 	UIDesc.Icon_ID = 0;
 	XMStoreFloat4x4(&UIDesc.vPrePosition,
@@ -774,7 +790,7 @@ HRESULT CUImanager::Ready_State()
 	 LayerName = TEXT("Layer_StateShoes");
 	m_UISelector.push_back(LayerName);
 
-	CUIStateCloth::UI_STATECLOTH_DESC UIClothDesc{};
+	CUIStateCloth::UI_STATECLOTH_DESC UIClothDesc={};
 
 	UIClothDesc.TextureTag = TEXT("Prototype_Component_Texture_WillBoots");
 	UIClothDesc.Icon_ID = 0;
@@ -890,75 +906,75 @@ HRESULT CUImanager::Ready_State()
 	LayerName = TEXT("Layer_StateInfoText");
 	m_UISelector.push_back(LayerName);
 
-	CUITEXT::UI_DESC UITextDesc{};
+	CUITEXT::UI_DESC UITextDesc={};
 	//추후 캐릭터 상태 만들어지면 상태 100,75,50,25, 마다 각자 상태만들어주기
 	UITextDesc.Font = TEXT("Font_Normal14");
 	UITextDesc.TextTag = TEXT("따뜻함");
-	UITextDesc.TextPosition = { m_fX-m_fX * 0.85f, m_fY + m_fY * -0.42f };
+	UITextDesc.TextPosition = { -m_fX * 0.85f, m_fY * 0.42f };
 	UITextDesc.Color = { 0.6f, 0.6f, 0.6f, 1.f };
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIText"), &UITextDesc)))
 		return E_FAIL;
 
 	UITextDesc.Font = TEXT("Font_Normal14");
 	UITextDesc.TextTag = TEXT("휴식함");
-	UITextDesc.TextPosition = { m_fX - m_fX * 0.85f, m_fY + m_fY * -0.22f };
+	UITextDesc.TextPosition = {  - m_fX * 0.85f,  m_fY * 0.22f };
 	UITextDesc.Color = { 0.6f, 0.6f, 0.6f, 1.f };
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIText"), &UITextDesc)))
 		return E_FAIL;
 
 	UITextDesc.Font = TEXT("Font_Normal14");
 	UITextDesc.TextTag = TEXT("갈증 없음");
-	UITextDesc.TextPosition = { m_fX - m_fX * 0.85f, m_fY + m_fY * -0.02f };
+	UITextDesc.TextPosition = {  - m_fX * 0.85f,  m_fY * 0.02f };
 	UITextDesc.Color = { 0.6f, 0.6f, 0.6f, 1.f };
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIText"), &UITextDesc)))
 		return E_FAIL;
 
 	UITextDesc.Font = TEXT("Font_Normal14");
 	UITextDesc.TextTag = TEXT("배부름");
-	UITextDesc.TextPosition = { m_fX - m_fX * 0.85f, m_fY + m_fY * +0.18f };
+	UITextDesc.TextPosition = {  - m_fX * 0.85f,  m_fY * -0.18f };
 	UITextDesc.Color = { 0.6f, 0.6f, 0.6f, 1.f };
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIText"), &UITextDesc)))
 		return E_FAIL;
 
 	UITextDesc.Font = TEXT("Font_Normal14");
 	UITextDesc.TextTag = TEXT("칼로리");
-	UITextDesc.TextPosition = { m_fX - m_fX * 0.7f, m_fY + m_fY * +0.33f };
+	UITextDesc.TextPosition = { - m_fX * 0.65f,  m_fY * -0.35f };
 	UITextDesc.Color = { 0.6f, 0.6f, 0.6f, 1.f };
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIText"), &UITextDesc)))
 		return E_FAIL;
 	//캐릭터 칼로리 만들어지면 구현//칼로리 수치
 	UITextDesc.Font = TEXT("Font_Bold12");
 	UITextDesc.TextTag = TEXT("1989");
-	UITextDesc.TextPosition = { m_fX - m_fX * 0.69f, m_fY + m_fY * +0.4f };
+	UITextDesc.TextPosition = { - m_fX * 0.65f,  m_fY * -0.43f };
 	UITextDesc.Color = { 1.0f, 1.0f, 1.0f, 1.f };
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIText"), &UITextDesc)))
 		return E_FAIL;
 
 
 	UITextDesc.Font = TEXT("Font_Bold12");
-	UITextDesc.TextTag = TEXT("기온");
-	UITextDesc.TextPosition = { m_fX - m_fX * 0.9f, m_fY + m_fY * +0.7f };
+	UITextDesc.TextTag = TEXT("기온 :");
+	UITextDesc.TextPosition = { - m_fX * 0.85f,  m_fY * -0.7f };
 	UITextDesc.Color = { 0.6f, 0.6f, 0.6f, 0.8f };
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIText"), &UITextDesc)))
 		return E_FAIL;
 
 	UITextDesc.Font = TEXT("Font_Bold14");
 	UITextDesc.TextTag = TEXT("체감온도 :");
-	UITextDesc.TextPosition = { m_fX - m_fX * 0.9f, m_fY + m_fY * +0.8f };
+	UITextDesc.TextPosition = { - m_fX * 0.85f,  m_fY * -0.8f };
 	UITextDesc.Color = { 0.6f, 0.6f, 0.6f, 0.8f };
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIText"), &UITextDesc)))
 		return E_FAIL;
 
 	UITextDesc.Font = TEXT("Font_Bold14");
 	UITextDesc.TextTag = TEXT("-20 C");
-	UITextDesc.TextPosition = { m_fX - m_fX * 0.7f, m_fY + m_fY * +0.7f };
+	UITextDesc.TextPosition = { - m_fX * 0.65f,  m_fY * -0.7f };
 	UITextDesc.Color = { 0.8f, 0.f, 0.f, 0.9f };
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIText"), &UITextDesc)))
 		return E_FAIL;
 
 	UITextDesc.Font = TEXT("Font_Bold18");
-	UITextDesc.TextTag = TEXT("-20 C");
-	UITextDesc.TextPosition = { m_fX - m_fX * 0.7f, m_fY + m_fY * +0.8f };
+	UITextDesc.TextTag = TEXT("-18 C");
+	UITextDesc.TextPosition = { - m_fX * 0.65f,  m_fY * -0.8f };
 	UITextDesc.Color = { 0.8f, 0.f, 0.f, 0.9f };
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIText"), &UITextDesc)))
 		return E_FAIL;
@@ -966,7 +982,7 @@ HRESULT CUImanager::Ready_State()
 	//뒤로
 	UITextDesc.Font = TEXT("Font_Normal14");
 	UITextDesc.TextTag = TEXT("뒤로");
-	UITextDesc.TextPosition = { m_fX + m_fX * 0.87f, m_fY + m_fY * 0.875f };
+	UITextDesc.TextPosition = { m_fX * 0.9f, m_fY * -0.9f };
 	UITextDesc.Color = { 0.6f, 0.6f, 0.6f, 1.f };
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIText"), &UITextDesc)))
 		return E_FAIL;
@@ -974,7 +990,7 @@ HRESULT CUImanager::Ready_State()
 	LayerName = TEXT("Layer_Stateback");
 	m_UISelector.push_back(LayerName);
 
-	CUIBack::UI_BACK_DESC UIBackDesc{};
+	CUIBack::UI_BACK_DESC UIBackDesc={};
 	UIBackDesc.TextureTag = TEXT("Prototype_Component_Texture_InventoryDetailCase");
 	UIBackDesc.Icon_ID = 0;
 	XMStoreFloat4x4(&UIBackDesc.vPrePosition,
@@ -1007,7 +1023,7 @@ HRESULT CUImanager::Ready_Cloth()
 
 	m_UISelector.push_back(LayerName);
 
-	CUIObject::UI_OBJECT_DESC UIDesc{};
+	CUIObject::UI_OBJECT_DESC UIDesc={};
 
 	UIDesc.TextureTag = TEXT("Prototype_Component_Texture_InvenCloth_Left");
 	UIDesc.Icon_ID = 0;
@@ -1025,7 +1041,7 @@ HRESULT CUImanager::Ready_Cloth()
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIObject"), &UIDesc)))
 		return E_FAIL;
 
-	CUIBack::UI_BACK_DESC UIBackDesc{};
+	CUIBack::UI_BACK_DESC UIBackDesc={};
 	UIBackDesc.TextureTag = TEXT("Prototype_Component_Texture_InventoryDetailCase");
 	UIBackDesc.Icon_ID = 0;
 	XMStoreFloat4x4(&UIBackDesc.vPrePosition,
@@ -1053,32 +1069,32 @@ HRESULT CUImanager::Ready_Cloth()
 	LayerName = TEXT("Layer_ClothText");
 	m_UISelector.push_back(LayerName);
 
-	CUITEXT::UI_DESC UITextDesc{};
+	CUITEXT::UI_DESC UITextDesc={};
 
 	UITextDesc.Font = TEXT("Font_Normal14");
 	UITextDesc.TextTag = TEXT("머리");
-	UITextDesc.TextPosition = { m_fX - m_fX * 0.735f, m_fY + m_fY * -0.72f };
+	UITextDesc.TextPosition = { - m_fX * 0.7f, + m_fY * 0.72f };
 	UITextDesc.Color = { 0.3f, 0.3f, 0.3f, 0.3f };
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIText"), &UITextDesc)))
 		return E_FAIL;
 
 	UITextDesc.Font = TEXT("Font_Normal14");
 	UITextDesc.TextTag = TEXT("몸통");
-	UITextDesc.TextPosition = { m_fX - m_fX * 0.735f, m_fY + m_fY * -0.45f };
+	UITextDesc.TextPosition = { - m_fX * 0.7f, + m_fY * 0.45f };
 	UITextDesc.Color = { 0.3f, 0.3f, 0.3f, 0.3f };
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIText"), &UITextDesc)))
 		return E_FAIL;
 
 	UITextDesc.Font = TEXT("Font_Normal14");
 	UITextDesc.TextTag = TEXT("액세서리");
-	UITextDesc.TextPosition = { m_fX - m_fX * 0.16f, m_fY + m_fY * -0.72f };
+	UITextDesc.TextPosition = { - m_fX * 0.1f, + m_fY * 0.72f };
 	UITextDesc.Color = { 0.3f, 0.3f, 0.3f, 0.3f };
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIText"), &UITextDesc)))
 		return E_FAIL;
 
 	UITextDesc.Font = TEXT("Font_Normal14");
 	UITextDesc.TextTag = TEXT("다리");
-	UITextDesc.TextPosition = { m_fX - m_fX * 0.135f, m_fY + m_fY * -0.45f };
+	UITextDesc.TextPosition = { - m_fX * 0.1f, + m_fY * 0.45f };
 	UITextDesc.Color = { 0.3f, 0.3f, 0.3f, 0.3f };
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIText"), &UITextDesc)))
 		return E_FAIL;
@@ -1086,7 +1102,7 @@ HRESULT CUImanager::Ready_Cloth()
 	//뒤로
 	UITextDesc.Font = TEXT("Font_Normal14");	
 	UITextDesc.TextTag = TEXT("뒤로");
-	UITextDesc.TextPosition = { m_fX + m_fX * 0.87f, m_fY + m_fY * 0.875f };
+	UITextDesc.TextPosition = { m_fX * 0.9f, m_fY * -0.9f };
 	UITextDesc.Color = { 0.6f, 0.6f, 0.6f, 1.f };
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIText"), &UITextDesc)))
 		return E_FAIL;
@@ -1096,7 +1112,7 @@ HRESULT CUImanager::Ready_Cloth()
 
 	m_UISelector.push_back(LayerName);
 
-	CUIClothToggle::UI_CLOTHTOGGLE_DESC ClothIconDesc{};
+	CUIClothToggle::UI_CLOTHTOGGLE_DESC ClothIconDesc={};
 
 	//Prototype_Component_Texture_InventoryItemCase
 		/********************************************************************************************************************/
@@ -1273,7 +1289,7 @@ HRESULT CUImanager::Ready_LoadingBar()
 
 	m_UISelector.push_back(LayerName);	
 
-	CUIObject::UI_OBJECT_DESC UIDesc{};
+	CUIObject::UI_OBJECT_DESC UIDesc={};
 	UIDesc.TextureTag = TEXT("Prototype_Component_Texture_LoadingBar_Back");
 	UIDesc.Icon_ID =0;
 	XMStoreFloat4x4(&UIDesc.vPrePosition,
@@ -1282,7 +1298,7 @@ HRESULT CUImanager::Ready_LoadingBar()
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIObject"), &UIDesc)))
 		return E_FAIL;
 
-	CUILoadingBar::UI_LOADINGBAR_DESC LoadingDesc{};
+	CUILoadingBar::UI_LOADINGBAR_DESC LoadingDesc={};
 
 	LoadingDesc.TextureTag = TEXT("Prototype_Component_Texture_LoadingBar_Current");
 	LoadingDesc.Icon_ID = 0;
@@ -1291,6 +1307,123 @@ HRESULT CUImanager::Ready_LoadingBar()
 	
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UILoadingBar"), &LoadingDesc)))
 		return E_FAIL;
+
+
+	return S_OK;
+}
+
+HRESULT CUImanager::Ready_Quest()
+{
+	wstring LayerName = TEXT("Layer_QuestBar");
+
+	m_UISelector.push_back(LayerName);
+
+	CUIBack::UI_BACK_DESC UIBackDesc={};
+	UIBackDesc.TextureTag = TEXT("Prototype_Component_Texture_QuestBar");
+	UIBackDesc.Icon_ID = 0;
+	XMStoreFloat4x4(&UIBackDesc.vPrePosition,
+		XMMatrixIdentity() * XMMatrixScaling(600.f, 40.f, 1.f) * XMMatrixTranslation(m_fX * 0.0f, m_fY * -0.8f, 0.f));
+	UIBackDesc.vColor = _float4(0.f, 0.f, 0.f, 1.f);
+	UIBackDesc.ShaderTag = TEXT("Prototype_Component_Shader_VtxPosTexColor");
+
+	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIBack"), &UIBackDesc)))
+		return E_FAIL;
+
+	CUITEXT::UI_DESC UITextDesc={};
+
+	UITextDesc.Font = TEXT("Font_Bold12");
+	UITextDesc.TextTag = TEXT("");
+	UITextDesc.TextPosition = { m_fX * 0.0f, m_fY * -0.8f };
+	UITextDesc.Color = { 1.0f, 1.0f, 1.0f, 1.f };
+	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIText"), &UITextDesc)))
+		return E_FAIL;
+	
+	return S_OK;
+}
+
+HRESULT CUImanager::Ready_Burn()
+{
+	wstring LayerName = TEXT("Layer_Burn");
+
+	m_UISelector.push_back(LayerName);
+	return S_OK;
+}
+
+HRESULT CUImanager::Ready_FadeIn()
+{
+	wstring LayerName = TEXT("Layer_FadeIn");
+
+	m_UISelector.push_back(LayerName);
+
+	CUIColor::UI_COLOR_DESC UIBackColorDesc = {};	
+	UIBackColorDesc.Icon_ID = (_uint)BACK_NOTEXTURE;	
+	XMStoreFloat4x4(&UIBackColorDesc.vPrePosition,	
+		XMMatrixIdentity() * XMMatrixScaling(g_iWinSizeX, g_iWinSizeY, 1.f) * XMMatrixTranslation(0, 0, 0.0f));	
+	UIBackColorDesc.vColor = _float4(0.f, 0.f, 0.f, 0.f);	
+	UIBackColorDesc.iShaderPass = 1;
+	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIColor"), &UIBackColorDesc)))
+		return E_FAIL;
+	
+
+
+	return S_OK;
+}
+
+HRESULT CUImanager::Ready_BluePrint()
+{
+	wstring LayerName = TEXT("Layer_BluePrint");
+
+	m_UISelector.push_back(LayerName);	
+
+	CUITEXT::UI_DESC UITextDesc = {};
+
+	//뒤로
+	UITextDesc.Font = TEXT("Font_Normal14");
+	UITextDesc.TextTag = TEXT("뒤로");
+	UITextDesc.TextPosition = { m_fX * 0.9f, m_fY * -0.9f };
+	UITextDesc.Color = { 0.6f, 0.6f, 0.6f, 1.f };
+	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIText"), &UITextDesc)))
+		return E_FAIL;
+
+	//청사진
+	UITextDesc.Font = TEXT("Font_Bold18");
+	UITextDesc.TextTag = TEXT("청사진");
+	UITextDesc.TextPosition = { m_fX * -0.6f, m_fY * 0.65f };
+	UITextDesc.Color = { 1.0f, 1.0f, 1.0f, 1.f };
+	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIText"), &UITextDesc)))
+		return E_FAIL;
+
+	//청사진 목록 제작 
+
+	CUIBluePrintToggle::UI_BLUEPRINTTOGGLE_DESC BPDesc = {};
+	BPDesc.TextureTag = TEXT("Prototype_Component_Texture_InventoryDetailCase");
+	BPDesc.Icon_ID = 0;
+	XMStoreFloat4x4(&BPDesc.vPrePosition,
+		XMMatrixIdentity() * XMMatrixScaling(250.f, 50.f, 1.f) * XMMatrixTranslation(m_fX * -0.5f, m_fY * 0.5f, 0.f));
+	BPDesc.vColor = _float4(0.3f, 0.34f, 0.33f, 0.5f);
+	BPDesc.ShaderTag = TEXT("Prototype_Component_Shader_VtxPosTexColor");
+	BPDesc.NameTag = TEXT("BedRoll");
+	BPDesc.UINameTag = TEXT("침낭");
+	BPDesc.fUsingTime = 60.f;
+	BPDesc.FirstIngredient = TEXT("Rut");
+	BPDesc.SecondIngredient = TEXT("Pelt");
+	BPDesc.bIsCollider = true;
+
+	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIBPToggle"), &m_BluePrintToggle[0], & BPDesc)))
+		return E_FAIL;
+
+	//CUIBack::UI_BACK_DESC UIBackDesc = {};	
+
+	//UIBackDesc.TextureTag = TEXT("Prototype_Component_Texture_InventoryDetailCase");
+	//UIBackDesc.Icon_ID = 0;
+	//XMStoreFloat4x4(&UIBackDesc.vPrePosition,
+	//	XMMatrixIdentity() * XMMatrixScaling(250.f, 100.f, 1.f) * XMMatrixTranslation(m_fX * -0.5f, m_fY * 0.5f, 0.f));
+	//UIBackDesc.vColor = _float4(0.3f, 0.34f, 0.33f, 0.5f);
+	//UIBackDesc.ShaderTag = TEXT("Prototype_Component_Shader_VtxPosTexColor");
+
+	//if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, LayerName, TEXT("Prototype_GameObject_UIBack"), &UIBackDesc)))
+	//	return E_FAIL;
+
 
 
 	return S_OK;
@@ -1396,6 +1529,18 @@ _bool CUImanager::Pick_InvenClothButton()
 	return false;
 }
 
+_bool CUImanager::Pick_InvenBPButton()
+{
+	for (auto& pToggle : m_BluePrintToggle)
+	{
+		if (dynamic_cast <CUIBluePrintToggle*>(pToggle)->Intersect())
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 void CUImanager::Set_Weight(_float fTotalWeight)
 {
 	wstring wTotalWeight = to_wstring(fTotalWeight);
@@ -1407,7 +1552,7 @@ void CUImanager::Set_Weight(_float fTotalWeight)
 
 HRESULT CUImanager::Cloth_Update(CItemData* pItemData)
 {
-	CUIClothToggle::UI_CLOTHTOGGLE_DESC ClothDataDesc{};
+	CUIClothToggle::UI_CLOTHTOGGLE_DESC ClothDataDesc={};
 	Add_ClothIcon(pItemData, &ClothDataDesc);	
 	if (pItemData->Compare_Name(TEXT("ToqueWool")))
 	{
@@ -1433,14 +1578,20 @@ HRESULT CUImanager::Cloth_Update(CItemData* pItemData)
 	return S_OK;	
 }
 
+void CUImanager::BP_Update(_float fTimeDelta)
+{
+	for (auto& iter : m_BluePrintToggle)
+		iter->Tick(fTimeDelta);
+}
+
 //인벤토리 레이어 안에 들어 가있는 아이템의 인덱스( 찾지말고 생성하자.)
 HRESULT CUImanager::Add_InvenIcon(_uint Index ,CItem* pItem)
 {
 
-	CItem::ITEM_DESC pItemDesc{};
+	CItem::ITEM_DESC pItemDesc={};
 	pItem->Get_Description(&pItemDesc);
 	
-	CUIItemToggle::UI_ITEMTOGGLE_DESC ItemToggleDesc{};
+	CUIItemToggle::UI_ITEMTOGGLE_DESC ItemToggleDesc={};
 	ItemToggleDesc.UIID = m_UIID++;
 	ItemToggleDesc.Icon_ID = 0;//텍스처는 한장만 쓸거임 (아이콘 텍스처) 무조건 0
 
@@ -1464,10 +1615,10 @@ HRESULT CUImanager::Add_InvenIcon(_uint Index ,CItem* pItem)
 
 HRESULT CUImanager::Add_InvenIcon(_uint Index, CItemData* pItemData)
 {
-	CItem::ITEM_DESC pItemDesc{};
+	CItem::ITEM_DESC pItemDesc={};
 	pItemData->Make_ItemDataDesc(&pItemDesc);
 
-	CUIItemToggle::UI_ITEMTOGGLE_DESC ItemToggleDesc{};
+	CUIItemToggle::UI_ITEMTOGGLE_DESC ItemToggleDesc={};
 	ItemToggleDesc.UIID = m_UIID++;
 	ItemToggleDesc.Icon_ID = 0;//텍스처는 한장만 쓸거임 (아이콘 텍스처) 무조건 0
 
@@ -1492,7 +1643,7 @@ HRESULT CUImanager::Add_InvenIcon(_uint Index, CItemData* pItemData)
 
 HRESULT CUImanager::Add_ClothIcon(CItemData* pItemData, void* ClothDesc)
 {
-	CItem::ITEM_DESC pItemDesc{};
+	CItem::ITEM_DESC pItemDesc={};
 	pItemData->Make_ItemDataDesc(&pItemDesc);
 
 	CUIClothToggle::UI_CLOTHTOGGLE_DESC*  pDesc=static_cast<CUIClothToggle::UI_CLOTHTOGGLE_DESC*>(ClothDesc);	
@@ -1527,10 +1678,10 @@ HRESULT CUImanager::Cloth_Reset()
 
 HRESULT CUImanager::Sort_InvenIcon(_uint Index, CItemData* pItemData)
 {
-	CItem::ITEM_DESC ItemDesc{};
+	CItem::ITEM_DESC ItemDesc={};
 	pItemData->Make_ItemDataDesc(&ItemDesc);
 
-	CUIItemToggle::UI_ITEMTOGGLE_DESC ItemToggleDesc{};
+	CUIItemToggle::UI_ITEMTOGGLE_DESC ItemToggleDesc={};
 	//ItemToggleDesc.UIID = m_UIID++;
 	//ItemToggleDesc.Icon_ID = 0;
 
@@ -1577,6 +1728,9 @@ CUImanager* CUImanager::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pCont
 
 void CUImanager::Free()
 {
+
+
+
 	Safe_Release(m_pGameInstance);
 	Safe_Release(m_pContext);
 	Safe_Release(m_pDevice);
@@ -1592,6 +1746,9 @@ void CUImanager::Free()
 
 	for (auto& pClothToggle : m_ClothToggle)
 		Safe_Release(pClothToggle);
+
+	for (auto& pBPToggle : m_BluePrintToggle)
+		Safe_Release(pBPToggle);
 
 	m_UISelector.clear();	
 }

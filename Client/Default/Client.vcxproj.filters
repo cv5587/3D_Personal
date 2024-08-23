@@ -79,89 +79,8 @@
     <Filter Include="02.GameObjects\02.LandObject\Player\PartObject\Weapon\Weapon">
       <UniqueIdentifier>{701efc3f-07a4-4a8d-b090-5a76d5aad607}</UniqueIdentifier>
     </Filter>
-    <Filter Include="94. StateMachine">
-      <UniqueIdentifier>{29393c3f-1693-4ca3-baf2-a92cdb918b27}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="94. StateMachine\State">
-      <UniqueIdentifier>{88ddf3b0-30ad-4617-8ff3-111821407f71}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="94. StateMachine\State\Player">
-      <UniqueIdentifier>{c96958d3-5b73-4600-8069-00e30ba8b938}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="94. StateMachine\State\Player\State_Jog">
-      <UniqueIdentifier>{8aa4ce01-40a9-43e4-8ae4-038733e235ff}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="94. StateMachine\State\Player\State_Idel">
-      <UniqueIdentifier>{31688db2-f7c8-4f86-9afd-e19da4c4f024}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="94. StateMachine\State\Player\State_Exhausted">
-      <UniqueIdentifier>{4af0577c-c4e2-479e-9a12-ce04d527541d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="94. StateMachine\State\Player\State_Run">
-      <UniqueIdentifier>{559a0c4a-f409-4ec0-b803-4b80a5e9547a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="94. StateMachine\State\Player\State_Equip">
-      <UniqueIdentifier>{62e7bce1-1f8e-460d-a4f9-21c0ec43d277}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="94. StateMachine\State\Player\State_UnEquip">
-      <UniqueIdentifier>{1a5c5f12-a26b-450e-9013-b28005c7dc95}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\99.Cameras\PlayerCamera">
       <UniqueIdentifier>{3ce49c6c-dbb7-4e17-b18d-d006d8ff2c32}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="94. StateMachine\State\Player\State_Aim_S">
-      <UniqueIdentifier>{33df44e9-7776-48f4-87e5-183aa3f9e9eb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="94. StateMachine\State\Player\State_Aim">
-      <UniqueIdentifier>{3c6b2790-138c-438b-a18a-c51e9882dc44}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="94. StateMachine\State\Player\State_Aim_E">
-      <UniqueIdentifier>{26a78c21-838a-4672-9f45-6acc476e7b31}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="94. StateMachine\State\Player\State_Walk_S">
-      <UniqueIdentifier>{3d087f81-fbf3-47b6-9bc9-a2a3e4cea602}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="94. StateMachine\State\Player\State_Walk_FB">
-      <UniqueIdentifier>{5de33030-1f74-424e-9bd4-a29f8dd60114}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="94. StateMachine\State\Player\State_Walk_L">
-      <UniqueIdentifier>{a4e19e66-410f-4323-9235-a446bd39b573}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="94. StateMachine\State\Player\State_Walk_R">
-      <UniqueIdentifier>{4534f26e-53a6-4c33-b508-f57bc8eefc85}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="94. StateMachine\State\Player\State_Walk_LE">
-      <UniqueIdentifier>{6f854ebb-51ed-4fcb-bc98-7203dcaa3525}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="94. StateMachine\State\Player\State_Walk_E">
-      <UniqueIdentifier>{781ed8ef-7716-48dd-a9f2-bdb9a4d6e15c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="94. StateMachine\State\Player\State_Walk_RE">
-      <UniqueIdentifier>{f9e012fa-9d4d-4400-9642-81a9c11b3c5c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="94. StateMachine\State\Player\State_Throw">
-      <UniqueIdentifier>{6dd6d7ce-0469-4340-8e22-6582a94b5158}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="94. StateMachine\State\Player\State_Attack">
-      <UniqueIdentifier>{b7ccacfd-5d35-402b-87e4-9ea7687b667c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="94. StateMachine\State\Player\State_Fire">
-      <UniqueIdentifier>{bd627851-2c18-41b5-b10d-3a29e92575d3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="94. StateMachine\State\Player\State_Hipfire">
-      <UniqueIdentifier>{f8bea0f5-6254-4ec1-80f6-0c4ed84e7091}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="94. StateMachine\State\Player\State_Reload_S">
-      <UniqueIdentifier>{1bcaf5a8-937d-4b13-8948-e6adab458667}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="94. StateMachine\State\Player\State_Reload">
-      <UniqueIdentifier>{326c35c2-25d4-4807-b230-b5fdbd71900e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="94. StateMachine\State\Player\State_Reload_E">
-      <UniqueIdentifier>{fbefca20-0ef6-483c-aa53-613ce48fcd33}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="93.PickUpSelector">
-      <UniqueIdentifier>{3ec4b7d0-f16b-4add-9757-2b8e19f9da94}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\04.Item">
       <UniqueIdentifier>{73b1c2e4-b8de-4f52-9133-54c908d1dbc2}</UniqueIdentifier>
@@ -172,23 +91,11 @@
     <Filter Include="02.GameObjects\00.UI\UITEXT">
       <UniqueIdentifier>{c00c883d-0b6b-4915-aa0a-ff3fad93b36b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="94. StateMachine\State\Player\State_PickUp">
-      <UniqueIdentifier>{1caed946-b89e-4bed-83cb-eabbd0c26651}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="94. StateMachine\State\Player\State_Inventory">
-      <UniqueIdentifier>{f125e0ce-94eb-4d72-98d3-3f35c994f05d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\00.UI\UIBack">
       <UniqueIdentifier>{6295e9cb-a72a-424b-ba64-071d21b302df}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\00.UI\UIColor">
       <UniqueIdentifier>{7d58f44e-2382-44ce-8075-fa6546ca0005}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="92.UIInventory">
-      <UniqueIdentifier>{2cd2c203-5e99-43f8-a4b1-7a013dabf20a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.UI\manager">
-      <UniqueIdentifier>{7884584b-cc47-43a5-a6ce-da73f16e4e25}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\00.UI\UIToggleID">
       <UniqueIdentifier>{c2953c8c-42b1-4ef4-81e5-b1791564bb34}</UniqueIdentifier>
@@ -220,17 +127,8 @@
     <Filter Include="02.GameObjects\02.LandObject\Player\PartObject\Weapon\PickRabbit">
       <UniqueIdentifier>{ae2a7543-3f97-470a-a7fa-af6bf482d056}</UniqueIdentifier>
     </Filter>
-    <Filter Include="94. StateMachine\State\Player\State_Kill">
-      <UniqueIdentifier>{ddda8125-83ce-46b4-a6b2-07bc4fb2915b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="94. StateMachine\State\Player\State_Release">
-      <UniqueIdentifier>{8d9f12d8-4f08-42b2-9c41-b8389adf5a37}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\00.UI\UIClothToggle">
       <UniqueIdentifier>{68183c47-9437-4883-836b-0fd9534747dc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="94. StateMachine\State\Player\State_Reload_Loop">
-      <UniqueIdentifier>{d8ab09a0-8e34-45c3-a0aa-ae0d9df9d501}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\05.InteractiveObject">
       <UniqueIdentifier>{f17945c0-e7c2-4bdb-8cef-69d1c7e24f47}</UniqueIdentifier>
@@ -238,11 +136,272 @@
     <Filter Include="02.GameObjects\05.InteractiveObject\Portal">
       <UniqueIdentifier>{2db2ca49-97c8-477f-b3c3-66215a64c0bc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="91.LoadingBar">
-      <UniqueIdentifier>{94f00d19-af24-49ed-8567-d834b1d6c21f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\00.UI\UILoadingBar">
       <UniqueIdentifier>{6de6b71b-0409-4b4d-9487-29440a56cf81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\02.LandObject\Monster\Rabbit">
+      <UniqueIdentifier>{505dc357-7c05-4fdc-b6bd-fcc9a0f37408}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\02.LandObject\Monster\Wolf">
+      <UniqueIdentifier>{11dc981f-46e6-460d-b794-22deba02a233}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\02.LandObject\NpcMother">
+      <UniqueIdentifier>{ee77e391-2699-4748-9cee-f91ddd2eff68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\02.LandObject\Player\PartObject\Weapon\Rifle">
+      <UniqueIdentifier>{3a98c5f5-ed4b-491a-8580-43551e369552}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="89.QuestManager">
+      <UniqueIdentifier>{abc75a7f-499e-4c5f-95c9-0e9913c2e02e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="89.QuestManager\QuestData">
+      <UniqueIdentifier>{a51a86d9-af2f-4817-83c0-603e637cf1e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05.InteractiveObject\Box">
+      <UniqueIdentifier>{6c09965f-62e8-45c2-9936-be754c7695a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05.InteractiveObject\Stove">
+      <UniqueIdentifier>{7824fe03-19ba-4fb4-9931-dcdf4160a76b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\UIActiveButton">
+      <UniqueIdentifier>{1b2cfeb6-e44d-49de-a66d-bc8532c1af61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\UIStoveIcon">
+      <UniqueIdentifier>{43d312b9-0dfc-4be7-85e3-2e0d38209a89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\02.LandObject\Player\PartObject\Weapon\Match">
+      <UniqueIdentifier>{ce7c7ed2-fe41-485a-9efb-55d849c414f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\UIIStoveItem">
+      <UniqueIdentifier>{c9f933d5-acce-4945-ad55-126b08c149f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05.InteractiveObject\Stove\Part">
+      <UniqueIdentifier>{1cc3da62-3fd2-4fea-9e3e-6c4a6fd85cb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05.InteractiveObject\Stove\Part\Meat">
+      <UniqueIdentifier>{8ef19b3c-41b3-44d5-8a2c-370674cbcf05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine">
+      <UniqueIdentifier>{29393c3f-1693-4ca3-baf2-a92cdb918b27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State">
+      <UniqueIdentifier>{88ddf3b0-30ad-4617-8ff3-111821407f71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player">
+      <UniqueIdentifier>{c96958d3-5b73-4600-8069-00e30ba8b938}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_Jog">
+      <UniqueIdentifier>{8aa4ce01-40a9-43e4-8ae4-038733e235ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_Idel">
+      <UniqueIdentifier>{31688db2-f7c8-4f86-9afd-e19da4c4f024}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_Exhausted">
+      <UniqueIdentifier>{4af0577c-c4e2-479e-9a12-ce04d527541d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_Run">
+      <UniqueIdentifier>{559a0c4a-f409-4ec0-b803-4b80a5e9547a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_Equip">
+      <UniqueIdentifier>{62e7bce1-1f8e-460d-a4f9-21c0ec43d277}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_UnEquip">
+      <UniqueIdentifier>{1a5c5f12-a26b-450e-9013-b28005c7dc95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_Aim_S">
+      <UniqueIdentifier>{33df44e9-7776-48f4-87e5-183aa3f9e9eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_Aim">
+      <UniqueIdentifier>{3c6b2790-138c-438b-a18a-c51e9882dc44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_Aim_E">
+      <UniqueIdentifier>{26a78c21-838a-4672-9f45-6acc476e7b31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_Walk_S">
+      <UniqueIdentifier>{3d087f81-fbf3-47b6-9bc9-a2a3e4cea602}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_Walk_FB">
+      <UniqueIdentifier>{5de33030-1f74-424e-9bd4-a29f8dd60114}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_Walk_L">
+      <UniqueIdentifier>{a4e19e66-410f-4323-9235-a446bd39b573}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_Walk_R">
+      <UniqueIdentifier>{4534f26e-53a6-4c33-b508-f57bc8eefc85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_Walk_LE">
+      <UniqueIdentifier>{6f854ebb-51ed-4fcb-bc98-7203dcaa3525}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_Walk_E">
+      <UniqueIdentifier>{781ed8ef-7716-48dd-a9f2-bdb9a4d6e15c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_Walk_RE">
+      <UniqueIdentifier>{f9e012fa-9d4d-4400-9642-81a9c11b3c5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_Throw">
+      <UniqueIdentifier>{6dd6d7ce-0469-4340-8e22-6582a94b5158}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_Attack">
+      <UniqueIdentifier>{b7ccacfd-5d35-402b-87e4-9ea7687b667c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_Fire">
+      <UniqueIdentifier>{bd627851-2c18-41b5-b10d-3a29e92575d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_Hipfire">
+      <UniqueIdentifier>{f8bea0f5-6254-4ec1-80f6-0c4ed84e7091}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_Reload_S">
+      <UniqueIdentifier>{1bcaf5a8-937d-4b13-8948-e6adab458667}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_Reload">
+      <UniqueIdentifier>{326c35c2-25d4-4807-b230-b5fdbd71900e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_Reload_E">
+      <UniqueIdentifier>{fbefca20-0ef6-483c-aa53-613ce48fcd33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_PickUp">
+      <UniqueIdentifier>{1caed946-b89e-4bed-83cb-eabbd0c26651}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_Inventory">
+      <UniqueIdentifier>{f125e0ce-94eb-4d72-98d3-3f35c994f05d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_Kill">
+      <UniqueIdentifier>{ddda8125-83ce-46b4-a6b2-07bc4fb2915b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_Release">
+      <UniqueIdentifier>{8d9f12d8-4f08-42b2-9c41-b8389adf5a37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_Enter">
+      <UniqueIdentifier>{d8ab09a0-8e34-45c3-a0aa-ae0d9df9d501}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_Quest">
+      <UniqueIdentifier>{6054c394-2816-4c14-b98e-4c257a5b0c19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_Burn">
+      <UniqueIdentifier>{39453ddf-8dc4-4e3b-b817-174365394318}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_Matchpre">
+      <UniqueIdentifier>{38c61cf2-5c89-4814-bcdc-74b4c9d96377}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_Burnout">
+      <UniqueIdentifier>{7910ad3e-5f1d-41f4-96da-9501bf252d40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_Matchsuccess">
+      <UniqueIdentifier>{a01a73ee-87e6-46ba-bfc8-b7ab8b9d4e53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_Struggle">
+      <UniqueIdentifier>{c0569040-4c8c-4166-ada1-e80ec70421b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_StruggleBare">
+      <UniqueIdentifier>{b546e153-b4c8-41b2-8ed8-88510ffea77d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\manager">
+      <UniqueIdentifier>{7884584b-cc47-43a5-a6ce-da73f16e4e25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_Harvest">
+      <UniqueIdentifier>{d6668035-5390-4a79-a93e-20d587967a5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05.InteractiveObject\BedRoll">
+      <UniqueIdentifier>{051a168e-7d5b-4dd9-ad6a-a07437a74887}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_Build">
+      <UniqueIdentifier>{8075c902-a7ac-4a5c-a393-21602f676a64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_Sleep">
+      <UniqueIdentifier>{225fadb0-29b0-4982-abbb-956bc0b821c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UIScene">
+      <UniqueIdentifier>{2d4299c4-08cf-4597-83c9-66737cd9263e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UIScene\93.PickUpSelector">
+      <UniqueIdentifier>{3ec4b7d0-f16b-4add-9757-2b8e19f9da94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UIScene\92.UIInventory">
+      <UniqueIdentifier>{2cd2c203-5e99-43f8-a4b1-7a013dabf20a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UIScene\91.LoadingBar">
+      <UniqueIdentifier>{94f00d19-af24-49ed-8567-d834b1d6c21f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UIScene\90.UINPC">
+      <UniqueIdentifier>{f874f91e-490a-4ca4-b3f1-439bd98ce3c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UIScene\90.UINPC\NPCManager">
+      <UniqueIdentifier>{4ef4c630-855d-4364-ab68-8bb98f7ba4d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UIScene\90.UINPC\TalkManager">
+      <UniqueIdentifier>{60d07ffe-db4f-40b5-8152-3053e8e14dbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UIScene\88.UIBurn">
+      <UniqueIdentifier>{d61405aa-a094-4c8a-bba9-3c6bffde6d78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UIScene\87.UIHarvest">
+      <UniqueIdentifier>{35bc4d50-5b12-4788-b16e-639bf2eee427}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UIScene\86.UISleep">
+      <UniqueIdentifier>{b59e60fb-66a9-47e2-9e6a-4489f943ac8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UIScene\85.UIStruggleIntro">
+      <UniqueIdentifier>{77ba1b6f-ed8f-47b2-975e-02b68d43cd83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_Getup">
+      <UniqueIdentifier>{f380e9ab-0fcb-4693-b384-93c596a6eb95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\UILoadingStruggle">
+      <UniqueIdentifier>{a09029d0-44f6-4774-8935-91b8d35d4b39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_StruggleKnife">
+      <UniqueIdentifier>{4287ae32-d464-4356-a43a-b37fd8184de5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_Fadeout">
+      <UniqueIdentifier>{bd0856e3-e808-4d02-9123-60b20c6041c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.Effect">
+      <UniqueIdentifier>{36b0650c-da5b-4eff-9683-bed2b81bf251}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.Effect\Particle">
+      <UniqueIdentifier>{a5ba3862-207a-4a41-8336-d9754e9aedb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.Effect\Particle\Point">
+      <UniqueIdentifier>{9404c9ea-8458-4f9e-afa8-f0ba35968837}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.Effect\Particle\Rect">
+      <UniqueIdentifier>{41f25379-402a-46a9-84e1-162ba40bf965}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.Effect\Explosion">
+      <UniqueIdentifier>{d13bf908-a2c6-479e-9cec-ddb2f3da27d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.Effect\RevolverFire">
+      <UniqueIdentifier>{56981d4e-ea8d-44ee-9dc9-8f0588a984f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\07.Sky">
+      <UniqueIdentifier>{ffedc999-085e-44c9-99fc-1c2de26002e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\07.Sky\Horizon">
+      <UniqueIdentifier>{fd669855-4fbd-45a8-bd35-fdaaedb33bb6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\02.LandObject\Player\PartObject\Weapon\Flare">
+      <UniqueIdentifier>{eec21f00-0765-41b2-89b3-6e0c11748043}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_FlarePre">
+      <UniqueIdentifier>{8313ba4b-c62f-478c-be69-4734fbec0872}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.StateMachine\State\Player\State_FlareSuccess">
+      <UniqueIdentifier>{da9d2245-216b-4b3a-a617-e6cafa87748d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.Effect\LenFlare">
+      <UniqueIdentifier>{84ef3f05-09f6-48c5-a52f-f4d62428a89c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\UIBluePrintToggle">
+      <UniqueIdentifier>{d0c91f9b-815e-44aa-8475-e89e3cabe02d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UIScene\84.UIPlayerState">
+      <UniqueIdentifier>{bf87a137-d64f-489b-bdea-aa2547295567}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\UIBlood">
+      <UniqueIdentifier>{503f4525-0ee0-47a4-b46c-4d954c177862}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.Effect\Trail">
+      <UniqueIdentifier>{d2c11a26-4b92-4346-b7d8-eebf3d7d43ba}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -316,85 +475,85 @@
       <Filter>02.GameObjects\02.LandObject\Player\PartObject\Weapon\Revolver</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\StateMachine.h">
-      <Filter>94. StateMachine</Filter>
+      <Filter>94.StateMachine</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State.h">
-      <Filter>94. StateMachine\State</Filter>
+      <Filter>94.StateMachine\State</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_Idle.h">
-      <Filter>94. StateMachine\State\Player\State_Idel</Filter>
+      <Filter>94.StateMachine\State\Player\State_Idel</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_Jog.h">
-      <Filter>94. StateMachine\State\Player\State_Jog</Filter>
+      <Filter>94.StateMachine\State\Player\State_Jog</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_Exhausted.h">
-      <Filter>94. StateMachine\State\Player\State_Exhausted</Filter>
+      <Filter>94.StateMachine\State\Player\State_Exhausted</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_Run.h">
-      <Filter>94. StateMachine\State\Player\State_Run</Filter>
+      <Filter>94.StateMachine\State\Player\State_Run</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_Equip.h">
-      <Filter>94. StateMachine\State\Player\State_Equip</Filter>
+      <Filter>94.StateMachine\State\Player\State_Equip</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_UnEquip.h">
-      <Filter>94. StateMachine\State\Player\State_UnEquip</Filter>
+      <Filter>94.StateMachine\State\Player\State_UnEquip</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Player_Camera.h">
       <Filter>02.GameObjects\99.Cameras\PlayerCamera</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_Aim_S.h">
-      <Filter>94. StateMachine\State\Player\State_Aim_S</Filter>
+      <Filter>94.StateMachine\State\Player\State_Aim_S</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_Aim.h">
-      <Filter>94. StateMachine\State\Player\State_Aim</Filter>
+      <Filter>94.StateMachine\State\Player\State_Aim</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_Aim_E.h">
-      <Filter>94. StateMachine\State\Player\State_Aim_E</Filter>
+      <Filter>94.StateMachine\State\Player\State_Aim_E</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_Walk_S.h">
-      <Filter>94. StateMachine\State\Player\State_Walk_S</Filter>
+      <Filter>94.StateMachine\State\Player\State_Walk_S</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_Walk_FB.h">
-      <Filter>94. StateMachine\State\Player\State_Walk_FB</Filter>
+      <Filter>94.StateMachine\State\Player\State_Walk_FB</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_Walk_L.h">
-      <Filter>94. StateMachine\State\Player\State_Walk_L</Filter>
+      <Filter>94.StateMachine\State\Player\State_Walk_L</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_Walk_R.h">
-      <Filter>94. StateMachine\State\Player\State_Walk_R</Filter>
+      <Filter>94.StateMachine\State\Player\State_Walk_R</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_Walk_LE.h">
-      <Filter>94. StateMachine\State\Player\State_Walk_LE</Filter>
+      <Filter>94.StateMachine\State\Player\State_Walk_LE</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_Walk_E.h">
-      <Filter>94. StateMachine\State\Player\State_Walk_E</Filter>
+      <Filter>94.StateMachine\State\Player\State_Walk_E</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_Walk_RE.h">
-      <Filter>94. StateMachine\State\Player\State_Walk_RE</Filter>
+      <Filter>94.StateMachine\State\Player\State_Walk_RE</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_Throw.h">
-      <Filter>94. StateMachine\State\Player\State_Throw</Filter>
+      <Filter>94.StateMachine\State\Player\State_Throw</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_Attack.h">
-      <Filter>94. StateMachine\State\Player\State_Attack</Filter>
+      <Filter>94.StateMachine\State\Player\State_Attack</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_Fire.h">
-      <Filter>94. StateMachine\State\Player\State_Fire</Filter>
+      <Filter>94.StateMachine\State\Player\State_Fire</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_Hipfire.h">
-      <Filter>94. StateMachine\State\Player\State_Hipfire</Filter>
+      <Filter>94.StateMachine\State\Player\State_Hipfire</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_Reload_S.h">
-      <Filter>94. StateMachine\State\Player\State_Reload_S</Filter>
+      <Filter>94.StateMachine\State\Player\State_Reload_S</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_Reload.h">
-      <Filter>94. StateMachine\State\Player\State_Reload</Filter>
+      <Filter>94.StateMachine\State\Player\State_Reload</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_Reload_E.h">
-      <Filter>94. StateMachine\State\Player\State_Reload_E</Filter>
+      <Filter>94.StateMachine\State\Player\State_Reload_E</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PickUpSelector.h">
-      <Filter>93.PickUpSelector</Filter>
+      <Filter>UIScene\93.PickUpSelector</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\UImanager.h">
       <Filter>02.GameObjects\00.UI\manager</Filter>
@@ -409,10 +568,10 @@
       <Filter>02.GameObjects\00.UI\UITEXT</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_PickUp.h">
-      <Filter>94. StateMachine\State\Player\State_PickUp</Filter>
+      <Filter>94.StateMachine\State\Player\State_PickUp</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_Inventory.h">
-      <Filter>94. StateMachine\State\Player\State_Inventory</Filter>
+      <Filter>94.StateMachine\State\Player\State_Inventory</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\UIBack.h">
       <Filter>02.GameObjects\00.UI\UIBack</Filter>
@@ -421,7 +580,7 @@
       <Filter>02.GameObjects\00.UI\UIColor</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\UIInventory.h">
-      <Filter>92.UIInventory</Filter>
+      <Filter>UIScene\92.UIInventory</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\UIToggleID.h">
       <Filter>02.GameObjects\00.UI\UIToggleID</Filter>
@@ -451,16 +610,16 @@
       <Filter>02.GameObjects\02.LandObject\Player\PartObject\Weapon\PickRabbit</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_Kill.h">
-      <Filter>94. StateMachine\State\Player\State_Kill</Filter>
+      <Filter>94.StateMachine\State\Player\State_Kill</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_Release.h">
-      <Filter>94. StateMachine\State\Player\State_Release</Filter>
+      <Filter>94.StateMachine\State\Player\State_Release</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\UIClothToggle.h">
       <Filter>02.GameObjects\00.UI\UIClothToggle</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_Enter.h">
-      <Filter>94. StateMachine\State\Player\State_Reload_Loop</Filter>
+      <Filter>94.StateMachine\State\Player\State_Enter</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\InteractiveObject.h">
       <Filter>02.GameObjects\05.InteractiveObject</Filter>
@@ -469,10 +628,151 @@
       <Filter>02.GameObjects\05.InteractiveObject\Portal</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\LoadingBar.h">
-      <Filter>91.LoadingBar</Filter>
+      <Filter>UIScene\91.LoadingBar</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\UILoadingBar.h">
       <Filter>02.GameObjects\00.UI\UILoadingBar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Mother.h">
+      <Filter>02.GameObjects\02.LandObject\NpcMother</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Rifle.h">
+      <Filter>02.GameObjects\02.LandObject\Player\PartObject\Weapon\Rifle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Quest.h">
+      <Filter>94.StateMachine\State\Player\State_Quest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NPCManager.h">
+      <Filter>UIScene\90.UINPC\NPCManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\QuestData.h">
+      <Filter>89.QuestManager\QuestData</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\TalkManager.h">
+      <Filter>UIScene\90.UINPC\TalkManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\QuestManager.h">
+      <Filter>89.QuestManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BoxProp.h">
+      <Filter>02.GameObjects\05.InteractiveObject\Box</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Stove.h">
+      <Filter>02.GameObjects\05.InteractiveObject\Stove</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Burn.h">
+      <Filter>94.StateMachine\State\Player\State_Burn</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UIBurn.h">
+      <Filter>UIScene\88.UIBurn</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UIActiveButton.h">
+      <Filter>02.GameObjects\00.UI\UIActiveButton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UIStoveIcon.h">
+      <Filter>02.GameObjects\00.UI\UIStoveIcon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Match.h">
+      <Filter>02.GameObjects\02.LandObject\Player\PartObject\Weapon\Match</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Burnout.h">
+      <Filter>94.StateMachine\State\Player\State_Burnout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Matchpre.h">
+      <Filter>94.StateMachine\State\Player\State_Matchpre</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Matchsuccess.h">
+      <Filter>94.StateMachine\State\Player\State_Matchsuccess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UIStoveItem.h">
+      <Filter>02.GameObjects\00.UI\UIIStoveItem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Meat.h">
+      <Filter>02.GameObjects\05.InteractiveObject\Stove\Part\Meat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Wolf.h">
+      <Filter>02.GameObjects\02.LandObject\Monster\Wolf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Rabbit.h">
+      <Filter>02.GameObjects\02.LandObject\Monster\Rabbit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Struggle.h">
+      <Filter>94.StateMachine\State\Player\State_Struggle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_StruggleBare.h">
+      <Filter>94.StateMachine\State\Player\State_StruggleBare</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Harvest.h">
+      <Filter>UIScene\87.UIHarvest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Harvest.h">
+      <Filter>94.StateMachine\State\Player\State_Harvest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BedRoll.h">
+      <Filter>02.GameObjects\05.InteractiveObject\BedRoll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Build.h">
+      <Filter>94.StateMachine\State\Player\State_Build</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Sleep.h">
+      <Filter>94.StateMachine\State\Player\State_Sleep</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UISleep.h">
+      <Filter>UIScene\86.UISleep</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UIStruggleIntro.h">
+      <Filter>UIScene\85.UIStruggleIntro</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Getup.h">
+      <Filter>94.StateMachine\State\Player\State_Getup</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UILoadingStruggle.h">
+      <Filter>02.GameObjects\00.UI\UILoadingStruggle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_StruggleKnife.h">
+      <Filter>94.StateMachine\State\Player\State_StruggleKnife</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Fadeout.h">
+      <Filter>94.StateMachine\State\Player\State_Fadeout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Particle_Rect.h">
+      <Filter>02.GameObjects\06.Effect\Particle\Rect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Particle_Point.h">
+      <Filter>02.GameObjects\06.Effect\Particle\Point</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Explosion.h">
+      <Filter>02.GameObjects\06.Effect\Explosion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RevolverFire.h">
+      <Filter>02.GameObjects\06.Effect\RevolverFire</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Sky.h">
+      <Filter>02.GameObjects\07.Sky</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Flare.h">
+      <Filter>02.GameObjects\02.LandObject\Player\PartObject\Weapon\Flare</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_FlarePre.h">
+      <Filter>94.StateMachine\State\Player\State_FlarePre</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_FlareSuccess.h">
+      <Filter>94.StateMachine\State\Player\State_FlareSuccess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\LensFlare.h">
+      <Filter>02.GameObjects\06.Effect\LenFlare</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UIBluePrintToggle.h">
+      <Filter>02.GameObjects\00.UI\UIBluePrintToggle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UIPlayerState.h">
+      <Filter>UIScene\84.UIPlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UIBlood.h">
+      <Filter>02.GameObjects\00.UI\UIBlood</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Trail_Effect.h">
+      <Filter>02.GameObjects\06.Effect\Trail</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -537,85 +837,85 @@
       <Filter>02.GameObjects\02.LandObject\Player\PartObject\Weapon\Revolver</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\StateMachine.cpp">
-      <Filter>94. StateMachine</Filter>
+      <Filter>94.StateMachine</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State.cpp">
-      <Filter>94. StateMachine\State</Filter>
+      <Filter>94.StateMachine\State</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_Idle.cpp">
-      <Filter>94. StateMachine\State\Player\State_Idel</Filter>
+      <Filter>94.StateMachine\State\Player\State_Idel</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_Jog.cpp">
-      <Filter>94. StateMachine\State\Player\State_Jog</Filter>
+      <Filter>94.StateMachine\State\Player\State_Jog</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_Exhausted.cpp">
-      <Filter>94. StateMachine\State\Player\State_Exhausted</Filter>
+      <Filter>94.StateMachine\State\Player\State_Exhausted</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_Run.cpp">
-      <Filter>94. StateMachine\State\Player\State_Run</Filter>
+      <Filter>94.StateMachine\State\Player\State_Run</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_Equip.cpp">
-      <Filter>94. StateMachine\State\Player\State_Equip</Filter>
+      <Filter>94.StateMachine\State\Player\State_Equip</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_UnEquip.cpp">
-      <Filter>94. StateMachine\State\Player\State_UnEquip</Filter>
+      <Filter>94.StateMachine\State\Player\State_UnEquip</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Player_Camera.cpp">
       <Filter>02.GameObjects\99.Cameras\PlayerCamera</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_Aim_S.cpp">
-      <Filter>94. StateMachine\State\Player\State_Aim_S</Filter>
+      <Filter>94.StateMachine\State\Player\State_Aim_S</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_Aim.cpp">
-      <Filter>94. StateMachine\State\Player\State_Aim</Filter>
+      <Filter>94.StateMachine\State\Player\State_Aim</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_Aim_E.cpp">
-      <Filter>94. StateMachine\State\Player\State_Aim_E</Filter>
+      <Filter>94.StateMachine\State\Player\State_Aim_E</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_Walk_S.cpp">
-      <Filter>94. StateMachine\State\Player\State_Walk_S</Filter>
+      <Filter>94.StateMachine\State\Player\State_Walk_S</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_Walk_FB.cpp">
-      <Filter>94. StateMachine\State\Player\State_Walk_FB</Filter>
+      <Filter>94.StateMachine\State\Player\State_Walk_FB</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_Walk_L.cpp">
-      <Filter>94. StateMachine\State\Player\State_Walk_L</Filter>
+      <Filter>94.StateMachine\State\Player\State_Walk_L</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_Walk_R.cpp">
-      <Filter>94. StateMachine\State\Player\State_Walk_R</Filter>
+      <Filter>94.StateMachine\State\Player\State_Walk_R</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_Walk_LE.cpp">
-      <Filter>94. StateMachine\State\Player\State_Walk_LE</Filter>
+      <Filter>94.StateMachine\State\Player\State_Walk_LE</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_Walk_E.cpp">
-      <Filter>94. StateMachine\State\Player\State_Walk_E</Filter>
+      <Filter>94.StateMachine\State\Player\State_Walk_E</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_Walk_RE.cpp">
-      <Filter>94. StateMachine\State\Player\State_Walk_RE</Filter>
+      <Filter>94.StateMachine\State\Player\State_Walk_RE</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_Throw.cpp">
-      <Filter>94. StateMachine\State\Player\State_Throw</Filter>
+      <Filter>94.StateMachine\State\Player\State_Throw</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_Attack.cpp">
-      <Filter>94. StateMachine\State\Player\State_Attack</Filter>
+      <Filter>94.StateMachine\State\Player\State_Attack</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_Fire.cpp">
-      <Filter>94. StateMachine\State\Player\State_Fire</Filter>
+      <Filter>94.StateMachine\State\Player\State_Fire</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_Hipfire.cpp">
-      <Filter>94. StateMachine\State\Player\State_Hipfire</Filter>
+      <Filter>94.StateMachine\State\Player\State_Hipfire</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_Reload_S.cpp">
-      <Filter>94. StateMachine\State\Player\State_Reload_S</Filter>
+      <Filter>94.StateMachine\State\Player\State_Reload_S</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_Reload.cpp">
-      <Filter>94. StateMachine\State\Player\State_Reload</Filter>
+      <Filter>94.StateMachine\State\Player\State_Reload</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_Reload_E.cpp">
-      <Filter>94. StateMachine\State\Player\State_Reload_E</Filter>
+      <Filter>94.StateMachine\State\Player\State_Reload_E</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PickUpSelector.cpp">
-      <Filter>93.PickUpSelector</Filter>
+      <Filter>UIScene\93.PickUpSelector</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\UImanager.cpp">
       <Filter>02.GameObjects\00.UI\manager</Filter>
@@ -630,10 +930,10 @@
       <Filter>02.GameObjects\00.UI\UITEXT</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_PickUp.cpp">
-      <Filter>94. StateMachine\State\Player\State_PickUp</Filter>
+      <Filter>94.StateMachine\State\Player\State_PickUp</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_Inventory.cpp">
-      <Filter>94. StateMachine\State\Player\State_Inventory</Filter>
+      <Filter>94.StateMachine\State\Player\State_Inventory</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\UIBack.cpp">
       <Filter>02.GameObjects\00.UI\UIBack</Filter>
@@ -642,7 +942,7 @@
       <Filter>02.GameObjects\00.UI\UIColor</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\UIInventory.cpp">
-      <Filter>92.UIInventory</Filter>
+      <Filter>UIScene\92.UIInventory</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\UIToggleID.cpp">
       <Filter>02.GameObjects\00.UI\UIToggleID</Filter>
@@ -672,16 +972,16 @@
       <Filter>02.GameObjects\02.LandObject\Player\PartObject\Weapon\PickRabbit</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_Kill.cpp">
-      <Filter>94. StateMachine\State\Player\State_Kill</Filter>
+      <Filter>94.StateMachine\State\Player\State_Kill</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_Release.cpp">
-      <Filter>94. StateMachine\State\Player\State_Release</Filter>
+      <Filter>94.StateMachine\State\Player\State_Release</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\UIClothToggle.cpp">
       <Filter>02.GameObjects\00.UI\UIClothToggle</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_Enter.cpp">
-      <Filter>94. StateMachine\State\Player\State_Reload_Loop</Filter>
+      <Filter>94.StateMachine\State\Player\State_Enter</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\InteractiveObject.cpp">
       <Filter>02.GameObjects\05.InteractiveObject</Filter>
@@ -690,10 +990,151 @@
       <Filter>02.GameObjects\05.InteractiveObject\Portal</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\LoadingBar.cpp">
-      <Filter>91.LoadingBar</Filter>
+      <Filter>UIScene\91.LoadingBar</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\UILoadingBar.cpp">
       <Filter>02.GameObjects\00.UI\UILoadingBar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Mother.cpp">
+      <Filter>02.GameObjects\02.LandObject\NpcMother</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Rifle.cpp">
+      <Filter>02.GameObjects\02.LandObject\Player\PartObject\Weapon\Rifle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Quest.cpp">
+      <Filter>94.StateMachine\State\Player\State_Quest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NPCManager.cpp">
+      <Filter>UIScene\90.UINPC\NPCManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\QuestData.cpp">
+      <Filter>89.QuestManager\QuestData</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\TalkManager.cpp">
+      <Filter>UIScene\90.UINPC\TalkManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\QuestManager.cpp">
+      <Filter>89.QuestManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BoxProp.cpp">
+      <Filter>02.GameObjects\05.InteractiveObject\Box</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Stove.cpp">
+      <Filter>02.GameObjects\05.InteractiveObject\Stove</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Burn.cpp">
+      <Filter>94.StateMachine\State\Player\State_Burn</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UIBurn.cpp">
+      <Filter>UIScene\88.UIBurn</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UIActiveButton.cpp">
+      <Filter>02.GameObjects\00.UI\UIActiveButton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UIStoveIcon.cpp">
+      <Filter>02.GameObjects\00.UI\UIStoveIcon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Match.cpp">
+      <Filter>02.GameObjects\02.LandObject\Player\PartObject\Weapon\Match</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Burnout.cpp">
+      <Filter>94.StateMachine\State\Player\State_Burnout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Matchpre.cpp">
+      <Filter>94.StateMachine\State\Player\State_Matchpre</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Matchsuccess.cpp">
+      <Filter>94.StateMachine\State\Player\State_Matchsuccess</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UIStoveItem.cpp">
+      <Filter>02.GameObjects\00.UI\UIIStoveItem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Meat.cpp">
+      <Filter>02.GameObjects\05.InteractiveObject\Stove\Part\Meat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Wolf.cpp">
+      <Filter>02.GameObjects\02.LandObject\Monster\Wolf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Rabbit.cpp">
+      <Filter>02.GameObjects\02.LandObject\Monster\Rabbit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Struggle.cpp">
+      <Filter>94.StateMachine\State\Player\State_Struggle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_StruggleBare.cpp">
+      <Filter>94.StateMachine\State\Player\State_StruggleBare</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Harvest.cpp">
+      <Filter>UIScene\87.UIHarvest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Harvest.cpp">
+      <Filter>94.StateMachine\State\Player\State_Harvest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BedRoll.cpp">
+      <Filter>02.GameObjects\05.InteractiveObject\BedRoll</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Build.cpp">
+      <Filter>94.StateMachine\State\Player\State_Build</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Sleep.cpp">
+      <Filter>94.StateMachine\State\Player\State_Sleep</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UISleep.cpp">
+      <Filter>UIScene\86.UISleep</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UIStruggleIntro.cpp">
+      <Filter>UIScene\85.UIStruggleIntro</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Getup.cpp">
+      <Filter>94.StateMachine\State\Player\State_Getup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UILoadingStruggle.cpp">
+      <Filter>02.GameObjects\00.UI\UILoadingStruggle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_StruggleKnife.cpp">
+      <Filter>94.StateMachine\State\Player\State_StruggleKnife</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Fadeout.cpp">
+      <Filter>94.StateMachine\State\Player\State_Fadeout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Particle_Rect.cpp">
+      <Filter>02.GameObjects\06.Effect\Particle\Rect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Particle_Point.cpp">
+      <Filter>02.GameObjects\06.Effect\Particle\Point</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Explosion.cpp">
+      <Filter>02.GameObjects\06.Effect\Explosion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RevolverFire.cpp">
+      <Filter>02.GameObjects\06.Effect\RevolverFire</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Sky.cpp">
+      <Filter>02.GameObjects\07.Sky</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Flare.cpp">
+      <Filter>02.GameObjects\02.LandObject\Player\PartObject\Weapon\Flare</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_FlarePre.cpp">
+      <Filter>94.StateMachine\State\Player\State_FlarePre</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_FlareSuccess.cpp">
+      <Filter>94.StateMachine\State\Player\State_FlareSuccess</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\LensFlare.cpp">
+      <Filter>02.GameObjects\06.Effect\LenFlare</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UIBluePrintToggle.cpp">
+      <Filter>02.GameObjects\00.UI\UIBluePrintToggle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UIPlayerState.cpp">
+      <Filter>UIScene\84.UIPlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UIBlood.cpp">
+      <Filter>02.GameObjects\00.UI\UIBlood</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Trail_Effect.cpp">
+      <Filter>02.GameObjects\06.Effect\Trail</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -749,6 +1190,18 @@
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_LoadingBar.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_LoadingStruggle.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxInstance_Rect.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxInstance_Point.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCube.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

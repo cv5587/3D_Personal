@@ -31,9 +31,12 @@ HRESULT CUITEXT::Initialize(void* pArg)
 		return E_FAIL;
 
 	m_TextTag = pDesc->TextTag;
-	m_TextPosition = pDesc->TextPosition;
+	//m_TextPosition = pDesc->TextPosition;
 	m_Font = pDesc->Font;
 	m_Color = pDesc->Color;
+
+	m_TextPosition.x = (g_iWinSizeX * 0.5f) + pDesc->TextPosition.x;
+	m_TextPosition.y = (g_iWinSizeY*0.5f) - pDesc->TextPosition.y;
 	//m_pTransformCom->Set_State_Matrix(XMLoadFloat4x4(&pDesc->vPrePosition));
 	//뷰,투영행렬
 	//XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
@@ -47,10 +50,53 @@ HRESULT CUITEXT::Initialize(void* pArg)
 
 void CUITEXT::Priority_Tick(_float fTimeDelta)
 {
+	if (!m_bFixPosition)
+	{
+		_float2 fSize = { 0.f,0.f };
+		if (TEXT("Font_Normal14") == m_Font)
+		{//6배수
+			fSize.x = 20.f;
+			fSize.y = 8.f;
+		}
+		else if (TEXT("Font_Bold18") == m_Font)
+		{//8배수
+			fSize.x = 22.f;
+			fSize.y = 10.f;
+		}
+		else if (TEXT("Font_Bold14") == m_Font)
+		{//8배수
+			fSize.x = 18.f;
+			fSize.y = 8.f;
+		}
+		else if (TEXT("Font_Bold12") == m_Font)
+		{
+			fSize.x = 14.f;
+			fSize.y = 6.f;
+		}
+		else if (TEXT("Font_Bold8") == m_Font)
+		{
+			fSize.x = 8.f;
+			fSize.y = 3.f;
+		}
+		else
+		{
+			fSize.x = 10.f;
+			fSize.y = 2.f;
+		}
+
+	//	m_ResultPosition.x = m_TextPosition.x ;
+	//	m_ResultPosition.y= m_TextPosition.y ;
+ 
+
+		m_ResultPosition.x = m_TextPosition.x - (m_TextTag.length() * fSize.x * 0.5f);
+		m_ResultPosition.y= m_TextPosition.y - fSize.y;
+		m_bFixPosition = true;
+	}
 }
 
 void CUITEXT::Tick(_float fTimeDelta)
 {
+
 }
 
 void CUITEXT::Late_Tick(_float fTimeDelta)
@@ -61,13 +107,58 @@ HRESULT CUITEXT::Render()
 {
 	
 
-	m_pGameInstance->Render_Font(m_Font, m_TextTag, m_TextPosition, XMLoadFloat4(&m_Color));
+	m_pGameInstance->Render_Font(m_Font, m_TextTag, m_ResultPosition, XMLoadFloat4(&m_Color));
+
 	return S_OK;
 }
 
 void CUITEXT::Choice_Render()
 {
 	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_UI, this);
+}
+
+void CUITEXT::Set_Text(wstring Text)
+{
+	m_bFixPosition = false;
+	m_TextTag = Text;
+	if (!m_bFixPosition)
+	{
+		_float2 fSize = { 0.f,0.f };
+		if (TEXT("Font_Normal14") == m_Font)
+		{//6배수
+			fSize.x = 0.f;
+			fSize.y = 0.f;
+		}
+		else if (TEXT("Font_Bold18") == m_Font)
+		{//8배수
+			fSize.x = 22.f;
+			fSize.y = 10.f;
+		}
+		else if (TEXT("Font_Bold14") == m_Font)
+		{//8배수
+			fSize.x = 18.f;
+			fSize.y = 8.f;
+		}
+		else if (TEXT("Font_Bold12") == m_Font)
+		{
+			fSize.x = 14.f;
+			fSize.y = 6.f;
+		}
+		else
+		{
+			fSize.x = 10.f;
+			fSize.y = 2.f;
+		}
+
+		m_ResultPosition.x = m_TextPosition.x - (m_TextTag.length() * fSize.x * 0.5f);
+		m_ResultPosition.y = m_TextPosition.y - fSize.y;
+		m_bFixPosition = true;
+	}
+}
+
+void CUITEXT::Switch_Text(wstring Text)
+{
+	m_TextTag = Text;
 }
 
 HRESULT CUITEXT::Add_Components()

@@ -12,9 +12,9 @@ void CState_PickUp::Enter(CPlayer* Player)
 
 void CState_PickUp::Update(CPlayer* Player, _float fTimeDelta)
 {
-	Player->Puck_up_Update(fTimeDelta);
+	Player->Pick_up_Update(fTimeDelta);
 
-		if (m_pGameInstance->Get_DIMouseState_Once(DIM_LB))
+	if (m_pGameInstance->Get_DIMouseState_Once(DIM_LB))
 	{
 			Player->Add_Item();
 			if (CON_NORMAL == Player->isCondition())

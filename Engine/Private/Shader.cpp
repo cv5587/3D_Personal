@@ -34,7 +34,7 @@ HRESULT CShader::Initialize_Prototype(const wstring& strShaderFilePath, const D3
 	if (nullptr == pTechnique)
 		return E_FAIL;
 
-	D3DX11_TECHNIQUE_DESC	TechniqueDesc{};
+	D3DX11_TECHNIQUE_DESC	TechniqueDesc={};
 
 	pTechnique->GetDesc(&TechniqueDesc);
 
@@ -44,7 +44,7 @@ HRESULT CShader::Initialize_Prototype(const wstring& strShaderFilePath, const D3
 	{
 		ID3DX11EffectPass* pPass = pTechnique->GetPassByIndex(i);
 
-		D3DX11_PASS_DESC	PassDesc{};
+		D3DX11_PASS_DESC	PassDesc={};
 
 		pPass->GetDesc(&PassDesc);
 

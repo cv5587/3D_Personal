@@ -14,7 +14,7 @@ public:
 	enum TYPE { TYPE_AABB, TYPE_OBB, TYPE_SPHERE,  TYPE_END };
 
 public:
-	typedef struct
+	typedef struct COLLIDER_DESC
 	{
 		TYPE		eType = { TYPE_END };
 	}COLLIDER_DESC;

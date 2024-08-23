@@ -1,12 +1,12 @@
 #include "InteractiveObject.h"
 #include "GameInstance.h"
 CInteractiveObject::CInteractiveObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	:CGameObject{ pDevice,pContext }
+	:CItem{ pDevice,pContext }
 {
 }
 
 CInteractiveObject::CInteractiveObject(const CGameObject& rhs)
-	:CGameObject{ rhs }
+	:CItem{ rhs }
 {
 }
 
@@ -50,7 +50,6 @@ _bool CInteractiveObject::IntersectRay(_vector* pRayArray, _float* fDist)
 {
 	return true;
 }
-
 
 void CInteractiveObject::Free()
 {

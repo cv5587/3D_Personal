@@ -50,6 +50,11 @@ void CState_Equip::Update(CPlayer* Player, _float fTimeDelta)
 
 	if(Player->isAnimFinished())
 	{
+		if (EQUIP_FLARE == Player->isEquip())
+		{
+			Player->Set_State(PLAYERSTATE::PLAYER_FLAREPRE);
+			return;
+		}
 		if (m_pGameInstance->Get_DIKeyState(DIK_W))
 		{
 			Player->Set_State(PLAYERSTATE::PLAYER_JOG);

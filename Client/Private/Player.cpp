@@ -13,10 +13,21 @@
 #include "UImanager.h"
 #include "GEAR.h"
 #include "PickRabbit.h"
-#include "Monster.h"
+#include "Rabbit.h"
 #include "InteractiveObject.h"	
 #include "LoadingBar.h"
-
+#include "Mother.h"
+#include "NPCManager.h"
+#include"UIBurn.h"
+#include "Match.h"
+#include "Harvest.h"
+#include "UISleep.h"
+#include "BedRoll.h"
+#include "UIStruggleIntro.h"
+#include "Flare.h"	
+#include "UIPlayerState.h"
+#include "Wolf.h"
+#include "Particle_Rect.h"
 CPlayer::CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLandObject{ pDevice, pContext }
 {
@@ -34,6 +45,7 @@ HRESULT CPlayer::Initialize_Prototype()
 
 HRESULT CPlayer::Initialize(void* pArg)
 {
+	srand(time(NULL));
 	CLandObject::LANDOBJ_DESC* pDesc = (CLandObject::LANDOBJ_DESC*)pArg;
 
 	pDesc->fSpeedPerSec = 2.f;
@@ -58,31 +70,94 @@ HRESULT CPlayer::Initialize(void* pArg)
 	m_pUImanager = CUImanager::Create(m_pDevice, m_pContext);	
 
 
-	CPickUpSelector::SELECTOR_DESC pSelectDesc{};
+	CPickUpSelector::SELECTOR_DESC pSelectDesc={};
 	pSelectDesc.PlayerInventory = m_pInventory;
 	pSelectDesc.UImanager = m_pUImanager;
 	m_pPickUpSelector = CPickUpSelector::Create(m_pDevice,m_pContext, &pSelectDesc);
+	if (nullptr == m_pPickUpSelector)
+		return E_FAIL;
 
-	CUIInventory::INVENTORY_DESC pInventoryDesc{};
+	CUIInventory::INVENTORY_DESC pInventoryDesc={};
 	pInventoryDesc.PlayerInventory = m_pInventory;
 	pInventoryDesc.UImanager = m_pUImanager;
 	m_pUIInventory = CUIInventory::Create(m_pDevice,m_pContext,&pInventoryDesc);
+	if (nullptr == m_pUIInventory)
+		return E_FAIL;
 
-	CLoadingBar::LOADINGBAR_DESC LoadingBarDesc{};
+	CLoadingBar::LOADINGBAR_DESC LoadingBarDesc={};
 	LoadingBarDesc.pCurrentLoadingBar = &m_fCurrentLoadingBar;
 	LoadingBarDesc.pUImanager = m_pUImanager;
 	m_pLoadingBar = CLoadingBar::Create(m_pDevice, m_pContext, &LoadingBarDesc);
+	if (nullptr == m_pLoadingBar)
+		return E_FAIL;
 
 	m_fSensor = 0.02f;
+	CNPCManager::NPC_DESC NPCDesc={};
+	NPCDesc.pUImanager = m_pUImanager;
+	NPCDesc.pPlayerInventory = m_pInventory;
+	m_pNPCManager = CNPCManager::Create(m_pDevice, m_pContext, &NPCDesc);
+	if(nullptr== m_pNPCManager)
+		return E_FAIL;
+
+	CUIBurn::UIBURN_DESC BurnDesc = {};
+	BurnDesc.pUImanager = m_pUImanager;
+	BurnDesc.pPlayerInventory = m_pInventory;
+	m_pUIBurn = CUIBurn::Create(m_pDevice, m_pContext, &BurnDesc);
+	if (nullptr == m_pUIBurn)
+		return E_FAIL;
+
+	CHarvest::UIHARVEST_DESC HarvestDesc = {};
+	HarvestDesc.pUImanager = m_pUImanager;
+	HarvestDesc.pPlayerInventory = m_pInventory;
+	m_pUIHarvest = CHarvest::Create(m_pDevice, m_pContext, &HarvestDesc);
+	if (nullptr == m_pUIHarvest)
+		return E_FAIL;
+
+
+	CUISleep::UISLEEP_DESC SleepDesc = {};
+	SleepDesc.pUImanager = m_pUImanager;
+	m_pUISleep = CUISleep::Create(m_pDevice, m_pContext, &SleepDesc);
+	if (nullptr == m_pUISleep)
+		return E_FAIL;
+
+	CUIStruggleIntro::STRUGGLEINTRO_DESC StruggleDesc = {};
+	StruggleDesc.pUImanager = m_pUImanager;
+	StruggleDesc.pPlayerInventory = m_pInventory;
+	StruggleDesc.pCurrentBar = &m_fCurrentLoadingBar;
+	m_pUIStruggle = CUIStruggleIntro::Create(m_pDevice, m_pContext, &StruggleDesc);
+	if (nullptr == m_pUIStruggle)
+		return E_FAIL;	
+
+
+	CUIPlayerState::UISTATE_DESC StateDesc = {};
+	StateDesc.pNPCManager = m_pNPCManager;
+	m_pUIState = CUIPlayerState::Create(m_pDevice, m_pContext, &StateDesc);
+	if (nullptr == m_pUIState)
+		return E_FAIL;
+
+
+
 
 	if (FAILED(Add_PartObjects()))
 		return E_FAIL;
+
+	//m_pInventory->Add_BedRoll();	
+	//m_pUImanager->Add_InvenIcon(m_pInventory->Get_LastIndex(), m_pInventory->Get_vecItemData().back());	
+
+	m_pInventory->Add_Knife();
+	m_pUImanager->Add_InvenIcon(m_pInventory->Get_LastIndex(), m_pInventory->Get_vecItemData().back());
+
+	m_pGameInstance->Play_BGM(TEXT("OutSnow.wav"),   0.8f);
+	
 
 	return S_OK;
 }
 
 void CPlayer::Priority_Tick(_float fTimeDelta)
 {
+	
+	m_pGameInstance->Rotate_Light(fTimeDelta);
+	
 	m_PartObjects[PART_BODY]->Priority_Tick(fTimeDelta);
 	switch (m_eEquip)
 	{
@@ -95,6 +170,16 @@ void CPlayer::Priority_Tick(_float fTimeDelta)
 	case Client::EQUIP_RABBIT:
 		m_PartObjects[PART_RABBIT]->Priority_Tick(fTimeDelta);
 		break;
+	case Client::EQUIP_MATCH:
+		m_PartObjects[PART_MATCH]->Priority_Tick(fTimeDelta);
+		m_PartObjects[PART_MATCHBOX]->Priority_Tick(fTimeDelta);
+		break;
+	case Client::EQUIP_KNIFE:
+		m_PartObjects[PART_KNIFE]->Priority_Tick(fTimeDelta);
+		break;
+	case Client::EQUIP_FLARE:
+		m_PartObjects[PART_FLARE]->Priority_Tick(fTimeDelta);
+		break;
 	case Client::EQUIP_PIPE:
 		m_PartObjects[PART_PIPE]->Priority_Tick(fTimeDelta);
 		break;
@@ -103,6 +188,32 @@ void CPlayer::Priority_Tick(_float fTimeDelta)
 
 void CPlayer::Tick(_float fTimeDelta)
 {
+	m_fSoundFXTime += fTimeDelta;
+
+	if (m_fSoundFXTime > m_fEndTime)
+	{
+		if(7>=m_fEndTime)
+			m_pGameInstance->Play_Sound(TEXT("Crow.wav"), CH_FX, 1.f);
+		else if(14>=m_fBurnTime)
+			m_pGameInstance->Play_Sound(TEXT("Bird.wav"), CH_FX, 1.f);
+		else
+			m_pGameInstance->Play_Sound(TEXT("Duck.wav"), CH_FX, 1.f);
+			
+
+		m_fSoundFXTime = 0.f;
+		m_fEndTime = rand()%20;
+	}
+
+	if (PLAYER_INVENTORY != m_eState &&
+		PLAYER_ENTER != m_eState &&
+		PLAYER_PICKUP != m_eState &&
+		PLAYER_QUEST != m_eState &&
+		PLAYER_BURN != m_eState &&
+		PLAYER_BUILD != m_eState &&
+		PLAYER_HARVEST != m_eState &&
+		PLAYER_SLEEP != m_eState)
+	m_pUIState->Tick(fTimeDelta);
+
 	m_pStateMachine->Update(this, fTimeDelta);
 
 	m_pNavigationCom->Set_OnNavigation(m_pTransformCom);
@@ -121,6 +232,16 @@ void CPlayer::Tick(_float fTimeDelta)
 	case Client::EQUIP_RABBIT:
 		m_PartObjects[PART_RABBIT]->Tick(fTimeDelta);
 		break;
+	case Client::EQUIP_MATCH:
+		m_PartObjects[PART_MATCH]->Tick(fTimeDelta);
+		m_PartObjects[PART_MATCHBOX]->Tick(fTimeDelta);
+		break;
+	case Client::EQUIP_KNIFE:
+		m_PartObjects[PART_KNIFE]->Tick(fTimeDelta);
+		break;
+	case Client::EQUIP_FLARE:
+		m_PartObjects[PART_FLARE]->Tick(fTimeDelta);
+		break;
 	case Client::EQUIP_PIPE:
 		m_PartObjects[PART_PIPE]->Tick(fTimeDelta);
 		break;
@@ -129,6 +250,17 @@ void CPlayer::Tick(_float fTimeDelta)
 
 void CPlayer::Late_Tick(_float fTimeDelta)
 {
+
+	if (PLAYER_INVENTORY != m_eState &&
+		PLAYER_ENTER != m_eState &&
+		PLAYER_PICKUP != m_eState &&
+		PLAYER_QUEST != m_eState &&
+		PLAYER_BURN != m_eState &&
+		PLAYER_BUILD != m_eState &&
+		PLAYER_HARVEST != m_eState &&
+		PLAYER_SLEEP != m_eState)
+		m_pUIState->Late_Tick(fTimeDelta);
+
 
 	m_PartObjects[PART_BODY]->Late_Tick(fTimeDelta);
 	switch (m_eEquip)
@@ -141,6 +273,16 @@ void CPlayer::Late_Tick(_float fTimeDelta)
 		break;
 	case Client::EQUIP_RABBIT:
 		m_PartObjects[PART_RABBIT]->Late_Tick(fTimeDelta);
+		break;
+	case Client::EQUIP_MATCH:
+		m_PartObjects[PART_MATCH]->Late_Tick(fTimeDelta);
+		m_PartObjects[PART_MATCHBOX]->Late_Tick(fTimeDelta);
+		break;
+	case Client::EQUIP_KNIFE:
+		m_PartObjects[PART_KNIFE]->Late_Tick(fTimeDelta);
+		break;
+	case Client::EQUIP_FLARE:
+		m_PartObjects[PART_FLARE]->Late_Tick(fTimeDelta);
 		break;
 	case Client::EQUIP_PIPE:
 		m_PartObjects[PART_PIPE]->Late_Tick(fTimeDelta);
@@ -164,7 +306,7 @@ HRESULT CPlayer::Add_Components()
 {
 
 	/* For.Com_Collider */
-	CBounding_AABB::BOUNDING_AABB_DESC		ColliderDesc{};
+	CBounding_AABB::BOUNDING_AABB_DESC		ColliderDesc={};
 
 	ColliderDesc.eType = CCollider::TYPE_AABB;
 	ColliderDesc.vExtents = _float3(0.3f, 0.7f, 0.3f);//aabb 조절가능
@@ -176,7 +318,7 @@ HRESULT CPlayer::Add_Components()
 		return E_FAIL;
 
 	/* For.Com_Navigation */
-	CNavigation::NAVIGATION_DESC	NavigationDesc{};
+	CNavigation::NAVIGATION_DESC	NavigationDesc={};
 
 	NavigationDesc.iCurrentCellIndex = m_iCellIndex;
 
@@ -196,12 +338,13 @@ HRESULT CPlayer::Add_PartObjects()
 
 
 	/* 바디객체를 복제해온다. */
-	CBody_Player::BODY_DESC		BodyDesc{};
+	CBody_Player::BODY_DESC		BodyDesc={};
 	BodyDesc.pParentMatrix = m_pTransformCom->Get_WorldFloat4x4();
 	BodyDesc.fSpeedPerSec = 0.f;
 	BodyDesc.fRotationPerSec = 0.f;
 	BodyDesc.pState = &m_eState;
 	BodyDesc.pEquip = &m_eEquip;
+	BodyDesc.pLit = &m_bLit;
 	BodyDesc.pBulletsLeft = &m_iBulletsLeft;
 	BodyDesc.pCloth = &m_eCloth;
 	BodyDesc.pAnimFinished = &m_bAnimFinished;
@@ -216,22 +359,29 @@ HRESULT CPlayer::Add_PartObjects()
 		dynamic_cast<CModel*>(m_PartObjects[PART_BODY]->Get_Component(TEXT("Com_Model")))->Get_CameraBone("Camera_Weapon_Offset");
 
 	/*카메라 생성이지 파트 오브젝트는 아님*/
-	CPlayer_Camera::PLAYER_CAMERA_DESC		CameraDesc{};
+	CPlayer_Camera::PLAYER_CAMERA_DESC		CameraDesc={};
 	CameraDesc.pEyeBoneMatrix =
-		dynamic_cast<CModel*>(m_PartObjects[PART_BODY]->Get_Component(TEXT("Com_Model")))->Get_ControlBoneMatrix("Camera_Weapon_Offset");
+		dynamic_cast<CModel*>(m_PartObjects[PART_BODY]->Get_Component(TEXT("Com_Model")))->
+		Get_BoneCombinedTransformationMatrix("Camera_Weapon_Offset");
+
+	//Camera_Weapon_Offset == 조절 카메라 
+	//Camera_Offset = 카메라 부모
+	//camera			=카메라 박을 위치
 
 	CameraDesc.pParentMatrix = m_pTransformCom->Get_WorldFloat4x4();
 	CameraDesc.pCamBone =
-		dynamic_cast<CModel*>(m_PartObjects[PART_BODY]->Get_Component(TEXT("Com_Model")))->Get_CameraBone("Camera_Weapon_Offset");
+		dynamic_cast<CModel*>(m_PartObjects[PART_BODY]->Get_Component(TEXT("Com_Model")))->Get_CameraBone("camera");
+	//Camera_Offset 이것도 던져줘서 부모한테 넣어주기
 	CameraDesc.fAspect = g_iWinSizeX / (_float)g_iWinSizeY;
-	CameraDesc.fFovy = XMConvertToRadians(70.f);
-	CameraDesc.fNear = 0.1f;
+	CameraDesc.fFovy = XMConvertToRadians(45.f);
+	CameraDesc.fNear = 0.01f;
 	CameraDesc.fFar = 3000.f;
 	CameraDesc.fSpeedPerSec = 50.f;
 	CameraDesc.fRotationPerSec = XMConvertToRadians(90.f);
 	XMStoreFloat4x4(&CameraDesc.vPrePosition, XMMatrixIdentity());
 	CameraDesc.ProtoTypeTag = TEXT("Prototype_GameObject_PlayerCamera");
 	CameraDesc.ModelTag = TEXT("");
+	CameraDesc.pState = (_uint*)&m_eState;
 
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, TEXT("Layer_Camera"), TEXT("Prototype_GameObject_PlayerCamera"), &CameraDesc)))
 		return E_FAIL;
@@ -239,7 +389,7 @@ HRESULT CPlayer::Add_PartObjects()
 
 	///*돌*/
 	///* 무기객체를 복제해온다. */
-	CWeapon::WEAPON_DESC			WeaponDesc{};
+	CWeapon::WEAPON_DESC			WeaponDesc={};
 	WeaponDesc.pParentMatrix = m_pTransformCom->Get_WorldFloat4x4();
 	//WeaponDesc.pState = &m_iState;
 	WeaponDesc.ProtoTypeTag = TEXT("Prototype_GameObject_Weapon");
@@ -264,7 +414,7 @@ HRESULT CPlayer::Add_PartObjects()
 
 	/*리볼버*/
 	///* 무기객체를 복제해온다. */
-	CRevolver::REVOLVER_DESC			RevolverDesc{};
+	CRevolver::REVOLVER_DESC			RevolverDesc={};
 	RevolverDesc.pParentMatrix = m_pTransformCom->Get_WorldFloat4x4();
 	//WeaponDesc.pState = &m_iState;
 	RevolverDesc.ProtoTypeTag = TEXT("Prototype_GameObject_Revolver");
@@ -297,7 +447,7 @@ HRESULT CPlayer::Add_PartObjects()
 
 	/*토끼*/
 	///* 무기객체를 복제해온다. */
-	CPickRabbit::PICKRABBIT_DESC			PickRabbitDesc{};
+	CPickRabbit::PICKRABBIT_DESC			PickRabbitDesc={};
 	PickRabbitDesc.pParentMatrix = m_pTransformCom->Get_WorldFloat4x4();
 	//WeaponDesc.pState = &m_iState;
 	PickRabbitDesc.ProtoTypeTag = TEXT("Prototype_GameObject_PickRabbit");
@@ -319,6 +469,113 @@ HRESULT CPlayer::Add_PartObjects()
 	if (nullptr == pPickRabbit)
 		return E_FAIL;
 	m_PartObjects.emplace_back(pPickRabbit);
+
+
+	/*성냥*/
+	///* 무기객체를 복제해온다. */
+	CMatch::MATCH_DESC			MatchDesc = {};
+	MatchDesc.pParentMatrix = m_pTransformCom->Get_WorldFloat4x4();
+	//MatchDesc.pState = &m_iState;
+	MatchDesc.ProtoTypeTag = TEXT("Prototype_GameObject_Match");
+	MatchDesc.ModelTag = TEXT("Prototype_Component_Model_Match");
+	XMStoreFloat4x4(&MatchDesc.vPrePosition, XMMatrixIdentity());
+	MatchDesc.pState = &m_eState;
+	MatchDesc.pEquip = &m_eEquip;
+	MatchDesc.pLit = &m_bLit;
+	MatchDesc.pBurnTime = &m_fBurnTime;
+	MatchDesc.pAnimFinished = &m_bAnimFinished;
+	//몸의 모델컴을 가져옴
+	 pModelCom = dynamic_cast<CModel*>(pBody->Get_Component(TEXT("Com_Model")));
+	if (nullptr == pModelCom)
+		return E_FAIL;
+	//무기 가 붙어 있을 뼈정보를 가져옴
+	MatchDesc.pCombinedTransformationMatrix = pModelCom->Get_BoneCombinedTransformationMatrix("right_prop_point");
+	if (nullptr == MatchDesc.pCombinedTransformationMatrix)
+		return E_FAIL;
+	//뼈정보를 넣어줘서 제작
+	CGameObject* pMatch = m_pGameInstance->Clone_Object(MatchDesc.ProtoTypeTag, &MatchDesc);
+	if (nullptr == pMatch)
+		return E_FAIL;
+	m_PartObjects.emplace_back(pMatch);
+
+
+
+
+	///*성냥갑*/
+	///* 무기객체를 복제해온다. */
+	WeaponDesc.pParentMatrix = m_pTransformCom->Get_WorldFloat4x4();
+	//WeaponDesc.pState = &m_iState;
+	WeaponDesc.ProtoTypeTag = TEXT("Prototype_GameObject_Weapon");
+	WeaponDesc.ModelTag = TEXT("Prototype_Component_Model_Matchbox");
+	XMStoreFloat4x4(&WeaponDesc.vPrePosition, XMMatrixIdentity());
+	WeaponDesc.pState = &m_eState;
+	WeaponDesc.pEquip = &m_eEquip;
+	WeaponDesc.pAnimFinished = &m_bAnimFinished;
+	//몸의 모델컴을 가져옴
+	pModelCom = dynamic_cast<CModel*>(pBody->Get_Component(TEXT("Com_Model")));
+	if (nullptr == pModelCom)
+		return E_FAIL;
+	//무기 가 붙어 있을 뼈정보를 가져옴
+	WeaponDesc.pCombinedTransformationMatrix = pModelCom->Get_BoneCombinedTransformationMatrix("left_prop_point");
+	if (nullptr == WeaponDesc.pCombinedTransformationMatrix)
+		return E_FAIL;
+	//뼈정보를 넣어줘서 제작
+	pWeapon = m_pGameInstance->Clone_Object(TEXT("Prototype_GameObject_Weapon"), &WeaponDesc);
+	if (nullptr == pWeapon)
+		return E_FAIL;
+	m_PartObjects.emplace_back(pWeapon);
+
+	///*나이프*/
+///* 무기객체를 복제해온다. */
+	WeaponDesc.pParentMatrix = m_pTransformCom->Get_WorldFloat4x4();
+	//WeaponDesc.pState = &m_iState;
+	WeaponDesc.ProtoTypeTag = TEXT("Prototype_GameObject_Weapon");
+	WeaponDesc.ModelTag = TEXT("Prototype_Component_Model_Knife");
+	XMStoreFloat4x4(&WeaponDesc.vPrePosition, XMMatrixIdentity());
+	WeaponDesc.pState = &m_eState;
+	WeaponDesc.pEquip = &m_eEquip;
+	WeaponDesc.pAnimFinished = &m_bAnimFinished;
+	//몸의 모델컴을 가져옴
+	pModelCom = dynamic_cast<CModel*>(pBody->Get_Component(TEXT("Com_Model")));
+	if (nullptr == pModelCom)
+		return E_FAIL;
+	//무기 가 붙어 있을 뼈정보를 가져옴
+	WeaponDesc.pCombinedTransformationMatrix = pModelCom->Get_BoneCombinedTransformationMatrix("right_prop_point");
+	if (nullptr == WeaponDesc.pCombinedTransformationMatrix)
+		return E_FAIL;
+	//뼈정보를 넣어줘서 제작
+	pWeapon = m_pGameInstance->Clone_Object(TEXT("Prototype_GameObject_Weapon"), &WeaponDesc);
+	if (nullptr == pWeapon)
+		return E_FAIL;
+	m_PartObjects.emplace_back(pWeapon);
+
+	///*플레어*/
+///* 무기객체를 복제해온다. */
+	CFlare::FLARE_DESC			FlareDesc = {};
+	FlareDesc.pParentMatrix = m_pTransformCom->Get_WorldFloat4x4();
+	//WeaponDesc.pState = &m_iState;
+	FlareDesc.ProtoTypeTag = TEXT("Prototype_GameObject_Flare");
+	FlareDesc.ModelTag = TEXT("Prototype_Component_Model_Flare");
+	XMStoreFloat4x4(&FlareDesc.vPrePosition, XMMatrixIdentity());
+	FlareDesc.pState = &m_eState;
+	FlareDesc.pEquip = &m_eEquip;
+	FlareDesc.pAnimFinished = &m_bAnimFinished;
+	FlareDesc.pLit = &m_bFlareLit;
+	//몸의 모델컴을 가져옴
+	pModelCom = dynamic_cast<CModel*>(pBody->Get_Component(TEXT("Com_Model")));
+	if (nullptr == pModelCom)
+		return E_FAIL;
+	//무기 가 붙어 있을 뼈정보를 가져옴
+	FlareDesc.pCombinedTransformationMatrix = pModelCom->Get_BoneCombinedTransformationMatrix("right_prop_point");
+	if (nullptr == FlareDesc.pCombinedTransformationMatrix)
+		return E_FAIL;
+	//뼈정보를 넣어줘서 제작
+	pWeapon = m_pGameInstance->Clone_Object(TEXT("Prototype_GameObject_Flare"), &FlareDesc);
+	if (nullptr == pWeapon)
+		return E_FAIL;
+	m_PartObjects.emplace_back(pWeapon);
+
+
 
 	return S_OK;
 }
@@ -381,7 +638,8 @@ void CPlayer::Throw()
 	{
 	case Client::EQUIP_STONE:
 	{
-		CGEAR::GEARITEM_DESC GEARItemDesc{};
+	//	m_pInventory->Using_Item(TEXT("Stone"));
+		CGEAR::GEARITEM_DESC GEARItemDesc={};
 		m_pInventory->Drop_Item(TEXT("Stone"), &GEARItemDesc);
 		_vector pos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
 		//몸의 모델컴을 가져옴
@@ -414,22 +672,19 @@ void CPlayer::Player_Turn(_float fTimeDelta, _long MouseMove)
 
 _bool CPlayer::Pick_up()
 {
-	//id 가 있는 객체 == 아이템 같은것을 이걸로
-	CGameObject* pPickObject = m_pGameInstance->FindID_CloneObject(LEVEL_GAMEPLAY, m_pGameInstance->Picking_IDScreen());
-	if (nullptr != pPickObject)
-	{
-		m_fCurrentLoadingBar = 0.f;
-
-		m_bAcquire = true;
-		m_pPickUpSelector->Pick_up(pPickObject, &m_bAcquire);
-		return true;
-	}
-
-
-	//내가 id랑 피킹이 안되면 콜라이더랑 피킹을 한다 어떤? (monster,portal 이랑)
-
 	_vector vMouseRay[2] = {};
 	_float fDist = 0.f;
+	m_pGameInstance->World_MouseRay(vMouseRay);
+	CGameObject* pPickObject = m_pGameInstance->IntersectRay(LEVEL_GAMEPLAY, TEXT("Layer_Item"), vMouseRay, &fDist);
+	if (nullptr != pPickObject)
+{
+	m_fCurrentLoadingBar = 0.f;
+	Selector_In(pPickObject);
+
+	return true;
+}
+
+
 	m_pGameInstance->World_MouseRay(vMouseRay);
 	pPickObject= m_pGameInstance->IntersectRay(LEVEL_GAMEPLAY , TEXT("Layer_Monster"), vMouseRay, &fDist);
 
@@ -439,13 +694,9 @@ _bool CPlayer::Pick_up()
 		{
 			m_fCurrentLoadingBar = 0.f;
 
+
+			//로직 다시
 			if (dynamic_cast<CMonster*>(pPickObject)->Get_isItem())
-			{
-				Add_Rabbit();
-				pPickObject->Set_Live(false);
-				return false;
-			}
-			else
 			{
 				m_bRabbitCatch = true;
 				pPickObject->Set_Live(false);
@@ -454,27 +705,68 @@ _bool CPlayer::Pick_up()
 		}
 	}
 	//여기부터 상호작용 오브젝트 레이피킹
-	pPickObject = m_pGameInstance->IntersectRay(LEVEL_GAMEPLAY, TEXT("Layer_InteractiveObject"), vMouseRay, &fDist);
+
+
+	pPickObject = m_pGameInstance->IntersectRay(LEVEL_GAMEPLAY, TEXT("Layer_Npc"), vMouseRay, &fDist);
 
 	if (nullptr != pPickObject)
 	{
-		m_bEnter = true;
-
-		if(m_fCurrentLoadingBar>= m_fMaxLoadingBar)
-		{
-			dynamic_cast<CInteractiveObject*>(pPickObject)->Action();
-			m_bEnter = false;
-		}
-
+		dynamic_cast<CMother*>(pPickObject)->Action();
 		return false;
 	}
-
 	return false;
 }
 
-void CPlayer::Puck_up_Update(_float fTimeDelta)
+_bool CPlayer::Pick_InteractiveObject()
+{
+	_vector vMouseRay[2] = {};
+	_float fDist = 0.f;
+	m_pGameInstance->World_MouseRay(vMouseRay);
+	CGameObject* pPickObject = m_pGameInstance->IntersectRay(LEVEL_GAMEPLAY, TEXT("Layer_InteractiveObject"), vMouseRay, &fDist);
+
+	if (nullptr != pPickObject)
+	{
+
+		if (TEXT("Prototype_GameObject_BedRoll") == pPickObject->Get_Prototype())
+		{
+			dynamic_cast<CInteractiveObject*>(pPickObject)->Action();
+		}
+		else if(TEXT("Prototype_GameObject_Stove")!= pPickObject->Get_Prototype())
+		{
+			
+	
+			m_bEnter = true;
+	
+			if (m_fCurrentLoadingBar >= m_fMaxLoadingBar)
+			{
+				dynamic_cast<CInteractiveObject*>(pPickObject)->Action();
+				m_bEnter = false;
+			}
+	
+			return true;
+	
+		}
+		else
+		{
+			m_pUIBurn->Set_Stove(pPickObject);
+			dynamic_cast<CInteractiveObject*>(pPickObject)->Action();
+			
+			return false;
+		}
+	}
+	return false;
+}
+
+void CPlayer::Selector_In(CGameObject* PickObject)
+{
+	m_bAcquire = true;
+	m_pPickUpSelector->Pick_up(PickObject, &m_bAcquire);
+}
+
+void CPlayer::Pick_up_Update(_float fTimeDelta)
 {
 	m_pPickUpSelector->Tick(fTimeDelta);
+	m_pPickUpSelector->Late_Tick(fTimeDelta);
 }
 
 void CPlayer::Add_Item()
@@ -497,7 +789,7 @@ void CPlayer::Drop_Item()
 
 HRESULT CPlayer::Inventory_Drop(wstring ItemName)
 {
-	CItem::ITEM_DESC ItemDesc{};
+	CItem::ITEM_DESC ItemDesc={};
 	m_pInventory->Drop_Item(ItemName, &ItemDesc);
 	_vector pos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
 	XMStoreFloat4x4(&ItemDesc.vPrePosition, XMMatrixIdentity() *
@@ -511,18 +803,18 @@ HRESULT CPlayer::Inventory_Drop(wstring ItemName)
 
 HRESULT CPlayer::Inventory_DropRabbit(wstring ItemName)
 {
-	CItem::ITEM_DESC ItemDesc{};
+	CItem::ITEM_DESC ItemDesc={};
 	m_pInventory->Drop_Item(ItemName, &ItemDesc);
 
-	CMonster::MOSTER_DESC MonsterDesc{};
+	CMonster::MONSTER_DESC MonsterDesc={};
 
 	MonsterDesc.fRotationPerSec = ItemDesc.fRotationPerSec;
 	MonsterDesc.fSpeedPerSec = ItemDesc.fSpeedPerSec;
-	MonsterDesc.ProtoTypeTag = TEXT("Prototype_GameObject_Monster");
+	MonsterDesc.ProtoTypeTag = TEXT("Prototype_GameObject_Rabbit");
 	MonsterDesc.ModelTag = TEXT("Prototype_Component_Model_Rabbit");
 	MonsterDesc.pPlayerMatrix = m_pTransformCom->Get_WorldFloat4x4();
 	MonsterDesc.isItem = true;
-	MonsterDesc.CellIndex = m_iCellIndex;
+	MonsterDesc.CellIndex = *m_pNavigationCom->Get_CurrentCell();
 	_vector pos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
 	XMStoreFloat4x4(&MonsterDesc.vPrePosition, XMMatrixIdentity() *XMMatrixTranslation(XMVectorGetX(pos), 0.f, XMVectorGetZ(pos)));
 	
@@ -534,22 +826,46 @@ HRESULT CPlayer::Inventory_DropRabbit(wstring ItemName)
 
 HRESULT CPlayer::Release_Rabbit(wstring ItemName)
 {
-	CMonster::MOSTER_DESC MonsterDesc{};
+	CRabbit::RABBIT_DESC MonsterDesc={};
 
-	MonsterDesc.ProtoTypeTag = TEXT("Prototype_GameObject_Monster");
+	MonsterDesc.ProtoTypeTag = TEXT("Prototype_GameObject_Rabbit");
 	MonsterDesc.ModelTag = TEXT("Prototype_Component_Model_Rabbit");
-	MonsterDesc.pPlayerMatrix = m_pTransformCom->Get_WorldFloat4x4();
-	MonsterDesc.isItem = false;
-	MonsterDesc.CellIndex = m_iCellIndex;
+	MonsterDesc.CellIndex = *m_pNavigationCom->Get_CurrentCell();
 	_vector pos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
-	XMStoreFloat4x4(&MonsterDesc.vPrePosition, XMMatrixIdentity() * XMMatrixTranslation(XMVectorGetX(pos), 0.f, XMVectorGetZ(pos)));
+	MonsterDesc.isItem = false;
+	XMStoreFloat4x4(&MonsterDesc.vPrePosition, XMMatrixIdentity() * XMMatrixTranslation(XMVectorGetX(pos), XMVectorGetY(pos), XMVectorGetZ(pos)));
 
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, TEXT("Layer_Monster"), MonsterDesc.ProtoTypeTag, &MonsterDesc)))
 		return E_FAIL;
-
+	m_bRabbitCatch = false;
+	m_pRabbit = nullptr;
 	return S_OK;
 }
 
+
+void CPlayer::UIBurn_Update(_float fTimeDelta)
+{
+	m_pUIBurn->Tick(fTimeDelta);
+	m_pUIBurn->Late_Tick(fTimeDelta);
+}
+
+void CPlayer::UIHarvest_Update(_float fTimeDelta)
+{
+	m_pUIHarvest->Tick(fTimeDelta);
+	m_pUIHarvest->Late_Tick(fTimeDelta);
+}
+
+void CPlayer::UISleep_Update(_float fTimeDelta)
+{
+	m_pUISleep->Tick(fTimeDelta);
+	m_pUISleep->Late_Tick(fTimeDelta);
+}
+
+void CPlayer::UIStruggle_Update(_float fTimeDelta)
+{
+	m_pUIStruggle->Tick(fTimeDelta);
+	m_pUIStruggle->Late_Tick(fTimeDelta);
+}
 
 void CPlayer::Cam_Turn(_float fTimeDelta, _long MouseMove)
 {
@@ -557,7 +873,7 @@ void CPlayer::Cam_Turn(_float fTimeDelta, _long MouseMove)
 
 	_vector		vRight = Socket.r[0];
 	_vector		vUp = Socket.r[1];
-	_vector		vLook = Socket.r[2];
+	_vector		vLook = Socket.r[2]; 
 
 	_matrix		RotationMatrix = XMMatrixRotationAxis(vRight, -0.02f * fTimeDelta * MouseMove);
 
@@ -572,12 +888,32 @@ void CPlayer::Cam_Turn(_float fTimeDelta, _long MouseMove)
 	m_pCamBone->Set_TransformationMatrix(Socket);
 
 	//이거하면 카메라 2번 움직는 꼴
-	//m_pCamera->Set_CamMatrix(fTimeDelta);
+	m_pCamera->Set_CamMatrix(fTimeDelta);	
 }
 
 void CPlayer::Pick_UI()
 {
 	m_pUIInventory->Pick_UIToggle();
+}
+
+void CPlayer::Pick_UIBurn()
+{
+	m_pUIBurn->Pick_UIBurn();
+}
+
+void CPlayer::Pick_UIHarvest()
+{
+	m_pUIHarvest->Pick_UIHarvest();
+}
+
+void CPlayer::Pick_UISleep()
+{
+	m_pUISleep->Pick_UISleep();
+}
+
+void CPlayer::Pick_UIStruggle()
+{
+	m_pUIStruggle->Pick_UIStruggle();
 }
 
 void CPlayer::Loading_UI(_float fTimeDelta)
@@ -593,18 +929,49 @@ void CPlayer::Inventory_Update(_float fTimeDelta)
 
 void CPlayer::Set_Reload_Reset()
 {
-	
 	m_bRevolver_AnimFin = false;
 	m_bAnimFinished = false;
 
 	dynamic_cast<CBody_Player*>(m_PartObjects[PART_BODY])->Reset_Anim();
 	dynamic_cast<CRevolver*>(m_PartObjects[PART_REOVLVER])->Reset_Anim();
-	
+}
+
+void CPlayer::Quest_Update(_float fTimeDelta)
+{
+	m_pNPCManager->Tick(fTimeDelta);
+	m_pNPCManager->Late_Tick(fTimeDelta);
+}
+
+_bool CPlayer::Talk(_int TalkIndex)
+{
+	return m_pNPCManager->Talk(TalkIndex);
 }
 
 void CPlayer::Set_SceneSelect(_uint iSceneIndex)
 {
 	m_pUIInventory->Set_CurrentScene(iSceneIndex);
+}
+
+_bool CPlayer::Burn_Out()
+{
+	if (true == m_bLit)
+		if (m_fBurnTime > 5.f)
+		{
+			Set_State(PLAYERSTATE::PLAYER_BURNOUT);
+			return true;
+		}
+
+	return false;
+}
+
+void CPlayer::Using_Item(wstring strName)
+{
+	m_pInventory->Using_Item(strName);
+}
+
+void CPlayer::Set_FadeIn()
+{
+	m_pUImanager->Render_UI(CUImanager::Layer_FadeIn);
 }
 
 HRESULT CPlayer::Set_Portal(_int iGoalCellIndex, _float4 vGoalPosition)
@@ -623,18 +990,119 @@ void CPlayer::Add_EnterTime(_float fTimeDelta)
 	m_fCurrentLoadingBar += 5.f * fTimeDelta;
 }
 
-void CPlayer::isReload()
+void CPlayer::Move_BuildObject(_float fTimeDelta)
 {
-	if (dynamic_cast<CRevolver*>(m_PartObjects[EQUIP_REVOLVER])->Reload_Time())
-			m_iBulletsLeft = m_iBulletsLeft++;
+
+
+	_float4		vPickPos = {};	
+	if (m_pGameInstance->Get_PickPos(&vPickPos))	
+		dynamic_cast<CTransform*>(m_pBuildObject->Get_Transform())->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&vPickPos));
+
+	m_pBuildObject->Tick(fTimeDelta);
+	m_pBuildObject->Late_Tick(fTimeDelta);
 }
 
-void CPlayer::RayCollInfo(const wstring Objname, CGameObject* pRabbit)
+void CPlayer::BuildObject()
 {
-	m_pRabbit = pRabbit;
-	m_pUImanager->RayColl_SetInfo(Objname);
-	m_pUImanager->Render_UI(CUImanager::Layer_RayColl);	
-	m_bRabbitCatch = true;
+	CBedRoll::BEDROLL_DESC Desc{};
+
+	Desc.ProtoTypeTag = m_pBuildObject->Get_Prototype();
+	Desc.ModelTag = m_pBuildObject->Get_ModelTag();
+	XMStoreFloat4x4(&Desc.vPrePosition, dynamic_cast<CTransform*>(m_pBuildObject->Get_Transform())->Get_WorldMatrix());
+	Desc.CellIndex = m_pNavigationCom->Pick_CellIndex(dynamic_cast<CTransform*>(m_pBuildObject->Get_Transform())->Get_State(CTransform::STATE_POSITION));
+	Desc.iShaderPass = 0;
+	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, TEXT("Layer_InteractiveObject"), Desc.ProtoTypeTag, &Desc)))
+		return;
+
+	m_pInventory->Using_Item(TEXT("BedRoll"));
+	
+	Safe_Release(m_pBuildObject);
+
+}
+
+void CPlayer::Make_FootStep()
+{
+	CParticle_Rect::PARTICLE_DESC RectDesc{};
+	XMStoreFloat4(&RectDesc.vStartPos, XMVectorSet(0.f, 0.1f, 0.f, 1.f));
+	RectDesc.BufferInstance.iNumInstance = 1;
+	RectDesc.BufferInstance.vOffsetPos = _float3(0.0f, 0.f, 0.0f);
+	RectDesc.BufferInstance.vPivotPos = _float3(0.0f, 0.0f, 0.0f);
+	RectDesc.BufferInstance.vRange = _float3(0.0f, 0.f, 0.0f);
+	RectDesc.BufferInstance.vSize = _float2(1.f, 1.f);
+	RectDesc.BufferInstance.vSpeed = _float2(0.0f, 0.00f);
+	RectDesc.BufferInstance.vLifeTime = _float2(2.f, 2.0f);
+	RectDesc.BufferInstance.fScaleSize = 1.f;
+	RectDesc.BufferInstance.isLoop = false;
+	RectDesc.iTYPE = CParticle_Rect::TYPE_FOOT;
+
+	_float4x4 position{};
+	XMStoreFloat4x4(&position, m_pTransformCom->Get_WorldMatrix());
+
+	RectDesc.pParentMatrix = &position;	
+	RectDesc.BufferInstance.vStartPos = RectDesc.vStartPos;
+	RectDesc.BufferInstance.pParentMatrix = &position;
+
+//	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, TEXT("Layer_FootStep"),
+//		TEXT("Prototype_GameObject_Particle_Rect"), &RectDesc)))
+//		return;
+	 
+}
+
+
+void CPlayer::RayFire()
+{
+	dynamic_cast<CRevolver*>(m_PartObjects[PART_REOVLVER])->Set_Shot();
+	dynamic_cast<CRevolver*>(m_PartObjects[PART_REOVLVER])->Set_Smog();
+	_vector vMouseRay[2] = {};
+	_float fDist = 0.f;
+	m_pGameInstance->World_MouseRay(vMouseRay);
+	CGameObject* pPickObject = m_pGameInstance->IntersectRay(LEVEL_GAMEPLAY, TEXT("Layer_Monster"), vMouseRay, &fDist);
+
+	if (nullptr != pPickObject)
+	{
+		if (TEXT("Prototype_Component_Model_Rabbit") == pPickObject->Get_ModelTag())
+		{
+			m_fCurrentLoadingBar = 0.f;
+
+			if (!dynamic_cast<CRabbit*>(pPickObject)->Get_isItem())
+			{
+				dynamic_cast<CRabbit*>(pPickObject)->Set_State(6);	
+			}
+		}
+		if (TEXT("Prototype_Component_Model_Wolf") == pPickObject->Get_ModelTag())
+		{
+			m_fCurrentLoadingBar = 0.f;
+
+			dynamic_cast<CWolf*>(pPickObject)->Set_State(6);
+			
+		}
+	}
+}
+
+void CPlayer::isReload()
+{
+//	if (dynamic_cast<CRevolver*>(m_PartObjects[EQUIP_REVOLVER])->Reload_Time())
+			m_iBulletsLeft = ++m_iBulletsLeft;
+}
+
+void CPlayer::RayCollInfo()
+{
+	_vector pRay[2];
+	CGameObject* pGameObject = nullptr;
+
+	m_pGameInstance->World_MouseRay(pRay);
+	if(m_pGameInstance->RayCollInfo(LEVEL_GAMEPLAY, TEXT("Layer_Item"), pRay, &pGameObject))
+	{
+		m_pUImanager->RayColl_SetInfo(dynamic_cast<CItem*>(pGameObject)->Get_TextUIName());
+		m_pUImanager->Render_UI(CUImanager::Layer_RayColl);
+	}
+
+	if (m_pGameInstance->RayCollInfo(LEVEL_GAMEPLAY, TEXT("Layer_InteractiveObject"), pRay, &pGameObject))
+	{
+		m_pUImanager->RayColl_SetInfo(dynamic_cast<CItem*>(pGameObject)->Get_TextUIName());
+		m_pUImanager->Render_UI(CUImanager::Layer_RayColl);
+	}
+
 }
 
 
@@ -681,6 +1149,8 @@ void CPlayer::Free()
 
 	m_PartObjects.clear();
 
+	Safe_Release(m_pUIState);
+
 	Safe_Release(m_pNavigationCom);
 
 	Safe_Release(m_pColliderCom);
@@ -697,6 +1167,16 @@ void CPlayer::Free()
 
 	Safe_Release(m_pLoadingBar);
 
-	CStateMachine::DestroyInstance();
+	Safe_Release(m_pNPCManager);
+
+	Safe_Release(m_pUIBurn);
+
+	Safe_Release(m_pUIHarvest);
+
+	Safe_Release(m_pUISleep);
+
+	Safe_Release(m_pUIStruggle);
+
+	//CStateMachine::DestroyInstance();
 
 }

@@ -122,6 +122,31 @@ void CAnimation::Update_TransformationMatrix(_float fTimeDelta, const vector<cla
 	}
 }
 
+void CAnimation::Update_StruggleTransformationMatrix(_float fTimeDelta, const vector<class CBone*>& Bones, _bool isLoop)
+{
+	m_CurrentPosition += m_TickPerSecond * fTimeDelta;
+
+
+
+	if (m_CurrentPosition >= m_Duration)
+	{
+		m_CurrentPosition = 0.0;
+
+		if (false == isLoop)
+			m_isFinished = true;
+	}
+
+	if (false == m_isFinished)
+	{
+		_uint		iChannelIndex = { 0 };
+
+		for (auto& pChannel : m_Channels)
+		{
+			pChannel->Update_StruggleTransformationMatrix(m_CurrentPosition, Bones, &m_CurrentKeyFrameIndices[iChannelIndex++]);
+		}
+	}
+}
+
 _bool CAnimation::Shift_Animation_TransformationMatrix(_float fTimeDelta, const vector<class CBone*>& Bones)
 {
 
@@ -152,7 +177,6 @@ void CAnimation::Reset()
 {
 	m_CurrentPosition = 0.0;
 	m_isFinished = false;
-	//¸Þ¸ð
 	vector<_uint>(m_CurrentKeyFrameIndices.size(), 0).swap(m_CurrentKeyFrameIndices);
 }
 

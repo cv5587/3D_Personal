@@ -2,6 +2,7 @@
 #include "GameInstance.h"
 #include "Item.h"
 #include "UImanager.h"
+#include "Player.h"
 
 
 CPickUpSelector::CPickUpSelector(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -33,7 +34,7 @@ HRESULT CPickUpSelector::Pick_up(CGameObject* pPickObject, _bool* Acquire)
 
 	m_PickObject = pPickObject;
 
-
+	wstring ModelTag = m_PickObject->Get_ModelTag();
 	//모든 정보를 가진 아이템
 	CItem* pItem = static_cast<CItem*>(pPickObject);
 
@@ -45,7 +46,7 @@ HRESULT CPickUpSelector::Pick_up(CGameObject* pPickObject, _bool* Acquire)
 
 	_matrix ItemMatrix = pTransform->Get_WorldMatrix();
 
-	XMStoreFloat4x4(&m_PickObjectOriginMatrix, ItemMatrix);
+	XMStoreFloat4x4(&m_PickObjectOriginMatrix, ItemMatrix);	
 
 	const _float4x4* pCamMatrix = m_pGameInstance->Get_Transform_float4x4_Inverse(CPipeLine::TS_VIEW);//카메라 위치행렬
 
@@ -60,12 +61,66 @@ HRESULT CPickUpSelector::Pick_up(CGameObject* pPickObject, _bool* Acquire)
 
 	if(CItem::ITEM_CLOTH==vecType[0] || CItem::ITEM_CLOTH == vecType[1])
 	{
-		Position = vCamPos + Length * 0.3f;
-		pTransform->Rotaion_Reset();
-		pTransform->Set_State_Matrix(XMMatrixIdentity()* XMMatrixScaling(0.4f, 0.4f, 0.4f)*
+		Position = vCamPos + Length * 0.4f;
+		//pTransform->Rotaion_Reset();
+		pTransform->Set_State_Matrix(XMMatrixIdentity()* XMMatrixScaling(0.3f, 0.3f, 0.3f)*
 			XMMatrixTranslation(XMVectorGetX(Position), XMVectorGetY(Position), XMVectorGetZ(Position)));
-		
-
+	}
+	else 	if (TEXT("Prototype_Component_Model_BeefJerky")==ModelTag)
+	{
+		Position = vCamPos + Length * 0.3f;
+		//pTransform->Rotaion_Reset();
+		pTransform->Set_State_Matrix(XMMatrixIdentity() * XMMatrixScaling(1.f, 1.f, 1.f) *
+			XMMatrixTranslation(XMVectorGetX(Position), XMVectorGetY(Position), XMVectorGetZ(Position)));
+	}
+	else 	if (TEXT("Prototype_Component_Model_RawRabbit") == ModelTag)
+	{
+		Position = vCamPos + Length * 0.3f;
+		//pTransform->Rotaion_Reset();
+		pTransform->Set_State_Matrix(XMMatrixIdentity() * XMMatrixScaling(0.3f, 0.3f, 0.3f) *
+			XMMatrixTranslation(XMVectorGetX(Position), XMVectorGetY(Position), XMVectorGetZ(Position)));
+	}
+	else 	if (TEXT("Prototype_Component_Model_CookedRabbit") == ModelTag)
+	{
+		Position = vCamPos + Length * 0.3f;
+		//pTransform->Rotaion_Reset();
+		pTransform->Set_State_Matrix(XMMatrixIdentity() * XMMatrixScaling(0.3f, 0.3f, 0.3f) *
+			XMMatrixTranslation(XMVectorGetX(Position), XMVectorGetY(Position), XMVectorGetZ(Position)));
+	}
+	else 	if (TEXT("Prototype_Component_Model_Rut") == ModelTag)
+	{
+		Position = vCamPos + Length * 0.3f;
+		//pTransform->Rotaion_Reset();
+		pTransform->Set_State_Matrix(XMMatrixIdentity() * XMMatrixScaling(0.3f, 0.3f, 0.3f) *
+			XMMatrixTranslation(XMVectorGetX(Position), XMVectorGetY(Position), XMVectorGetZ(Position)));
+	}
+	else 	if (TEXT("Prototype_Component_Model_Pelt") == ModelTag)
+	{
+		Position = vCamPos + Length * 0.3f;
+		//pTransform->Rotaion_Reset();
+		pTransform->Set_State_Matrix(XMMatrixIdentity() * XMMatrixScaling(0.3f, 0.3f, 0.3f) *
+			XMMatrixTranslation(XMVectorGetX(Position), XMVectorGetY(Position), XMVectorGetZ(Position)));
+	}
+	else 	if (TEXT("Prototype_Component_Model_Hardwood") == ModelTag)
+	{
+		Position = vCamPos + Length * 0.3f;
+		//pTransform->Rotaion_Reset();
+		pTransform->Set_State_Matrix(XMMatrixIdentity() * XMMatrixScaling(0.3f, 0.3f, 0.3f) *
+			XMMatrixTranslation(XMVectorGetX(Position), XMVectorGetY(Position), XMVectorGetZ(Position)));
+	}
+	else 	if (TEXT("Prototype_Component_Model_Stick") == ModelTag)
+	{
+		Position = vCamPos + Length * 0.3f;
+		//pTransform->Rotaion_Reset();
+		pTransform->Set_State_Matrix(XMMatrixIdentity() * XMMatrixScaling(0.3f, 0.3f, 0.3f) *
+			XMMatrixTranslation(XMVectorGetX(Position), XMVectorGetY(Position), XMVectorGetZ(Position)));
+	}
+	else 	if (TEXT("Prototype_Component_Model_Flare") == ModelTag)
+	{
+		Position = vCamPos + Length * 0.3f;
+		//pTransform->Rotaion_Reset();
+		pTransform->Set_State_Matrix(XMMatrixIdentity() * XMMatrixScaling(0.3f, 0.3f, 0.3f) *
+			XMMatrixTranslation(XMVectorGetX(Position), XMVectorGetY(Position), XMVectorGetZ(Position)));
 	}
 	else 
 	{
@@ -111,12 +166,14 @@ HRESULT CPickUpSelector::Tick( _float fTimeDelta)
 	m_pUImanager->Render_TypeUI(CUImanager::Layer_Type);
 	m_pUImanager->Render_UI(CUImanager::Layer_Text);
 
+
+
 	return S_OK;
 }
 
 HRESULT CPickUpSelector::Late_Tick(_float fTimeDelta)
 {
-
+	m_PickObject->Late_Tick(fTimeDelta);
 	return S_OK;
 }
 
@@ -130,8 +187,8 @@ void CPickUpSelector::Add_Item()
 	m_pPlayerInventory->Add_Item(dynamic_cast<CItem*>(m_PickObject));
 	//아이템 주우면 ui 생성 하는 형식으로 가자 (미리 생성해서 바꾸지 말고.)
 	m_pUImanager->Add_InvenIcon(m_pPlayerInventory->Get_LastIndex(),dynamic_cast<CItem*>(m_PickObject));
-	
-	m_pGameInstance->Delete_CloneObject(LEVEL_GAMEPLAY, m_PickObject);
+	m_PickObject->Set_Live(false);
+//	m_pGameInstance->Delete_CloneObject(LEVEL_GAMEPLAY, m_PickObject);
 	//여기서 아이템 ui 생성 하고 하나의 레이어 모아둔다. 
 	//인벤토리에서는 항상 모아둔 레이어만 출력하게 만든다. 선택하면 설명창은 하나의 화면으로 돌려 쓰자.
 

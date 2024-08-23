@@ -12,7 +12,7 @@ class CUITEXT final :
     public CUIBase
 {
 public:
-	typedef struct :public CUIBase::UI_BASE_DESC {
+	typedef struct UI_DESC :public CUIBase::UI_BASE_DESC {
 		wstring TextTag;
 		wstring Font;
 		_float2	TextPosition;
@@ -35,11 +35,12 @@ public:
 
 
 public:
-	void Set_Text(wstring Text)
-	{
-		m_TextTag = Text;
+	void Set_Text(wstring Text);
+	void Switch_Text(wstring Text);
+	wstring* Get_pText() {
+		return &m_TextTag;
 	}
-
+	void Set_Color(_float4 vColor) { m_Color = vColor; }
 private:
 
 	_float							m_fX, m_fY, m_fSizeX, m_fSizeY;
@@ -48,7 +49,10 @@ private:
 	wstring						m_TextTag = { TEXT("") };
 	wstring						m_Font = { TEXT("") };
 	_float2						m_TextPosition = { 0.f, 0.f };
+	_float2						m_ResultPosition = { 0.f, 0.f };
 	_float4						m_Color = {1.f, 1.f, 1.f, 1.f};	
+
+	_bool						m_bFixPosition = { false };
 private:
 	HRESULT Add_Components();
 	HRESULT Bind_ShaderResources();

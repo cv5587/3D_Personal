@@ -7,7 +7,7 @@ BEGIN(Engine)
 class ENGINE_DLL CGameObject abstract : public CBase
 {
 public:
-	typedef struct : public CTransform::TRANSFORM_DESC
+	typedef struct GAMEOBJECT_DESC : public CTransform::TRANSFORM_DESC
 	{
 		wstring ProtoTypeTag;
 		wstring		ModelTag;
@@ -31,7 +31,10 @@ public:
 	virtual void UI_Render(_uint IconID);
 	virtual _bool Intersect(class CCollider* pTargetCollider) ;
 	virtual _bool IntersectRay(_vector* pRayArray, _float* fDist) ;
-
+	virtual _bool RayCollInfo(_vector* pRayArray, CGameObject** pGameObject);
+	virtual _bool IntersectUI() ;
+	virtual HRESULT Action();
+	virtual HRESULT Render_LightDepth() { return S_OK; }
 	virtual wstring Get_Prototype() {
 		return m_ProtoTypeTag;
 	}

@@ -15,10 +15,13 @@ public:
 public:
 	_bool Compare_Name(const wstring ItemName);
 	void Add_Quantity() { m_iQuantity++; }
+	
+	_bool QuestItemFinish();
 	_bool Compare_Type(_uint TypeIndex);
 
 	void Drop_Item(void* pDesc);
 	void Make_ItemDataDesc(void* pDesc);
+	_bool	Using();
 private:
 	//아이템 타입은 여러개 가지고 있고 이걸 이용하자.
 	vector<_uint> m_ItemType;

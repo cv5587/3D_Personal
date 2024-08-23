@@ -12,6 +12,11 @@ void CState_Kill::Enter(CPlayer* Player)
 
 void CState_Kill::Update(CPlayer* Player, _float fTimeDelta)
 {
+	if(!m_bOnce)
+	{
+		m_pGameInstance->Play_Sound(TEXT("RabbitKill.wav"), CH_RABBIT, 1.f);
+		m_bOnce = true;
+	}
 	if (Player->isAnimFinished())
 	{
 		Player->Add_Rabbit();
@@ -33,6 +38,7 @@ void CState_Kill::Update(CPlayer* Player, _float fTimeDelta)
 
 void CState_Kill::Exit(CPlayer* Player)
 {
+	m_bOnce = false;
 }
 
 CState* CState_Kill::Create()

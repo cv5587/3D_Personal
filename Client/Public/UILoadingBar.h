@@ -12,7 +12,7 @@ class CUILoadingBar :
     public CUIBase
 {
 public:
-	typedef struct :public CUIBase::UI_BASE_DESC {
+	typedef struct UI_LOADINGBAR_DESC :public CUIBase::UI_BASE_DESC {
 
 	}UI_LOADINGBAR_DESC;
 

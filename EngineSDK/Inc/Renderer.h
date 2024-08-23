@@ -17,7 +17,7 @@ BEGIN(Engine)
 class CRenderer final : public CBase
 {
 public:
-	enum RENDERGROUP { RENDER_PRIORITY, RENDER_NONBLEND, RENDER_NONLIGHT, RENDER_BLEND, RENDER_UI, RENDER_END };
+	enum RENDERGROUP { RENDER_PRIORITY, RENDER_SHADOWOBJ, RENDER_NONBLEND, RENDER_DECAL,RENDER_NONLIGHT, RENDER_BLEND, RENDER_UI, RENDER_END };
 
 private:
 	CRenderer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -49,11 +49,17 @@ private:
 	_float4x4										m_ViewMatrix = {};
 	_float4x4										m_ProjMatrix = {};
 
+	ID3D11DepthStencilView* m_pLightDepthStencilView = { nullptr };
+
 private:
 	void  Render_Priority();
+	void Render_ShadowObjects();
 	void  Render_NonBlend();
+	void Render_Decal();
 	void Render_LightAcc();
 	void Render_DeferredResult();
+	void Render_Bloom();
+	void Render_FinalBlend();
 	void  Render_NonLight();
 	void  Render_Blend();
 	void  Render_UI();
@@ -65,6 +71,7 @@ private:
 private:
 	void Render_Debug();
 #endif
+
 
 public:
 	static CRenderer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

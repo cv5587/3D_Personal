@@ -201,6 +201,22 @@ void CNavigation::Snap_Point(_vector vPoint, _float3* StorePoint, _float SnapRea
 
 }
 
+_int CNavigation::Pick_CellIndex(_fvector PickPoint)
+{
+
+	_vector		vLocalPos = XMVector3TransformCoord(PickPoint, XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_WorldMatrix)));
+	_int			iNeighborIndex = { -1 };
+
+	for (size_t i = 0; i < m_Cells.size(); i++)
+	{
+		if (m_Cells[i]->isIn(vLocalPos, &iNeighborIndex))
+			return i;
+
+	}
+
+	return -1;
+}
+
 void CNavigation::Delete_Index(_int CellIndex)
 {
 	m_Cells.erase(m_Cells.begin() + CellIndex);
@@ -286,6 +302,7 @@ HRESULT CNavigation::Set_OnNavigation(CTransform* pTransform)
 
 	if (-1 == m_iCurrentCellIndex)
 		return S_OK;
+
 
 	vLocalPos.y=m_Cells[m_iCurrentCellIndex]->Set_OnCell(vLocalPos);
 

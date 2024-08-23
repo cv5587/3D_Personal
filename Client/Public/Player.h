@@ -16,7 +16,8 @@ BEGIN(Client)
 class CPlayer final : public CLandObject
 {
 public:
-	enum PART { PART_BODY,  PART_STONE, PART_REOVLVER, PART_RABBIT, PART_PIPE, PART_END };
+	enum PART { PART_BODY,  PART_STONE, PART_REOVLVER, PART_RABBIT
+		, PART_MATCH, PART_MATCHBOX, PART_KNIFE, PART_FLARE, PART_PIPE, PART_END };
 	
 private:
 	CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -54,6 +55,9 @@ public:
 		m_eEquip = eEquip;
 		m_bChangeEquip = true;
 	}
+	void Set_NoActionEquip(PLAYEREQUIP eEquip) {
+		m_eEquip = eEquip;
+	}
 	void Set_UnEquip() {
 		m_eEquip = PLAYEREQUIP::EQUIP_NONE;
 	}
@@ -63,7 +67,9 @@ public:
 public:
 	void Player_Turn(_float fTimeDelta,_long MouseMove);
 	_bool Pick_up();
-	void Puck_up_Update(_float fTimeDelta);
+	_bool Pick_InteractiveObject();
+	void Selector_In(class CGameObject* PickObject);
+	void Pick_up_Update(_float fTimeDelta);
 
 	void Add_Item();
 	void Add_Rabbit();
@@ -72,25 +78,38 @@ public:
 	HRESULT Inventory_DropRabbit(wstring ItemName);
 	HRESULT Release_Rabbit(wstring ItemName);
 
-	void Cam_Turn(_float fTimeDelta, _long MouseMove);
+	void UIBurn_Update(_float fTimeDelta);
+	void UIHarvest_Update(_float fTimeDelta);
+	void UISleep_Update(_float fTimeDelta);
+	void UIStruggle_Update(_float fTimeDelta);
+	void Inventory_Update(_float fTimeDelta);
+
 	
 public:
 	void Pick_UI();
+	void Pick_UIBurn();
+	void Pick_UIHarvest();
+	void Pick_UISleep();
+	void Pick_UIStruggle();
 	void Loading_UI(_float fTimeDelta);
 public:
-	void Inventory_Update(_float fTimeDelta);
 	const PLAYERCONDITION isCondition() { return m_eCondition; }
 	const PLAYEREQUIP			isEquip() { return m_eEquip; }
 
-	const _bool						isEquipChange() { return m_bChangeEquip; }
-	const _bool						isAnimFinished() { return m_bAnimFinished; }
-	const _bool						isRevolver_AnimFin() { return m_bRevolver_AnimFin; }
-	const _bool						isRabbit_AnimFin() { return m_bRabbit_AnimFin; }
-	const _bool						isRabbitCatch() { return m_bRabbitCatch; }
-	const _bool						isEnter() { 	return m_bEnter; }
-
+	_bool						isEquipChange() { return m_bChangeEquip; }
+	_bool						isAnimFinished() { return m_bAnimFinished; }
+	_bool						isRevolver_AnimFin() { return m_bRevolver_AnimFin; }
+	_bool						isRabbit_AnimFin() { return m_bRabbit_AnimFin; }
+	_bool						isRabbitCatch() { return m_bRabbitCatch; }
+	_bool						isEnter() { 	return m_bEnter; }
+	_bool						isLit() { 	return m_bLit; }
+	_bool						isStruggle() { return m_bStruggle; }
+	_bool						isStruggleItem() { return m_bStruggleItem; }
 	void Set_Reload_Reset();
 
+public://Quest
+	void Quest_Update(_float fTimeDelta);
+	_bool Talk(_int TalkIndex);
 public:
 	void Set_SceneSelect(_uint iSceneIndex);
 	void Set_RabbitCatch(_bool isCatch) { m_bRabbitCatch = isCatch; }
@@ -98,9 +117,20 @@ public:
 			m_fCurrentLoadingBar = 0.f; 
 			m_bEnter = isEnter; 
 	}
-
+	void CurrentLoadingBarReset() {
+		m_fCurrentLoadingBar = 0.f;
+	}
+	void Set_Lit(_bool bLit) { m_bLit = bLit; }
+	void Set_FlareLit(_bool bLit) { m_bFlareLit = bLit; }
+	void Set_Struggle(_bool bStruggle) { m_bStruggle = bStruggle; }
+	void Set_StruggleItem(_bool bStruggleItem) { m_bStruggleItem = bStruggleItem	;}
+	void Reset_BurnTime() { m_fBurnTime = 0.f; }
+	_bool Burn_Out();
+	void Using_Item(wstring strName);
 public:
+	void Set_FadeIn();
 	HRESULT Set_Portal(_int iGoalCellIndex, _float4 vGoalPosition);
+	void Cam_Turn(_float fTimeDelta, _long MouseMove);
 private:
 	vector<class CGameObject*>		m_PartObjects;
 	PLAYERSTATE								m_eState = { PLAYERSTATE::PLAYER_IDLE };
@@ -112,14 +142,19 @@ private:
 	_bool											m_bAnimFinished = { true };
 	_float											m_fSensor = { 0.0f };
 	
+	
+	_bool											m_bStruggleItem = { false };
+	_bool											m_bStruggle = { false };
 	_bool											m_bRevolver_AnimFin = { true };
 	_bool											m_bRabbit_AnimFin = { false };
 	//pickupselector 돌릴지 말지 확인용 
 	_bool											m_bAcquire = {false};
 	_bool											m_bRabbitCatch = { false };
 	_bool											m_bEnter = { false };
-
-	CGameObject*									m_pRabbit = {nullptr};
+	_bool											m_bLit = { false };
+	_bool											m_bFlareLit = { false };
+	_float											m_fBurnTime = { 0.f };
+	CGameObject*								m_pRabbit = {nullptr};
 
 	class CNavigation* m_pNavigationCom = { nullptr };
 	class CCollider* m_pColliderCom = { nullptr };
@@ -128,6 +163,14 @@ private:
 	class CUIInventory* m_pUIInventory = { nullptr };
 	class CUImanager* m_pUImanager = { nullptr };
 	class CLoadingBar* m_pLoadingBar = { nullptr };
+	class CNPCManager* m_pNPCManager = { nullptr };
+	class CUIBurn* m_pUIBurn = { nullptr };
+	class CHarvest* m_pUIHarvest = { nullptr };
+	class CUISleep* m_pUISleep = { nullptr };
+	class CUIStruggleIntro* m_pUIStruggle = { nullptr };
+	class CUIPlayerState* m_pUIState = { nullptr };
+
+	class CGameObject* m_pBuildObject = { nullptr };
 private:
 	class CBone* m_pCamBone = { nullptr };
 	class CPlayer_Camera* m_pCamera = { nullptr };
@@ -136,18 +179,41 @@ private:
 
 public:
 	void Add_EnterTime(_float fTimeDelta);
+
+	//아이템 설치 필요함수
+public:
+	void Set_BuildObject(class CGameObject* pBuildItem) {
+		m_pBuildObject = pBuildItem;
+	}
+	void Move_BuildObject(_float fTimeDelta);
+	void BuildObject();
+
+	void Make_FootStep();
+	public:
+		_float* Get_LoadBar() { return &m_fCurrentLoadingBar; }
+	//로딩바 함수
 private:
 	_float m_fMaxLoadingBar = { 10.f };
 	_float m_fCurrentLoadingBar = { 0.f };
 public:
+		_bool isLoadFinished() {
+			return m_fCurrentLoadingBar >= m_fMaxLoadingBar;
+		}
+		_bool isFadeInFinished() {
+			return m_fCurrentLoadingBar >= 5.f;
+		}
+public:
+	void RayFire();
 	void isFire() { m_iBulletsLeft = --m_iBulletsLeft; }
 	void isReload();
 	_uint Get_BullletLeft() { return m_iBulletsLeft; }
 	const _bool isEmptyBullet() { return(0==m_iBulletsLeft ); }
 private:
 		_uint m_iBulletsLeft = { 6 };
+		_float m_fSoundFXTime = { 0.f };
+		_float m_fEndTime = { 3.f };
 public:
-	void RayCollInfo(const wstring Objname, CGameObject* pRabbit);
+	void RayCollInfo();
 
 public:
 	void Mouse_Fix();

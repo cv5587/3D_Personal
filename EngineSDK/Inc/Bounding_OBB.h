@@ -7,7 +7,7 @@ BEGIN(Engine)
 class CBounding_OBB final : public CBounding
 {
 public:
-	typedef struct : public CBounding::BOUNDING_DESC
+	typedef struct BOUNDING_OBB_DESC : public CBounding::BOUNDING_DESC
 	{
 		_float3		vExtents;
 		_float3		vRotation;

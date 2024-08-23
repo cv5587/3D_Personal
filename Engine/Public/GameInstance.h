@@ -4,8 +4,6 @@
 #include "Component_Manager.h"
 #include "PipeLine.h"
 
-
-
 BEGIN(Engine)
 
 class ENGINE_DLL CGameInstance final : public CBase
@@ -64,7 +62,7 @@ public: /* For.Object_Manager */
 	class CUIBase* FindUIID_CloneObject(_uint iLevelIndex, const wstring& strLayerTag, _int UIID);
 	_bool Intersect(_uint iLevelIndex, const wstring& strLayerTag, class CCollider* pTargetCollider);
 	CGameObject* IntersectRay(_uint iLevelIndex, const wstring& strLayerTag, _vector* pRayArray, _float* fDist);
-
+	_bool RayCollInfo(_uint iLevelIndex, const wstring& strLayerTag, _vector* pRayArray, CGameObject** pGameObject);
 
 public: /* For.Component_Manager */
 	HRESULT Add_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag, CComponent* pPrototype);
@@ -95,6 +93,8 @@ public:/*For.Calculator*/
 	_bool Compare_Float4(_float4 f1, _float4 f2);
 	_vector Picking_UI(_fmatrix ProjM);
 	void World_MouseRay(_vector* RayArray);
+	HRESULT Tick();
+	_bool Get_PickPos(_float4* pPickPos);
 
 public: /* For.Font_Manager */
 	HRESULT Add_Font(const wstring& strFontTag, const wstring& strFontFilePath);
@@ -104,16 +104,30 @@ public: /* For.Light_Manager */
 	const LIGHT_DESC* Get_LightDesc(_uint iIndex) const;
 	HRESULT Add_Light(const LIGHT_DESC& LightDesc);
 	HRESULT Render_Lights(class CShader* pShader, class CVIBuffer_Rect* pVIBuffer);
+	HRESULT Rotate_Light(_float fTimeDelta);
+	HRESULT Set_LightSwitch(_uint iIndex, _bool bSwitch);
+	HRESULT Set_LightPosition(_uint iIndex, _fvector vPosition);
+	HRESULT Set_Range(_uint iIndex, _float fRange);
 
 public: /* For.Target_Manager */
 	HRESULT Add_RenderTarget(const wstring& strTargetTag, _uint iSizeX, _uint iSizeY, DXGI_FORMAT ePixelFormat, const _float4& vClearColor);
 	HRESULT Add_MRT(const wstring& strMRTTag, const wstring& strTargetTag);
-	HRESULT Begin_MRT(const wstring& strMRTTag);
+	HRESULT Begin_MRT(const wstring& strMRTTag, _bool isClear, ID3D11DepthStencilView* pDSView = nullptr);
 	HRESULT Begin_UIMRT(const wstring& strMRTTag);
 	HRESULT End_MRT();
 	HRESULT Bind_RenderTargetSRV(const wstring& strTargetTag, class CShader* pShader, const _char* pConstantName);
 	HRESULT Copy_Resource(const wstring& strTargetTag, ID3D11Texture2D* pDesc);
 
+public:/* For.Frustum */
+	void Transform_ToLocalSpace(_fmatrix WorldMatrixInv);
+	_bool isIn_WorldFrustum(_fvector vPosition, _float fRange = 0.f);
+	_bool isIn_LocalFrustum(_fvector vPosition, _float fRange = 0.f);
+
+public:/* For.SoundMgr */
+	void Play_Sound(wstring pSoundKey, CHANNELID eID, _float fVolume );	//채널에서 플레이 중인거 무시하고 출력
+	void Play_Sound(wstring pSoundKey, CHANNELID eID, _float fVolume,  _fvector vPos);	//채널에서 플레이 중인거 무시하고 출력
+	void StopSound(CHANNELID eID);
+	void Play_BGM(wstring pSoundKey, _float fVolume);
 #ifdef _DEBUG
 public:
 	HRESULT Ready_RTDebug(const wstring& strTargetTag, _float fX, _float fY, _float fSizeX, _float fSizeY);
@@ -133,7 +147,8 @@ private:
 	class CFont_Manager*					m_pFont_Manager = { nullptr };
 	class CLight_Manager*				m_pLight_Manager = { nullptr };
 	class CTarget_Manager*				m_pTarget_Manager = { nullptr };
-
+	class CFrustum*							m_pFrustum = { nullptr };
+	class CSoundMgr*						m_pSoundMgr = { nullptr };
 public:	
 	static void Release_Engine();
 	virtual void Free() override;

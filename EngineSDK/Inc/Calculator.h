@@ -19,10 +19,12 @@ public:
 	 _int Picking_UIIDScreen();
 	 _vector Picking_UI(_fmatrix ProjM);
 	 void World_MouseRay(_vector* RayArray);
-
+	 HRESULT Tick();
 public:
+	_bool Get_PickPos(_float4* pPickPos);
 	 _bool Compare_Float4(_float4 f1, _float4 f2);	
-
+private:
+	_float Compute_ProjZ(_float fX, _float fY);
 private:
 	ID3D11Device*					m_pDevice = { nullptr };
 	ID3D11DeviceContext*		m_pContext = { nullptr };
@@ -30,8 +32,8 @@ private:
 	HWND									m_hWnd = {};
 	_uint										m_iWinSizeX = { 0 };
 	_uint										m_iWinSizeY = { 0 };
-
-
+	_bool							m_isSuccess = { false };
+	_float4							m_vPickPos = {};
 
 	ID3D11Texture2D* m_pTexture2D = { nullptr };
 

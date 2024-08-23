@@ -47,6 +47,16 @@ void CState_Hipfire::Update(CPlayer* Player, _float fTimeDelta)
 		Player->Go_Right(fTimeDelta);
 	}
 
+	if(!isbFire)
+	{
+		if (Player->isRevolver_AnimFin())
+		{
+			m_pGameInstance->StopSound(CH_GUN);
+			m_pGameInstance->Play_Sound(TEXT("Gunfire.wav"), CH_GUN, 1.0f);
+			Player->RayFire();
+			isbFire = true;
+		}
+	}
 
 	if (Player->isAnimFinished())
 	{
@@ -77,6 +87,7 @@ void CState_Hipfire::Update(CPlayer* Player, _float fTimeDelta)
 
 void CState_Hipfire::Exit(CPlayer* Player)
 {
+	isbFire = false;
 }
 
 CState* CState_Hipfire::Create()

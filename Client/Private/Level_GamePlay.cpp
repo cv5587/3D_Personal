@@ -9,6 +9,8 @@
 #include "CLTH.h"
 #include "Monster.h"
 #include"Data_Manager.h"
+#include "Particle_Point.h"
+#include "Particle_Rect.h"
 
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CData_Manager* pDataManager)
 	: CLevel{	pDevice, pContext}
@@ -21,6 +23,9 @@ HRESULT CLevel_GamePlay::Initialize()
 {
 
 	if (FAILED(Ready_Lights()))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Effect(TEXT("Layer_Effect"))))
 		return E_FAIL;
 
 	if (FAILED(m_pDataManager->Load_Data(LEVEL_GAMEPLAY)))
@@ -38,36 +43,47 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 
 HRESULT CLevel_GamePlay::Ready_Lights()
 {
-	LIGHT_DESC			LightDesc{};
+	LIGHT_DESC			LightDesc={};
 
-	LightDesc.eType = LIGHT_DESC::TYPE_DIRECTIONAL;
-	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.vAmbient = _float4(0.2f, 0.2f, 0.2f, 1.f);
-	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
+	//LightDesc.eType = LIGHT_DESC::TYPE_DIRECTIONAL;
+	//LightDesc.vDirection = _float4(0.f, -1.f, 0.f, 0.f);
+	//LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+	//LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.4f, 1.f);
+	//LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
 
+	//m_pGameInstance->Add_Light(LightDesc);
+	//
+	ZeroMemory(&LightDesc, sizeof(LIGHT_DESC));
+	LightDesc.eType = LIGHT_DESC::TYPE_POINT;
+	LightDesc.vPosition = _float4(800.f, 100.f, 400.f, 1.f);
+	LightDesc.fRange = 2000.f;
+	LightDesc.vDiffuse = _float4(1.f, 1.0f, 1.f, 1.f);
+	LightDesc.vAmbient = _float4(0.4f, 0.4f, 0.42f, 1.f);
+	LightDesc.vSpecular = LightDesc.vDiffuse;
+	LightDesc.bSwitch = true;
 	m_pGameInstance->Add_Light(LightDesc);
-
 
 	ZeroMemory(&LightDesc, sizeof(LIGHT_DESC));
 	LightDesc.eType = LIGHT_DESC::TYPE_POINT;
-	LightDesc.vPosition = _float4(20.f, 5.f, 20.f, 1.f);
-	LightDesc.fRange = 20.f;
-	LightDesc.vDiffuse = _float4(1.f, 0.0f, 0.f, 1.f);
-	LightDesc.vAmbient = _float4(0.4f, 0.1f, 0.1f, 1.f);
+	LightDesc.vPosition = _float4(800.f, 200.f, 400.f, 1.f);
+	LightDesc.fRange = 2000.f;
+	//LightDesc.vDiffuse = _float4(1.f, 1.0f, 1.f, 1.f);
+	LightDesc.vDiffuse = _float4(0.1f, 0.1f, 0.1f, 1.f);
+	LightDesc.vAmbient = _float4(0.4f, 0.4f, 0.42f, 1.f);
 	LightDesc.vSpecular = LightDesc.vDiffuse;
-
+	LightDesc.bSwitch = false;
 	m_pGameInstance->Add_Light(LightDesc);
 
-	ZeroMemory(&LightDesc, sizeof(LIGHT_DESC));
-	LightDesc.eType = LIGHT_DESC::TYPE_POINT;
-	LightDesc.vPosition = _float4(40.f, 5.f, 20.f, 1.f);
-	LightDesc.fRange = 20.f;
-	LightDesc.vDiffuse = _float4(0.0f, 1.f, 0.f, 1.f);
-	LightDesc.vAmbient = _float4(0.1f, 0.4f, 0.1f, 1.f);
-	LightDesc.vSpecular = LightDesc.vDiffuse;
 
-	m_pGameInstance->Add_Light(LightDesc);
+	//ZeroMemory(&LightDesc, sizeof(LIGHT_DESC));
+	//LightDesc.eType = LIGHT_DESC::TYPE_POINT;
+	//LightDesc.vPosition = _float4(40.f, 5.f, 20.f, 1.f);
+	//LightDesc.fRange = 20.f;
+	//LightDesc.vDiffuse = _float4(0.0f, 1.f, 0.f, 1.f);
+	//LightDesc.vAmbient = _float4(0.1f, 0.4f, 0.1f, 1.f);
+	//LightDesc.vSpecular = LightDesc.vDiffuse;
+
+	//m_pGameInstance->Add_Light(LightDesc);
 
 	return S_OK;
 }
@@ -75,7 +91,7 @@ HRESULT CLevel_GamePlay::Ready_Lights()
 HRESULT CLevel_GamePlay::Ready_Layer_Camera(const wstring& strLayerTag)
 {
 	/*
-	CFreeCamera::FREE_CAMERA_DESC		CameraDesc{};
+	CFreeCamera::FREE_CAMERA_DESC		CameraDesc={};
 
 	CameraDesc.fSensor = 0.05f;
 	CameraDesc.vEye = _float4(0.0f, 30.f, -25.f, 1.f);
@@ -89,6 +105,32 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const wstring& strLayerTag)
 	XMStoreFloat4x4(&CameraDesc.vPrePosition, XMMatrixIdentity());
 	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, strLayerTag, TEXT("Prototype_GameObject_FreeCamera"), &CameraDesc)))
 		return E_FAIL;*/
+
+	return S_OK;
+}
+
+HRESULT CLevel_GamePlay::Ready_Layer_Effect(const wstring& strLayerTag)
+{
+	//if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, strLayerTag, TEXT("Prototype_GameObject_Particle_Rect"))))
+	//	return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, strLayerTag, TEXT("Prototype_GameObject_Sky"))))
+		return E_FAIL;
+
+	CParticle_Point::PARTICLE_DESC PointDesc{};
+	XMStoreFloat4(&PointDesc.vStartPos, XMVectorSet(791.f, 0.f, 353.f, 1.f));
+
+	PointDesc.BufferInstance.iNumInstance = 3000;
+	PointDesc.BufferInstance.vOffsetPos = _float3(0.0f, 0.f, 0.0f);
+	PointDesc.BufferInstance.vPivotPos = _float3(0.0f, 50.f, 0.0f);
+	PointDesc.BufferInstance.vRange = _float3(250.0f, 0.5f, 250.0f);
+	PointDesc.BufferInstance.vSize = _float2(0.1f, 0.3f);
+	PointDesc.BufferInstance.vSpeed = _float2(1.f, 7.f);
+	PointDesc.BufferInstance.vLifeTime = _float2(6.f, 10.f);
+	PointDesc.BufferInstance.isLoop = true;
+
+	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, strLayerTag, TEXT("Prototype_GameObject_Particle_Point"), &PointDesc)))
+		return E_FAIL;
+
 
 	return S_OK;
 }
@@ -111,7 +153,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Environment(const wstring& strLayerTag)
 
 HRESULT CLevel_GamePlay::Ready_LandObjects()
 {
-	CLandObject::LANDOBJ_DESC		LandObjDesc{};
+	CLandObject::LANDOBJ_DESC		LandObjDesc={};
 
 	if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"), &LandObjDesc)))
 		return E_FAIL;
@@ -198,7 +240,7 @@ HRESULT CLevel_GamePlay::Load_GameData()
 				}
 				else if (TEXT("Layer_EnvironmentObject") == wLayer)
 				{
-					CGameObject::GAMEOBJECT_DESC pDesc{};
+					CGameObject::GAMEOBJECT_DESC pDesc={};
 					pDesc.ProtoTypeTag = strPrototypeTag;
 					pDesc.ModelTag = strModelTag;
 					pDesc.vPrePosition = fWorldPosition;
@@ -211,7 +253,7 @@ HRESULT CLevel_GamePlay::Load_GameData()
 					_int CellIndex = { -1 };
 					fin.read((char*)&CellIndex, sizeof(_int));
 
-					CLandObject::LANDOBJ_DESC		LandObjDesc{};
+					CLandObject::LANDOBJ_DESC		LandObjDesc={};
 
 					LandObjDesc.ProtoTypeTag = strPrototypeTag;
 					LandObjDesc.ModelTag = strModelTag;
@@ -224,7 +266,7 @@ HRESULT CLevel_GamePlay::Load_GameData()
 				{
 					if (TEXT("Prototype_GameObject_GEAR") == strPrototypeTag)
 					{
-						CGEAR::GEARITEM_DESC GEARItemDESC{};
+						CGEAR::GEARITEM_DESC GEARItemDESC ={};
 						GEARItemDESC.ProtoTypeTag = strPrototypeTag;
 						GEARItemDESC.ModelTag = strModelTag;
 						GEARItemDESC.vPrePosition = fWorldPosition;
@@ -243,7 +285,7 @@ HRESULT CLevel_GamePlay::Load_GameData()
 					}
 					else if (TEXT("Prototype_GameObject_CLTH") == strPrototypeTag)
 					{
-						CCLTH::CLTHITEM_DESC CLTHItemDESC{};
+						CCLTH::CLTHITEM_DESC CLTHItemDESC ={};
 						CLTHItemDESC.ProtoTypeTag = strPrototypeTag;
 						CLTHItemDESC.ModelTag = strModelTag;
 						CLTHItemDESC.vPrePosition = fWorldPosition;
@@ -266,13 +308,13 @@ HRESULT CLevel_GamePlay::Load_GameData()
 					_int CellIndex = { -1 };
 					fin.read((char*)&CellIndex, sizeof(_int));
 
-					CMonster::MOSTER_DESC		MOSTER_DESC{};
+					CMonster::MONSTER_DESC		MONSTER_DESC ={};
 
-					MOSTER_DESC.ProtoTypeTag = strPrototypeTag;
-					MOSTER_DESC.ModelTag = strModelTag;
-					MOSTER_DESC.vPrePosition = fWorldPosition;
-					MOSTER_DESC.CellIndex = CellIndex;
-					if (FAILED(m_pGameInstance->Add_CloneObject(iReadLevel, wLayer, strPrototypeTag, &MOSTER_DESC)))
+					MONSTER_DESC.ProtoTypeTag = strPrototypeTag;
+					MONSTER_DESC.ModelTag = strModelTag;
+					MONSTER_DESC.vPrePosition = fWorldPosition;
+					MONSTER_DESC.CellIndex = CellIndex;
+					if (FAILED(m_pGameInstance->Add_CloneObject(iReadLevel, wLayer, strPrototypeTag, &MONSTER_DESC)))
 						return E_FAIL;
 				}
 			}

@@ -28,6 +28,7 @@ HRESULT CCamera::Initialize(void* pArg)
 	/* 카메라의 월드행렬의 역행렬 == 뷰 스페이스변환 행렬. */
 	m_pEyeBoneMatrix = pDesc->pEyeBoneMatrix;
 
+
 	//m_pTransformCom->Set_State(CTransform::STATE_POSITION,);
 	_vector p = XMVectorSet(0.f, 0.f, 1.f, 1.f);
 	m_pTransformCom->LookAt(p);
@@ -56,9 +57,13 @@ void CCamera::Priority_Tick(_float fTimeDelta)
 
 void CCamera::Tick(_float fTimeDelta)
 {
+	//XMVectorGetY(XMVector3Normalize(XMLoadFloat4x4(m_pFovBoneMatrix).r[3]));
 	//m_pGameInstance->Set_Transform(CPipeLine::TS_CAMWORLD,m_pTransformCom->Get_WorldMatrix());
 	m_pGameInstance->Set_Transform(CPipeLine::TS_VIEW, XMMatrixInverse(nullptr, m_pTransformCom->Get_WorldMatrix()));
+	//_matrix Fov = XMMatrixPerspectiveFovLH(m_fFovy, m_fAspect, m_fNear, m_fFar);
+	//_matrix boneFov = XMLoadFloat4x4(m_pFovBoneMatrix);
 	m_pGameInstance->Set_Transform(CPipeLine::TS_PROJ, XMMatrixPerspectiveFovLH(m_fFovy, m_fAspect, m_fNear, m_fFar));
+	//m_pGameInstance->Set_Transform(CPipeLine::TS_PROJ, XMLoadFloat4x4(m_pFovBoneMatrix));
 }
 
 void CCamera::Late_Tick(_float fTimeDelta)

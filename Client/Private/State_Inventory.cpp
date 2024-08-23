@@ -8,6 +8,7 @@ CState_Inventory::CState_Inventory()
 void CState_Inventory::Enter(CPlayer* Player)
 {
 	Player->Set_SceneSelect(2);
+	m_pGameInstance->Play_Sound(TEXT("OpenInven.wav"), INVENTORY, 1.0f);
 }
 
 void CState_Inventory::Update(CPlayer* Player, _float fTimeDelta)
@@ -33,6 +34,7 @@ void CState_Inventory::Update(CPlayer* Player, _float fTimeDelta)
 
 void CState_Inventory::Exit(CPlayer* Player)
 {
+	m_pGameInstance->Play_Sound(TEXT("OpenInven.wav"), INVENTORY, 1.0f);
 }
 
 CState* CState_Inventory::Create()

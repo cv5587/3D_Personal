@@ -33,6 +33,7 @@ public:
 	//충돌체크용
 	_bool Intersect( class CCollider* pTargetCollider);
 	CGameObject* IntersectRay(_vector* pRayArray, _float* fDist);
+	_bool RayCollInfo(_vector* pRayArray, CGameObject** ppGameObject);
 public:
 	//UI렌더
 	void Render_UI();

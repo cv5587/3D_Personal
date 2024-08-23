@@ -16,13 +16,15 @@ void CState_Enter::Update(CPlayer* Player, _float fTimeDelta)
 
 	if (!Player->isEnter())
 	{
+
 		Player->Set_State(PLAYERSTATE::PLAYER_IDLE);
 		return;
 	}
 
 	if (m_pGameInstance->Get_DIMouseState(DIM_LB))
 	{
-		Player->Pick_up();
+		m_pGameInstance->Play_Sound(TEXT("DoorEnter.wav"), ENTER, 0.3f);
+		Player->Pick_InteractiveObject();
 	
 		Player->Add_EnterTime(fTimeDelta);	
 		return;
@@ -36,7 +38,20 @@ void CState_Enter::Update(CPlayer* Player, _float fTimeDelta)
 
 void CState_Enter::Exit(CPlayer* Player)
 {
+	m_bIn = !m_bIn;
+	if(m_bIn)
+	{
+		m_pGameInstance->Play_BGM(TEXT("InSnow.wav"), 0.6f);
+	}
+	else
+	{
+		m_pGameInstance->Play_BGM(TEXT("OutSnow.wav"), 0.6f);
+	}
+
+	m_pGameInstance->Get_DIMouseState_Once(DIM_LB);
 	Player->Set_Enter(false);
+
+
 }
 
 CState* CState_Enter::Create()

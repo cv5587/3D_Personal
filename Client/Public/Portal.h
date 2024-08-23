@@ -12,7 +12,7 @@ class CPortal final:
     public CInteractiveObject
 {
 public:
-	typedef struct : public CInteractiveObject::INTERACTIVEOBJECT_DESC
+	typedef struct PORTAL_DESC : public CInteractiveObject::INTERACTIVEOBJECT_DESC
 	{
 		_int  iGoalCellIndex;
 		_float4 vGoalPosition;
@@ -37,6 +37,7 @@ public:
 	virtual HRESULT Render() override;
 	virtual _bool IntersectRay(_vector* pRayArray, _float* fDist) override;
 	virtual HRESULT Action() override;
+	virtual _bool RayCollInfo(_vector* pRayArray, CGameObject** pGameObject) override;
 
 private:
 	_int m_iGoalCellIndex = { -1 };

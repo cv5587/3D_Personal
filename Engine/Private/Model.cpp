@@ -166,7 +166,16 @@ void CModel::Play_Animation(_float fTimeDelta)
     /* 현재 애니메이션의 상태에 맞도록 뼈들의 상태행렬(TransformationMatrix)을 만들고 갱신해준다. */
     /* m_Animations[m_iCurrentAnimIndex] : 이 애니메이션에서 사용ㅇ하는 뼈들의 상태정보다 */
     if (m_PreAnimDesc.iAnimIndex == m_AnimDesc.iAnimIndex)
-        m_Animations[m_AnimDesc.iAnimIndex]->Update_TransformationMatrix(fTimeDelta, m_Bones, m_AnimDesc.isLoop);
+    {
+      if (355 == m_AnimDesc.iAnimIndex || 354 == m_AnimDesc.iAnimIndex|| 350 == m_AnimDesc.iAnimIndex)
+        {
+         m_Animations[m_AnimDesc.iAnimIndex]->Update_StruggleTransformationMatrix(fTimeDelta, m_Bones, m_AnimDesc.isLoop);
+       }
+     else
+       {
+         m_Animations[m_AnimDesc.iAnimIndex]->Update_TransformationMatrix(fTimeDelta, m_Bones, m_AnimDesc.isLoop);
+       }
+    }
     else
         Shift_Animation(fTimeDelta);
 

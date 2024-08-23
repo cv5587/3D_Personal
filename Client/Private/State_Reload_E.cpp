@@ -12,6 +12,19 @@ void CState_Reload_E::Enter(CPlayer* Player)
 
 void CState_Reload_E::Update(CPlayer* Player, _float fTimeDelta)
 {
+	m_fCurrentTime += fTimeDelta;
+
+	if (!m_bOnce)
+	{
+		if (m_fCurrentTime > 0.4f)
+		{
+			m_pGameInstance->StopSound(CH_GUN);
+			m_pGameInstance->Play_Sound(TEXT("ReloadS.wav"), CH_GUN, 0.8f);
+			m_bOnce = true;
+		}
+	}
+
+
 	if (m_pGameInstance->Get_DIKeyState(DIK_W))
 	{
 		if (m_pGameInstance->Get_DIKeyState(DIK_A))
@@ -134,6 +147,8 @@ void CState_Reload_E::Update(CPlayer* Player, _float fTimeDelta)
 
 void CState_Reload_E::Exit(CPlayer* Player)
 {
+	m_fCurrentTime = 0.f;
+	m_bOnce = false;
 }
 
 CState* CState_Reload_E::Create()

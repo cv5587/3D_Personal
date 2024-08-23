@@ -14,7 +14,7 @@ class CUIToggleID final :
 	public CUIBase
 {
 public:
-	typedef struct :public CUIBase::UI_BASE_DESC {
+	typedef struct UI_TOGGLE_DESC :public CUIBase::UI_BASE_DESC {
 		_uint UISceneIndex;
 	}UI_TOGGLE_DESC;
 

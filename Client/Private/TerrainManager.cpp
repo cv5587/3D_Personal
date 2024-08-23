@@ -18,7 +18,7 @@ HRESULT CTerrainManager::Initialize()
 HRESULT CTerrainManager::Clone_Terrain(void* pArg)	
 {
 	_int* sTerrainUV=(_int*)pArg;	
-	CTerrain::TERRAIN_DESC pDesc{};
+	CTerrain::TERRAIN_DESC pDesc={};
 	pDesc.TerrainUV[0] = sTerrainUV[0];
 	pDesc.TerrainUV[1] = sTerrainUV[1];
 	XMStoreFloat4x4(&pDesc.vPrePosition, XMMatrixIdentity() * XMMatrixScaling(2.0f, 2.0f, 2.0f));

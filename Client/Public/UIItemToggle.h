@@ -13,7 +13,7 @@ class CUIItemToggle :
 	public CUIBase
 {
 public:
-	typedef struct :public CUIBase::UI_BASE_DESC {
+	typedef struct UI_ITEMTOGGLE_DESC :public CUIBase::UI_BASE_DESC {
 		vector<_uint> ItemType;
 		_uint			iQuantity = { 0 };
 		wstring		ItemUIName = { TEXT("") };

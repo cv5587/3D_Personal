@@ -16,6 +16,9 @@ CUIButton::CUIButton(const CUIButton& rhs)
 
 HRESULT CUIButton::Initialize_Prototype()
 {
+    XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
+    XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH(g_iWinSizeX, g_iWinSizeY, 0.f, 1.0f));
+
     return S_OK;
 }
 
@@ -32,8 +35,6 @@ HRESULT CUIButton::Initialize(void* pArg)
     //
     m_pTransformCom->Set_State_Matrix(XMLoadFloat4x4(&pDesc->vPrePosition));
     //뷰,투영행렬
-    XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
-    XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH(g_iWinSizeX, g_iWinSizeY, 0.f, 1.0f));
 
 
     _vector Scale = XMLoadFloat3(&m_pTransformCom->Get_Scaled());//x,y 크기   

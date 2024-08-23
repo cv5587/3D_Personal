@@ -21,6 +21,8 @@ BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
+
+
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
                      _In_ LPWSTR    lpCmdLine,
@@ -65,6 +67,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		return FALSE;
 
 	_float		fTimeAcc = { 0.0f };
+
+
+
+
 
     // 기본 메시지 루프입니다.
 	while (true)
@@ -123,7 +129,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     wcex.cbWndExtra     = 0;
     wcex.hInstance      = hInstance;
     wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_CLIENT));
-    wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
+    wcex.hCursor        = LoadCursor(nullptr, IDC_CROSS);
     wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
     wcex.lpszMenuName   = MAKEINTRESOURCEW(IDC_CLIENT);
     wcex.lpszClassName  = szWindowClass;

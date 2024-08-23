@@ -15,7 +15,7 @@ class CUIClothToggle :
 public:
 	enum TYPE {TYPE_HAT, TYPE_ACC, TYPE_JACKET, TYPE_OUTPANT , TYPE_SHIRTS , TYPE_INPANT, TYPE_GLOVE, TYPE_SOCKS, TYPE_SHOES, TYPE_END };
 public:
-	typedef struct :public CUIBase::UI_BASE_DESC {
+	typedef struct UI_CLOTHTOGGLE_DESC :public CUIBase::UI_BASE_DESC {
 		_uint			Type;
 		_uint			iQuantity = { 0 };
 		wstring		ItemUIName = { TEXT("") };

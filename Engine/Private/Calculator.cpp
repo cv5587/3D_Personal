@@ -28,14 +28,14 @@ HRESULT CCalculator::Initialize(HWND hWnd)
 
 	 _uint		iNumViews = { 1 };
 
-	 D3D11_VIEWPORT		ViewportDesc{};
+	 D3D11_VIEWPORT		ViewportDesc={};
 
 	 m_pContext->RSGetViewports(&iNumViews, &ViewportDesc);
 
 	 m_iWinSizeX = ViewportDesc.Width;
 	 m_iWinSizeY = ViewportDesc.Height;
 
-	 D3D11_TEXTURE2D_DESC		TextureDesc{};
+	 D3D11_TEXTURE2D_DESC		TextureDesc={};
 
 	 ZeroMemory(&TextureDesc, sizeof(D3D11_TEXTURE2D_DESC));
 
@@ -254,13 +254,20 @@ _int CCalculator::Picking_IDScreen()
 	if (iIndex > 1280 * 720)
 		return -1;
 
-	int* pData = static_cast<int*>(SubResources.pData);
+	//int* pData = static_cast<int*>(SubResources.pData);
 
-	int vResult = pData[iIndex * 4];	
+	//int vResult = pData[iIndex * 4];	
+
+
+	_float4		vResult = ((_float4*)SubResources.pData)[iIndex];
+
+	//int* pData = static_cast<int*>(SubResources.pData);
+
+	_int iResult = (_int)vResult.x;
 
 	m_pContext->Unmap(m_pTexture2D, 0);
 
-	return vResult;
+	return iResult;
 }
 
 _int CCalculator::Picking_UIIDScreen()
@@ -279,7 +286,7 @@ _int CCalculator::Picking_UIIDScreen()
 	if (ptMouse.y >= m_iWinSizeY)
 		ptMouse.y = m_iWinSizeY;
 
-	m_pGameInstance->Copy_Resource(TEXT("Target_ObjectID"), m_pTexture2D);
+	m_pGameInstance->Copy_Resource(TEXT("Target_UIID"), m_pTexture2D);
 	if (nullptr == m_pTexture2D)
 		return -1;
 
@@ -293,13 +300,15 @@ _int CCalculator::Picking_UIIDScreen()
 	if (iIndex > 1280 * 720)
 		return -1;
 
-	int* pData = static_cast<int*>(SubResources.pData);
-		
-	int vResult = pData[iIndex * 4+1];
+	_float4		vResult = ((_float4*)SubResources.pData)[iIndex];
+
+	//int* pData = static_cast<int*>(SubResources.pData);
+	
+	_int iResult = (_int)vResult.x;
 
 	m_pContext->Unmap(m_pTexture2D, 0);
 
-	return vResult;
+	return iResult;
 }
 
 _vector CCalculator::Picking_UI(_fmatrix ProjM)
@@ -355,6 +364,51 @@ void CCalculator::World_MouseRay(_vector* RayArray)
 	RayArray[1] = XMVector3Normalize(Raydir);
 }
 
+HRESULT CCalculator::Tick()
+{
+	m_isSuccess = true;
+
+	POINT		ptMouse = { };
+
+	GetCursorPos(&ptMouse);
+
+	ScreenToClient(m_hWnd, &ptMouse);
+
+	if (ptMouse.x < 0)
+		ptMouse.x = 0;
+	if (ptMouse.x >= m_iWinSizeX)
+		ptMouse.x = m_iWinSizeX;
+	if (ptMouse.y < 0)
+		ptMouse.y = 0;
+	if (ptMouse.y >= m_iWinSizeY)
+		ptMouse.y = m_iWinSizeY;
+
+	_vector		vMousePos = XMVectorZero();
+
+	/* 투영공간상의 좌표다. = 로컬위치 * 월드행렬 * 뷰행렬 * 투영행렬 / w */
+	vMousePos = XMVectorSetX(vMousePos, ptMouse.x / (m_iWinSizeX * 0.5f) - 1.f);
+	vMousePos = XMVectorSetY(vMousePos, ptMouse.y / -(m_iWinSizeY * 0.5f) + 1.f);
+	vMousePos = XMVectorSetZ(vMousePos, Compute_ProjZ(ptMouse.x - 1, ptMouse.y - 1));
+	vMousePos = XMVectorSetW(vMousePos, 1.f);
+
+	if (XMVectorGetZ(vMousePos) < 0.0f)
+		m_isSuccess = false;
+
+	vMousePos = XMVector3TransformCoord(vMousePos, m_pGameInstance->Get_Transform_Matrix_Inverse(CPipeLine::TS_PROJ));
+	vMousePos = XMVector3TransformCoord(vMousePos, m_pGameInstance->Get_Transform_Matrix_Inverse(CPipeLine::TS_VIEW));
+
+	XMStoreFloat4(&m_vPickPos, vMousePos);
+
+	return S_OK;
+}
+
+_bool CCalculator::Get_PickPos(_float4* pPickPos)
+{
+	*pPickPos = m_vPickPos;
+
+	return m_isSuccess;
+}
+
 _bool CCalculator::Compare_Float4(_float4 f1, _float4 f2)
 {
 	_vector v1 = XMLoadFloat4(&f1);
@@ -368,6 +422,36 @@ _bool CCalculator::Compare_Float4(_float4 f1, _float4 f2)
 	if (v1.m128_f32[3] != v2.m128_f32[3])
 		return false;
 	return true;
+}
+
+_float CCalculator::Compute_ProjZ(_float fX, _float fY)
+{
+	if (fX < 0.f)
+		fX = 0.f;
+	if (fY < 0.f)
+		fY = 0.f;
+
+	m_pGameInstance->Copy_Resource(TEXT("Target_Depth"), m_pTexture2D);
+
+	if (nullptr == m_pTexture2D)
+		return 0.f;
+
+	D3D11_MAPPED_SUBRESOURCE		SubResources{};
+
+	m_pContext->Map(m_pTexture2D, 0, D3D11_MAP_READ, 0, &SubResources);
+
+	/* 내 마우스 좌표가 존재하는 위치에 있는 텍스쳐 픽셀의 인덱스 */
+	_uint		iIndex = fY * (m_iWinSizeX)+fX;
+
+	_float4		vResult = ((_float4*)SubResources.pData)[iIndex];
+
+	m_pContext->Unmap(m_pTexture2D, 0);
+
+
+	if (0.0f == vResult.w)
+		return -1.f;
+
+	return vResult.x;
 }
 
 CCalculator* CCalculator::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, HWND hWnd, _uint iWinSizeX, _uint iWinSizeY)

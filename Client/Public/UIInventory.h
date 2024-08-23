@@ -14,7 +14,7 @@ class CUIInventory :
     public CBase
 {
 public:
-    typedef struct {
+    typedef struct INVENTORY_DESC {
         void* PlayerInventory;
         void* UImanager;
     }INVENTORY_DESC;
@@ -30,8 +30,8 @@ public:
     HRESULT Initialize(void* pArg);
     HRESULT Tick(_float fTimeDelta);
     HRESULT Late_Tick(_float fTimeDelta);
-    void Render_UI(_uint LayerIndex);
-    void Render_TypeUI(_uint LayerIndex);
+
+
 
 public:
     void Set_CurrentScene(_uint iSceneIndex);
@@ -39,6 +39,7 @@ public:
     void Refresh();
     void Pick_UIToggle();
     void Cloth_Update();
+
 
 private:
     class CGameInstance* m_pGameInstance = { nullptr };

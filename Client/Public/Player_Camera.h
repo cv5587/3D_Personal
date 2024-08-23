@@ -10,10 +10,11 @@ class CPlayer_Camera final :
     public CCamera
 {
 public:
-	typedef struct : public CCamera::CAMERA_DESC
+	typedef struct PLAYER_CAMERA_DESC : public CCamera::CAMERA_DESC
 	{
-		class CBone* pCamBone;
+		class CBone* pCamBone;//Ä«¸Þ¶ó»À
 		const _float4x4* pParentMatrix;
+		_uint* pState;
 	}PLAYER_CAMERA_DESC;
 
 private:
@@ -23,6 +24,7 @@ private:
 	const _float4x4* m_pParentMatrix;
 	_float4x4 m_fixWorld;
 	class CBone* m_pCamBone = { nullptr };
+	_uint* m_pState = { nullptr };
 public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;

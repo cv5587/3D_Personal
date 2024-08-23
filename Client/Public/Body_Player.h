@@ -14,8 +14,9 @@ BEGIN(Client)
 class CBody_Player final : public CPartObject
 {
 public:
-	typedef struct : public CPartObject::PARTOBJ_DESC
+	typedef struct BODY_DESC : public CPartObject::PARTOBJ_DESC
 	{
+		_bool* pLit;
 		_uint* pBulletsLeft;
 	}BODY_DESC;
 private:
@@ -36,6 +37,11 @@ private:
 	CModel* m_pModelCom = { nullptr };
 	_uint* m_pBulletsLeft = { nullptr };
 
+	_bool* m_pLit = { nullptr };
+
+	//class CGameObject* m_pBreath = { nullptr };
+	
+	_float m_fCurrentTime = { 0.f };
 
 	void Set_AnimationState();
 	HRESULT Mesh_Render(_uint MeshIndex);
@@ -43,6 +49,7 @@ public:
 	void Reset_Anim();
 public:
 	HRESULT Add_Components();
+	HRESULT Add_Particle();
 	HRESULT Bind_ShaderResources();
 
 public:

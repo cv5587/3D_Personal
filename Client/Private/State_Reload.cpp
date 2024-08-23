@@ -54,15 +54,26 @@ void CState_Reload::Update(CPlayer* Player, _float fTimeDelta)
 	//애니메이션 갯수 만큼 클래스 제작 or 갯수 받아와서 반복 재생 제작
 	if(!m_AddBullet)
 	{
-		Player->isReload();
-		m_AddBullet = true;
+		m_CurrentTime += fTimeDelta;
+		if(m_CurrentTime>0.6f)
+		{
+			m_pGameInstance->StopSound(CH_GUN);
+			m_pGameInstance->Play_Sound(TEXT("Reloading.wav"), CH_GUN, 0.5f);
+			Player->isReload();
+			m_AddBullet = true;
+		}
 	}
 	if (Player->isAnimFinished()&&Player->isRevolver_AnimFin())//
 	{
+
 		//Player->End_Change();
 		//애니메이션 루프 한번이 끝날때마다 장전되는 총알갯수 갱신 
-		
-		if (6 != Player->Get_BullletLeft())
+		//if (!m_AddBullet)
+		//{
+		//	Player->isReload();
+		//	m_AddBullet = true;
+		//}
+		if (true==m_AddBullet &&6 != Player->Get_BullletLeft())
 		{
 			Player->Set_State(PLAYERSTATE::PLAYER_RELOAD);	
 			Player->Set_Reload_Reset();
@@ -96,6 +107,7 @@ void CState_Reload::Update(CPlayer* Player, _float fTimeDelta)
 void CState_Reload::Exit(CPlayer* Player)
 {
 	m_AddBullet = false;
+	m_CurrentTime = { 0.f };
 }
 
 CState* CState_Reload::Create()

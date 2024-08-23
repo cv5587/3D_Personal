@@ -12,7 +12,7 @@ class CBullet final:
     public CItem
 {
 public:
-	typedef struct : public CItem::ITEM_DESC {
+	typedef struct BULLET_ITEM_DESC : public CItem::ITEM_DESC {
 
 
 	}BULLET_ITEM_DESC;

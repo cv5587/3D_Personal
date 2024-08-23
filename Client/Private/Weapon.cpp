@@ -88,7 +88,7 @@ HRESULT CWeapon::Render()
 HRESULT CWeapon::Add_Components()
 {
 	/* For.Com_Model */
-	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Stone"),
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, m_ModelTag,
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
 		return E_FAIL;
 

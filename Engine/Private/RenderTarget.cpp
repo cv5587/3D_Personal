@@ -13,7 +13,7 @@ CRenderTarget::CRenderTarget(ID3D11Device* pDevice, ID3D11DeviceContext* pContex
 
 HRESULT CRenderTarget::Initialize(_uint iSizeX, _uint iSizeY, DXGI_FORMAT ePixelFormat, const _float4& vClearColor)
 {
-	D3D11_TEXTURE2D_DESC		TextureDesc{};
+	D3D11_TEXTURE2D_DESC		TextureDesc={};
 
 	TextureDesc.Width = iSizeX;
 	TextureDesc.Height = iSizeY;
@@ -49,6 +49,7 @@ HRESULT CRenderTarget::Clear()
 	return S_OK;
 }
 
+
 HRESULT CRenderTarget::Bind_SRV(CShader* pShader, const _char* pConstantName)
 {
 	return pShader->Bind_SRV(pConstantName, m_pSRV);
@@ -65,7 +66,7 @@ HRESULT CRenderTarget::Copy_Resource(ID3D11Texture2D* pDesc)
 
 HRESULT CRenderTarget::Ready_Debug(_float fX, _float fY, _float fSizeX, _float fSizeY)
 {
-	D3D11_VIEWPORT			ViewportDesc{};
+	D3D11_VIEWPORT			ViewportDesc={};
 	_uint					iNumViewports = 1;
 
 	m_pContext->RSGetViewports(&iNumViewports, &ViewportDesc);

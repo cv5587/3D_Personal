@@ -7,14 +7,14 @@ CInput_Device::CInput_Device(void)
 _byte CInput_Device::Get_DIKeyState_Once(_ubyte byKeyID)
 {
 
-    if (!m_bKeyDown && KEYDOWN(m_byKeyState, byKeyID))
+    if (!m_bKeyDown[byKeyID] && KEYDOWN(m_byKeyState, byKeyID))
 	{
-		m_bKeyDown = true;
+		m_bKeyDown[byKeyID] = true;
 		return Get_DIKeyState(byKeyID);
     } 
-	else if (m_bKeyDown && !KEYDOWN(m_byKeyState, byKeyID))
+	else if (m_bKeyDown[byKeyID] && !KEYDOWN(m_byKeyState, byKeyID))
 	{
-		m_bKeyDown = false;
+		m_bKeyDown[byKeyID] = false;
 		return 0x00;
     } 
 	return 0x00;

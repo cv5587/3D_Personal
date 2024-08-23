@@ -301,6 +301,40 @@ HRESULT CTransform::LookAt(_fvector vTargetPosition)
 	return S_OK;
 }
 
+HRESULT CTransform::LookBack(_fvector vTargetPosition)
+{
+	_float3 vScaled = Get_Scaled();
+
+	_vector	vLook = Get_State(STATE_POSITION)- vTargetPosition;
+
+	_vector	vRight = XMVector3Cross(XMVectorSet(0.0f, 1.f, 0.f, 0.f), vLook);
+
+	_vector vUp = XMVector3Cross(vLook, vRight);
+
+	Set_State(STATE_RIGHT, XMVector3Normalize(vRight) * vScaled.x);
+	Set_State(STATE_UP, XMVector3Normalize(vUp) * vScaled.y);
+	Set_State(STATE_LOOK, XMVector3Normalize(vLook) * vScaled.z);
+
+	return S_OK;
+}
+
+HRESULT CTransform::LookUp()
+{
+	_float3 vScaled = Get_Scaled();
+
+	_vector	vLook =XMVectorSet(0.f, 1.f, 0.f ,0.f);
+	_vector	vRight = Get_State(STATE_RIGHT);
+	_vector	vUp = XMVector3Cross(vRight, vLook);
+
+	//_vector vUp = XMVector3Cross(vLook, vRight);
+
+	Set_State(STATE_RIGHT, XMVector3Normalize(vRight) * vScaled.x);
+	Set_State(STATE_UP, XMVector3Normalize(vUp) * vScaled.y);
+	Set_State(STATE_LOOK, XMVector3Normalize(vLook) * vScaled.z);
+
+	return S_OK;
+}
+
 HRESULT CTransform::LookAt_For_LandObject(_fvector vTargetPosition)
 {
 	_float3 vScaled = Get_Scaled();
@@ -528,39 +562,29 @@ HRESULT CTransform::Patrol(_float fTimeDelta, CNavigation* pNavigation)
 HRESULT CTransform::Escape(_fmatrix mPlayer, _float fTimeDelta,   CNavigation* pNavigation)
 {
 	_vector vPosition = Get_State(CTransform::STATE_POSITION);
+	_vector vLook = Get_State(STATE_LOOK);
+	_vector vTargetPos, vScale, vRotation;
+	XMMatrixDecompose(&vScale, &vRotation, &vTargetPos, mPlayer);
+
+	LookBack(vTargetPos);
+	//_vector vDir = vTargetPos - vPosition; // 플레이어의 방향 벡터
+	Go_Straight(fTimeDelta, pNavigation);
+
+	return S_OK;
+
+}
+
+HRESULT CTransform::Chase(_fmatrix mPlayer, _float fTimeDelta, CNavigation* pNavigation)
+{
+	_vector vPosition = Get_State(CTransform::STATE_POSITION);
 	_vector vLook = Get_State(STATE_LOOK);//토깽이 정면 벡터
 	_vector vTargetPos, vScale, vRotation;
 	XMMatrixDecompose(&vScale, &vRotation, &vTargetPos, mPlayer);
 
-	_vector vDir = vPosition - vTargetPos;	//플레이어의 반대 방향 벡터
-	
-	_float Rotate = acosf(XMVectorGetX(XMVector3Dot(XMVector3Normalize(vLook), XMVector3Normalize(vDir))));
-
-	Rotate_Radian(ROT_Y, XMConvertToDegrees(Rotate));
-
+	LookAt(vTargetPos);
+	//_vector vDir = vTargetPos - vPosition; // 플레이어의 방향 벡터
+	Go_Straight(fTimeDelta, pNavigation);
 	return S_OK;
-
-
-	//_vector vPosition = Get_State(CTransform::STATE_POSITION);
-
-	//_vector vTargetPos, vScale, vRotation;
-	//if (XMMatrixDecompose(&vScale, &vRotation, &vTargetPos, mPlayer))
-	//{
-	//	_vector vDir = vPosition - vTargetPos;
-
-	//	vPosition += XMVector3Normalize(vDir) * m_fSpeedPerSec * fTimeDelta;
-
-	//	_float4 SlideDir{};
-	//	if (nullptr == pNavigation ? true : pNavigation->isMove(vPosition, &SlideDir))
-	//		Set_State(STATE_POSITION, vPosition);
-	//	else
-	//	{
-	//		//이거 내비게이션에 cell_reflect 쓸거임
-	//		Rotate_Radian(STATE_UP, XMConvertToRadians(180.f));
-	//	}
-	//}
-
-	//return S_OK;
 }
 
 

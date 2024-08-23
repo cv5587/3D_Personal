@@ -16,22 +16,30 @@ public:
     virtual HRESULT Initialize(void* pArg) override;
 
 public:
-    HRESULT Add_Item(class CItem* pItem);
+    HRESULT Add_Item(class CItem* pItem);   
     HRESULT Add_Rabbit();
+    HRESULT Add_RabbitMeat();
+    HRESULT Add_RabbitRut();
+    HRESULT Add_RabbitPelt();
+    HRESULT Add_BedRoll();
+    HRESULT Add_Knife();
     HRESULT Drop_Item(wstring ItemName, void* pDesc);
+
+    _bool Check_QuestItem(wstring ItemName);
+    _bool Check_StoveItem(wstring ItemName, void* pDesc);
 
     _float Get_TotalWeight() {
         return m_fTotalWeight;
     }
     _uint Get_LastIndex()
     {
-        return m_Inventory.size() - 1;
+        return (_uint)m_Inventory.size() - 1;
     }
     vector<class CItemData*> Get_vecItemData()
     {
         return m_Inventory;
     }
-
+    void Using_Item(wstring strName);
 private:
     vector<class CItemData*> m_Inventory;
     _float                                  m_fTotalWeight = { 0.f };

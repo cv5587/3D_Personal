@@ -32,6 +32,25 @@ HRESULT CUIInventory::Tick(_float fTimeDelta)
 {
 	m_pUImanager->Set_Weight(m_pPlayerInventory->Get_TotalWeight());
 	Cloth_Update();
+	switch (m_CurrentScene)
+	{
+	case Client::CUIInventory::SCENE_STATE:
+		break;
+	case Client::CUIInventory::SCENE_EQUIP:
+		break;
+	case Client::CUIInventory::SCENE_BAG:
+		break;
+	case Client::CUIInventory::SCENE_BLUEPRINT:
+	{
+		m_pUImanager->BP_Update(fTimeDelta);
+
+	}
+		break;
+	case Client::CUIInventory::SCENE_END:
+		break;
+	default:
+		break;
+	}
 
 	return S_OK;
 }
@@ -71,6 +90,7 @@ HRESULT CUIInventory::Late_Tick(_float fTimeDelta)
 		m_pUImanager->Render_UI(CUImanager::Layer_Item);
 		break;
 	case Client::CUIInventory::SCENE_BLUEPRINT:
+		m_pUImanager->Render_UI(CUImanager::Layer_BluePrint);
 		break;
 	case Client::CUIInventory::SCENE_END:
 		break;
@@ -81,13 +101,7 @@ HRESULT CUIInventory::Late_Tick(_float fTimeDelta)
 	return S_OK;
 }
 
-void CUIInventory::Render_UI(_uint LayerIndex)
-{
-}
 
-void CUIInventory::Render_TypeUI(_uint LayerIndex)
-{
-}
 //토글전용
 void CUIInventory::Set_CurrentScene(_uint iSceneIndex)
 {
@@ -197,6 +211,8 @@ void CUIInventory::Pick_UIToggle()
 		Refresh();
 
 	m_pUImanager->Pick_InvenClothButton();
+
+	m_pUImanager->Pick_InvenBPButton();
 
 }
 

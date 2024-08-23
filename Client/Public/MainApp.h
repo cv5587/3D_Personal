@@ -27,7 +27,14 @@ private:
 	class CGameInstance*			m_pGameInstance = { nullptr };
 
 	class CData_Manager* m_pDataManager = { nullptr };
-	
+
+#ifdef _DEBUG
+private:
+	_tchar					m_szFPS[MAX_PATH] = TEXT("");
+	_float					m_fTimeAcc = {};
+	_uint					m_iNumRender = {};
+
+#endif
 
 public:
 	HRESULT Open_Level(LEVEL eLevelID);

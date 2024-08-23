@@ -4,6 +4,7 @@
 BEGIN(Engine)
 class CShader;
 class CModel;
+class CCollider;
 END
 
 BEGIN(Client)
@@ -11,7 +12,8 @@ class CCLTH final :
 	public CItem
 {
 public:
-	typedef struct : public CItem::ITEM_DESC {
+	typedef struct CLTHITEM_DESC : public CItem::ITEM_DESC
+	{
 
 
 	}CLTHITEM_DESC;
@@ -29,11 +31,13 @@ public:
 	virtual void Late_Tick(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 	HRESULT Check_Model(void* pArg);
-
+	virtual _bool Intersect(CCollider* pTargetCollider)override;
+	virtual _bool IntersectRay(_vector* pRayArray, _float* fDist) override;
+	virtual _bool RayCollInfo(_vector* pRayArray, CGameObject** pGameObject)override;
 protected:
-	CShader* m_pShaderCom = { nullptr };
-	CModel* m_pModelCom = { nullptr };
-
+	class CShader* m_pShaderCom = { nullptr };
+	class CModel* m_pModelCom = { nullptr };
+	class CCollider* m_pColliderCom = { nullptr };
 public:
 	HRESULT Add_Components();
 	HRESULT Bind_ShaderResources();

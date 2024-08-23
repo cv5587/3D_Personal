@@ -24,7 +24,7 @@ public:
 	virtual _float Compute_Height(const _float3& vLocalPos) { return 0.f; }
 
 public:
-	HRESULT Bind_Buffers();
+	virtual HRESULT Bind_Buffers();
 
 protected:
 	ID3D11Buffer*				m_pVB = { nullptr };

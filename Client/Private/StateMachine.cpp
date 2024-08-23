@@ -31,6 +31,21 @@
 #include "State_Inventory.h"
 #include "State_Kill.h"
 #include "State_Release.h"
+#include "State_Quest.h"
+#include "State_Burn.h"
+#include "State_Burnout.h"
+#include "State_Matchpre.h"
+#include "State_Matchsuccess.h"
+#include "State_Struggle.h"
+#include "State_StruggleBare.h"
+#include "State_Harvest.h"
+#include "State_Build.h"
+#include "State_Sleep.h"
+#include "State_Getup.h"
+#include"State_StruggleKnife.h"
+#include"State_Fadeout.h"
+#include "State_FlarePre.h"
+#include"State_FlareSuccess.h"
 #pragma endregion
 
 IMPLEMENT_SINGLETON(CStateMachine)
@@ -126,7 +141,51 @@ HRESULT CStateMachine::Initialize()
 
 	pState = CState_Release::Create();
 	m_vecStates.push_back(pState);
+	
+	pState = CState_Quest::Create();
+	m_vecStates.push_back(pState);
 
+	pState = CState_Burn::Create();
+	m_vecStates.push_back(pState);
+
+	pState = CState_Burnout::Create();
+	m_vecStates.push_back(pState);
+
+	pState = CState_Matchpre::Create();
+	m_vecStates.push_back(pState);
+
+	pState = CState_Matchsuccess::Create();
+	m_vecStates.push_back(pState);
+
+	pState = CState_Harvest::Create();
+	m_vecStates.push_back(pState);
+
+	pState = CState_Build::Create();
+	m_vecStates.push_back(pState);
+
+	pState = CState_Sleep::Create();
+	m_vecStates.push_back(pState);
+
+	pState = CState_Getup::Create();
+	m_vecStates.push_back(pState);
+
+	pState = CState_Struggle::Create();
+	m_vecStates.push_back(pState);
+
+	pState = CState_StruggleBare::Create();
+	m_vecStates.push_back(pState);
+
+	pState = CState_StruggleKnife::Create();
+	m_vecStates.push_back(pState);
+	
+	pState = CState_Fadeout::Create();
+	m_vecStates.push_back(pState);
+
+	pState = CState_FlarePre::Create();
+	m_vecStates.push_back(pState);
+
+	pState = CState_FlareSuccess::Create();
+	m_vecStates.push_back(pState);
 	//m_eCurrentState = m_vecStates[(_uint)PLAYERSTATE::PLAYER_IDLE];
 
 	return S_OK;
@@ -162,4 +221,6 @@ void CStateMachine::Free()
 	for (auto& iter : m_vecStates)
 		Safe_Release(iter);
 	m_vecStates.clear();
+
+
 }

@@ -27,9 +27,14 @@
 #include "assimp\Importer.hpp"
 #include "assimp\postprocess.h"
 
+#include "fmod\fmod.h"
+#include "fmod\fmod.hpp"
+#include <io.h>
+#include <iostream>
 #include <string>
 using namespace DirectX;
 
+#include <array>
 #include <vector>
 #include <list>
 #include <map>
@@ -44,6 +49,11 @@ namespace Engine
 	{
 		HitIDTexture=0,
 
+	};
+	enum CHANNELID {
+		BACKGROUND, FLARE, ENTER, MATCH, OPEN,INVENTORY, CH_WOLF,CH_GUN,CH_COOK, CH_STOVE,
+		CH_FOOT, CH_RABBIT,CH_FX,
+		MAXCHANNEL
 	};
 }
 

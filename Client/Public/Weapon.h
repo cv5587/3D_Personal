@@ -13,7 +13,7 @@ BEGIN(Client)
 class CWeapon : public CPartObject
 {
 public:
-	typedef struct : public CPartObject::PARTOBJ_DESC
+	typedef struct WEAPON_DESC : public CPartObject::PARTOBJ_DESC
 	{
 		const _float4x4* pCombinedTransformationMatrix;
 	}WEAPON_DESC;

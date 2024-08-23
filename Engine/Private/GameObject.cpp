@@ -85,6 +85,21 @@ _bool CGameObject::IntersectRay(_vector* pRayArray, _float* fDist)
 	return true;
 }
 
+_bool CGameObject::RayCollInfo(_vector* pRayArray, CGameObject** pGameObject)
+{
+	return true;
+}
+
+_bool CGameObject::IntersectUI()
+{
+	return true;
+}
+
+HRESULT CGameObject::Action()
+{
+	return S_OK;
+}
+
 CComponent* CGameObject::Get_Transform()
 {
 	auto& iter = m_Components.find(m_pTransformTag);

@@ -11,6 +11,7 @@ CLight::CLight()
 HRESULT CLight::Initialize(const LIGHT_DESC& LightDesc)
 {
 	m_LightDesc = LightDesc;
+	m_bSwitch = m_LightDesc.bSwitch;
 
 	return S_OK;
 }

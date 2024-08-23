@@ -56,6 +56,20 @@ _bool CItemData::Compare_Name(const wstring ItemName)
 		return false;
 }
 
+_bool CItemData::QuestItemFinish()
+{
+	if (1<m_iQuantity )
+	{
+		m_iQuantity--;
+		return false;
+	}
+	else if (1 == m_iQuantity)
+	{
+		return true;
+	}
+
+}
+
 _bool CItemData::Compare_Type(_uint TypeIndex)
 {
 	if (m_ItemType[0] == TypeIndex || m_ItemType[1] == TypeIndex)
@@ -98,6 +112,20 @@ void CItemData::Make_ItemDataDesc(void* pDesc)
 	pItemDesc->fWeight = m_fWeight;
 	pItemDesc->isEquip = &m_isEquip;
 	pItemDesc->CellIndex = m_iCellIndex;
+}
+
+_bool CItemData::Using()
+{
+	if (1 < m_iQuantity)
+	{
+		m_iQuantity-=1;
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+
 }
 
 void CItemData::Free()

@@ -42,7 +42,7 @@ HRESULT CUIToggleID::Initialize(void* pArg)
 		m_SceneText = TEXT("백팩");
 		break;
 	case 3:
-		m_SceneText = TEXT("청사진");
+		m_SceneText = TEXT("제작");
 		break;
 	default:
 		break;

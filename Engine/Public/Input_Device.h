@@ -6,8 +6,6 @@
 #define KEYDOWN(name, key) (name[key] & 0x80) 
 #define MOUSEDOWN(name, key) (name[key] & 0x80) 
 
-
-
 BEGIN(Engine)
 class ENGINE_DLL CInput_Device :
     public CBase
@@ -48,7 +46,7 @@ private:
 private:
 	_byte					m_byKeyState[256];		// 키보드에 있는 모든 키값을 저장하기 위한 변수
 	DIMOUSESTATE			m_tMouseState;
-	_bool m_bKeyDown = false;
+	_bool m_bKeyDown[256] = { false, };
 	_bool m_bMouseDown[4] = { false, false, false, false };
 public:
 	static CInput_Device* Create(HINSTANCE hInst, HWND hWnd);

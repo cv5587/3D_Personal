@@ -11,7 +11,8 @@
 #include "Font_Manager.h"
 #include "Light_Manager.h"
 #include "Target_Manager.h"
-
+#include "Frustum.h"
+#include "SoundMgr.h"
 IMPLEMENT_SINGLETON(CGameInstance)
 
 CGameInstance::CGameInstance()
@@ -38,7 +39,9 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, cons
 		return E_FAIL;
 
 	/* 사운드  디바이스를 초기화하낟. */
-	
+	m_pSoundMgr = CSoundMgr::Create();
+	if (nullptr == m_pSoundMgr)
+		return E_FAIL;
 
 	/* 레벨 매니져의 준비를 하자. */
 	m_pLevel_Manager = CLevel_Manager::Create();
@@ -84,7 +87,9 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, cons
 	if (nullptr == m_pLight_Manager)
 		return E_FAIL;
 
-
+	m_pFrustum = CFrustum::Create();
+	if (nullptr == m_pFrustum)
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -101,6 +106,12 @@ void CGameInstance::Tick_Engine(_float fTimeDelta)
 	m_pObject_Manager->Tick(fTimeDelta);	
 
 	m_pPipeLine->Tick();
+
+	m_pSoundMgr->Update_Listener();
+
+	m_pFrustum->Update();
+
+	m_pCalculator->Tick();
 
 	m_pObject_Manager->Late_Tick(fTimeDelta);
 
@@ -307,6 +318,11 @@ CGameObject* CGameInstance::IntersectRay(_uint iLevelIndex, const wstring& strLa
 	return m_pObject_Manager->IntersectRay(iLevelIndex, strLayerTag, pRayArray,fDist);
 }
 
+_bool CGameInstance::RayCollInfo(_uint iLevelIndex, const wstring& strLayerTag, _vector* pRayArray, CGameObject** pGameObject)
+{
+	return m_pObject_Manager->RayCollInfo(iLevelIndex,strLayerTag,pRayArray, pGameObject);
+}
+
 
 HRESULT CGameInstance::Add_Prototype(_uint iLevelIndex, const wstring & strPrototypeTag, CComponent * pPrototype)
 {
@@ -330,12 +346,12 @@ HRESULT CGameInstance::Add_RenderObject(CRenderer::RENDERGROUP eRenderGroup, CGa
 
 	return m_pRenderer->Add_RenderObject(eRenderGroup, pRenderObject);	
 }
-
+#ifdef _DEBUG
 HRESULT CGameInstance::Add_DebugComponent(CComponent* pComponent)
 {
 	return m_pRenderer->Add_DebugComponent(pComponent);
 }
-
+#endif
 const _float4x4* CGameInstance::Get_Transform_float4x4(CPipeLine::TRANSFORMSTATE eState)
 {
 	return m_pPipeLine->Get_Transform_float4x4(eState);
@@ -408,6 +424,16 @@ void CGameInstance::World_MouseRay(_vector* RayArray)
 	m_pCalculator->World_MouseRay(RayArray);
 }
 
+HRESULT CGameInstance::Tick()
+{
+	return m_pCalculator->Tick();
+}
+
+_bool CGameInstance::Get_PickPos(_float4* pPickPos)
+{
+	return m_pCalculator->Get_PickPos(pPickPos);
+}
+
 HRESULT CGameInstance::Add_Font(const wstring& strFontTag, const wstring& strFontFilePath)
 {
 	return m_pFont_Manager->Add_Font(strFontTag, strFontFilePath);
@@ -442,6 +468,26 @@ HRESULT CGameInstance::Render_Lights(CShader* pShader, CVIBuffer_Rect* pVIBuffer
 	return m_pLight_Manager->Render(pShader, pVIBuffer);
 }
 
+HRESULT CGameInstance::Rotate_Light(_float fTimeDelta)
+{
+	return m_pLight_Manager->Rotate(fTimeDelta);
+}
+
+HRESULT CGameInstance::Set_LightSwitch(_uint iIndex, _bool bSwitch)
+{
+	return m_pLight_Manager->Set_Switch(iIndex, bSwitch);
+}
+
+HRESULT CGameInstance::Set_LightPosition(_uint iIndex, _fvector vPosition)
+{
+	return m_pLight_Manager->Set_Position(iIndex, vPosition);
+}
+
+HRESULT CGameInstance::Set_Range(_uint iIndex, _float fRange)
+{
+	return m_pLight_Manager->Set_Range(iIndex, fRange);
+}
+
 HRESULT CGameInstance::Add_RenderTarget(const wstring& strTargetTag, _uint iSizeX, _uint iSizeY, DXGI_FORMAT ePixelFormat, const _float4& vClearColor)
 {
 	return m_pTarget_Manager->Add_RenderTarget(strTargetTag, iSizeX, iSizeY, ePixelFormat, vClearColor);
@@ -452,9 +498,9 @@ HRESULT CGameInstance::Add_MRT(const wstring& strMRTTag, const wstring& strTarge
 	return m_pTarget_Manager->Add_MRT(strMRTTag, strTargetTag);
 }
 
-HRESULT CGameInstance::Begin_MRT(const wstring& strMRTTag)
+HRESULT CGameInstance::Begin_MRT(const wstring& strMRTTag, _bool isClear, ID3D11DepthStencilView* pDSView)
 {
-	return m_pTarget_Manager->Begin_MRT(strMRTTag);
+	return m_pTarget_Manager->Begin_MRT(strMRTTag, isClear, pDSView);
 }
 
 HRESULT CGameInstance::Begin_UIMRT(const wstring& strMRTTag)
@@ -477,6 +523,42 @@ HRESULT CGameInstance::Copy_Resource(const wstring& strTargetTag, ID3D11Texture2
 	return m_pTarget_Manager->Copy_Resource(strTargetTag, pDesc);
 }
 
+void CGameInstance::Transform_ToLocalSpace(_fmatrix WorldMatrixInv)
+{
+	return m_pFrustum->Transform_ToLocalSpace(WorldMatrixInv);
+}
+
+_bool CGameInstance::isIn_WorldFrustum(_fvector vPosition, _float fRange)
+{
+	return m_pFrustum->isIn_WorldFrustum(vPosition, fRange);
+}
+
+_bool CGameInstance::isIn_LocalFrustum(_fvector vPosition, _float fRange)
+{
+	return m_pFrustum->isIn_LocalFrustum(vPosition, fRange);
+}
+
+void CGameInstance::Play_Sound(wstring pSoundKey, CHANNELID eID, _float fVolume )
+{
+	m_pSoundMgr->Play_Sound(pSoundKey, eID, fVolume);
+}
+
+void CGameInstance::Play_Sound(wstring pSoundKey, CHANNELID eID, _float fVolume, _fvector vPos)
+{
+	m_pSoundMgr->Play_Sound(pSoundKey, eID, fVolume, vPos);
+}
+
+void CGameInstance::StopSound(CHANNELID eID)
+{
+	m_pSoundMgr->StopSound(eID);
+}
+
+void CGameInstance::Play_BGM(wstring pSoundKey, _float fVolume)
+{
+	m_pSoundMgr->Play_BGM(pSoundKey, fVolume);
+}
+
+
 #ifdef _DEBUG
 HRESULT CGameInstance::Ready_RTDebug(const wstring& strTargetTag, _float fX, _float fY, _float fSizeX, _float fSizeY)
 {
@@ -498,6 +580,8 @@ void CGameInstance::Release_Engine()
 
 void CGameInstance::Free()
 {
+	Safe_Release(m_pSoundMgr);
+	Safe_Release(m_pFrustum);
 	Safe_Release(m_pTarget_Manager);
 	Safe_Release(m_pLight_Manager);
 	Safe_Release(m_pFont_Manager);

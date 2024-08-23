@@ -18,12 +18,16 @@ public:
 public:
 	void Save_Terrain_UV(ofstream* fout);
 
+public:
+	void Culling(_fmatrix WorldMatrixInv);
+
 private:
 	_uint				m_iNumVerticesX = { 0 };
 	_uint				m_iNumVerticesZ = { 0 };
 	_int*				 m_pTerrainUV = {nullptr};
 	 _tchar			m_strHeightMapFilePath[MAX_PATH] = TEXT("");
 
+	 class CQuadTree* m_pQuadTree = { nullptr };
 public:
 	static CVIBuffer_Terrain* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const wstring& strHeightMapFilePath);
 	virtual CComponent* Clone(void* pArg) override;

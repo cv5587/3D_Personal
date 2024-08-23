@@ -12,6 +12,7 @@ public:
     HRESULT Initialize(ifstream* fin);
     void Update_TransformationMatrix(_double CurrentPosition, const vector<class CBone*>& Bones, _uint* pCurrentKeyFrameIndex);
     void Shift_Animation_TransformationMatrix(_double ShiftCurrentPosition, const vector<class CBone*>& Bones, _bool& bFirst,_double& ShiftDuration);
+    void Update_StruggleTransformationMatrix(_double CurrentPosition, const vector<class CBone*>& Bones, _uint* pCurrentKeyFrameIndex);
 
     HRESULT Save_Channel( ofstream* fout);
 private:

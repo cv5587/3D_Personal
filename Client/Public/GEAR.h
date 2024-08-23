@@ -7,6 +7,7 @@ class CCollider;
 class CNavigation;
 class CShader;
 class CModel;
+class CCollider;
 END
 
 BEGIN(Client)
@@ -14,7 +15,7 @@ class CGEAR final :
     public CItem
 {
 public:
-	typedef struct : public CItem::ITEM_DESC {
+	typedef struct GEARITEM_DESC : public CItem::ITEM_DESC {
 
 
 		_float4 vDirection;
@@ -32,12 +33,14 @@ public:
 	virtual void Tick(_float fTimeDelta) override;
 	virtual void Late_Tick(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
-
+	virtual _bool Intersect(CCollider* pTargetCollider)override;
+	virtual _bool IntersectRay(_vector* pRayArray, _float* fDist) override;
+	virtual _bool RayCollInfo(_vector* pRayArray, CGameObject** pGameObject) override;
 	HRESULT Check_Model(void* pArg);
 protected:
-	CShader* m_pShaderCom = { nullptr };
-	CModel* m_pModelCom = { nullptr };
-
+	class CShader* m_pShaderCom = { nullptr };
+	class CModel* m_pModelCom = { nullptr };
+	class CCollider* m_pColliderCom = { nullptr };
 
 
 public:

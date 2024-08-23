@@ -51,6 +51,27 @@ namespace Client
 		PLAYER_KILL,//토끼 주김
 		PLAYER_RELEASE,//토끼 살려줌
 
+		PLAYER_QUEST,//퀘스트 진입
+		PLAYER_BURN,//불지피기
+
+
+		PLAYER_BURNOUT,//성냥 상태
+		PLAYER_MATCHPRE,//불지피기
+		PLAYER_MATSUCCESS,//불지피기
+
+		PLAYER_HARVEST,
+		PLAYER_BUILD,
+		PLAYER_SLEEP,
+		PLAYER_GETUP,
+
+		PLAYER_STRUGGLE,
+		PLAYER_STRUGGLEBARE,
+		PLAYER_STRUGGLEKNIFE,
+		PLAYER_FADEOUT,
+
+		PLAYER_FLAREPRE,
+		PLAYER_FLARESUCCESS,
+
 		PLAYER_END
 	};
 	
@@ -59,6 +80,9 @@ namespace Client
 		EQUIP_STONE,
 		EQUIP_REVOLVER,
 		EQUIP_RABBIT,
+		EQUIP_MATCH,
+		EQUIP_KNIFE,
+		EQUIP_FLARE,
 		EQUIP_PIPE,
 		EQUIP_END
 	};
@@ -79,6 +103,6 @@ namespace Client
 }
 
 extern HINSTANCE g_hInst;
-extern HWND g_hWnd;
+extern HWND		g_hWnd;
 
 using namespace Client;

@@ -11,7 +11,7 @@ class ENGINE_DLL CNavigation final
 	: public CComponent
 {
 public:
-	typedef struct
+	typedef struct NAVIGATION_DESC
 	{
 		_int		iCurrentCellIndex = { -1 };
 	}NAVIGATION_DESC;
@@ -31,6 +31,7 @@ public:
 	_bool isReflect(_fvector vPosition, _float4* LineDir=nullptr);
 	HRESULT Make_Cell(const _float3* vPoint);
 	void Snap_Point(_vector vPoint,_float3* StorePoint,_float SnapReach);
+	_int Pick_CellIndex(_fvector PickPoint);
 	//Åø¿ë
 public:
 	_int* Get_CurrentCell() { return &m_iCurrentCellIndex; }
@@ -63,9 +64,9 @@ private:
 	_int						m_iCurrentCellIndex = { -1 };
 
 
-#ifdef _DEBUG
+
 	class CShader* m_pShader = { nullptr };
-#endif
+
 
 private:
 	HRESULT SetUp_Neighbors();

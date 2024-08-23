@@ -43,12 +43,19 @@ void CCLTH::Priority_Tick(_float fTimeDelta)
 
 void CCLTH::Tick(_float fTimeDelta)
 {
+	m_pColliderCom->Tick(m_pTransformCom->Get_WorldMatrix());
 }
 
 void CCLTH::Late_Tick(_float fTimeDelta)
 {
-	m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
+	if (true == m_pGameInstance->isIn_WorldFrustum(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 2.f))
+	{
+		m_pGameInstance->Add_RenderObject(CRenderer::RENDER_NONBLEND, this);
 
+#ifdef _DEBUG
+		m_pGameInstance->Add_DebugComponent(m_pColliderCom);
+#endif
+	}
 }
 
 HRESULT CCLTH::Render()
@@ -58,7 +65,7 @@ HRESULT CCLTH::Render()
 
 	_uint	iNumMeshes = m_pModelCom->Get_NumMeshes();
 
-	for (size_t i = 0; i < iNumMeshes; i++)
+	for (_uint i = 0; i < iNumMeshes; i++)
 	{
 		if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 			return E_FAIL;
@@ -147,6 +154,49 @@ HRESULT CCLTH::Check_Model(void* pArg)
 	return S_OK;
 }
 
+_bool CCLTH::Intersect(CCollider* pTargetCollider)
+{
+	if (!m_bThrow)
+		return false;
+
+	if (m_pColliderCom->Intersect(pTargetCollider))
+	{
+		m_pNavigationCom->Set_OnNavigation(m_pTransformCom);
+		m_bThrow = false;
+		m_iCellIndex = -1;
+		m_pNavigationCom->Reset_CellIndex();
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+_bool CCLTH::IntersectRay(_vector* pRayArray, _float* fDist)
+{
+	if (m_pColliderCom->IntersectRay(pRayArray, fDist))
+		return true;
+
+
+	return false;
+}
+
+_bool CCLTH::RayCollInfo(_vector* pRayArray, CGameObject** pGameObject)
+{
+	_float fDist = 0.f;
+	if (m_pColliderCom->IntersectRay(pRayArray, &fDist))
+	{
+		if (3.f > fDist)
+		{
+			*pGameObject = this;
+			return true;
+		}
+	}
+
+	return false;
+}
+
 HRESULT CCLTH::Add_Components()
 {
 	/* For.Com_Model */
@@ -156,9 +206,22 @@ HRESULT CCLTH::Add_Components()
 
 	//만약 부들이 쉐이더가 다르면 모두 양면 으로 해주자.
 	/* For.Com_Shader */
-	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxMeshID"),
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxMesh"),
 		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
 		return E_FAIL;
+
+	/* For.Com_Collider */
+	CBounding_AABB::BOUNDING_AABB_DESC		ColliderDesc = {};
+
+	ColliderDesc.eType = CCollider::TYPE_AABB;
+	ColliderDesc.vExtents = _float3(0.3f, 0.3f, 0.3f);//aabb 조절가능
+	ColliderDesc.vCenter = _float3(0.f,0.f, 0.f);
+
+
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider"),
+		TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &ColliderDesc)))
+		return E_FAIL;
+
 
 	return S_OK;
 }
@@ -171,8 +234,7 @@ HRESULT CCLTH::Bind_ShaderResources()
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_float4x4(CPipeLine::TS_PROJ))))
 		return E_FAIL;
-	if (FAILED(m_pShaderCom->Bind_ID("g_ID", m_iRenderID)))
-		return E_FAIL;
+
 
 	return S_OK;
 }
@@ -210,4 +272,5 @@ void CCLTH::Free()
 
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pModelCom);
+	Safe_Release(m_pColliderCom);
 }

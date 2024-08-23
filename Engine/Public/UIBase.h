@@ -5,7 +5,7 @@ class ENGINE_DLL CUIBase :
     public CGameObject
 {
 public:
-	typedef struct : public CGameObject::GAMEOBJECT_DESC {
+	typedef struct UI_BASE_DESC : public CGameObject::GAMEOBJECT_DESC {
 		wstring TextureTag;
 		_uint Icon_ID;
 		_int UIID;
@@ -27,7 +27,8 @@ public:
 	virtual HRESULT Render() override;
 
 public:
-	virtual HRESULT Action();
+	virtual _bool IntersectUI()override;
+	virtual HRESULT Action()override;
 public:
 	void Set_IconID(_uint ID) { m_iIconID = ID; }
 

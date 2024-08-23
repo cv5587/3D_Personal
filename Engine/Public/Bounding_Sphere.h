@@ -7,7 +7,7 @@ BEGIN(Engine)
 class CBounding_Sphere final : public CBounding
 {
 public:
-	typedef struct : public CBounding::BOUNDING_DESC
+	typedef struct BOUNDING_SPHERE_DESC : public CBounding::BOUNDING_DESC
 	{
 		_float		fRadius;
 	}BOUNDING_SPHERE_DESC;

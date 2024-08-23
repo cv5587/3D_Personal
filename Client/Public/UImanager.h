@@ -34,7 +34,9 @@ public:
         Layer_StateShoes, Layer_StatePant, Layer_StateSleeve,Layer_StateHat
         , Layer_StateInfoback, Layer_StateInfo,
         Layer_StateInfoText, Layer_Stateback, Layer_ClothCase, Layer_ClothText, Layer_ClothToggle,
-        Layer_LoadingBar, Layer_END
+        Layer_LoadingBar, Layer_QuestBar, Layer_Burn, Layer_FadeIn,
+        Layer_BluePrint,
+        Layer_END
     };
 public:
     enum KEYID{ KEY_LEFTCLICK, KEY_RIGHTCLICK, KEY_END };
@@ -80,6 +82,10 @@ public:
      HRESULT Ready_State();
      HRESULT Ready_Cloth();
      HRESULT Ready_LoadingBar();
+     HRESULT Ready_Quest();
+     HRESULT Ready_Burn();
+     HRESULT Ready_FadeIn();
+     HRESULT Ready_BluePrint();
 
      void Set_SortMode(_uint SortIndex);
      _uint Get_SortMode() { return m_SortMode; }
@@ -90,10 +96,12 @@ public:
     void Pick_ClothItem(_uint UIID);
     _bool Pick_InvenInfoButton();
     _bool Pick_InvenClothButton();
+    _bool Pick_InvenBPButton();
 public:
     //무게 변환 (틱마다
     void Set_Weight(_float fTotalWeight);
     HRESULT Cloth_Update(class CItemData* pItemData);
+    void BP_Update(_float fTimeDelta);
 
 public :
     HRESULT Add_InvenIcon(_uint Index,  class CItem* pItem);
@@ -116,6 +124,7 @@ private:
 
     vector<CGameObject*> m_ItemToggle;//아이템 칸 생성함(그리고 템 받아옴
     vector<CGameObject*> m_ClothToggle;//옷 칸 생성함(그리고 템 받아옴
+    vector<CGameObject*> m_BluePrintToggle;//옷 칸 생성함(그리고 템 받아옴
     _int m_PickItemIndex = { -1 };//찍은 토글인덱스 번호
     _int m_PickClothIndex = { -1 };//찍은 토글인덱스 번호
 private:

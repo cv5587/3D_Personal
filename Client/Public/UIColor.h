@@ -12,8 +12,10 @@ class CUIColor final :
 	public CUIBase
 {
 public:
-	typedef struct :public CUIBase::UI_BASE_DESC {
+	typedef struct UI_COLOR_DESC :public CUIBase::UI_BASE_DESC {
 		_float4 vColor;
+		_uint iShaderPass;
+		_float* pCurrentLoad;
 	}UI_COLOR_DESC;
 
 private:
@@ -40,7 +42,8 @@ private:
 
 	_float4						m_vColor;
 	wstring						m_ShaderTag = { TEXT("") };
-
+	_uint							m_iShaderPass = { 0 };
+	_float*						m_pCurrentLoad;
 private:
 	HRESULT Add_Components();
 	HRESULT Bind_ShaderResources();

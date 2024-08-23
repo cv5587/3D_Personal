@@ -1,13 +1,13 @@
 #pragma once
 #include "Client_Defines.h"
-#include "GameObject.h"
+#include "Item.h"
 #include "Player.h"
 BEGIN(Client)
 class CInteractiveObject abstract :
-    public CGameObject
+    public CItem
 {
 public:
-	typedef struct : public CGameObject::GAMEOBJECT_DESC
+	typedef struct INTERACTIVEOBJECT_DESC : public CItem::ITEM_DESC
 	{
 
 	}INTERACTIVEOBJECT_DESC;
@@ -24,7 +24,7 @@ public:
 	virtual void Late_Tick(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 	virtual _bool IntersectRay(_vector* pRayArray, _float* fDist) override;
-
+	
 	virtual HRESULT Action() = 0;
 
 

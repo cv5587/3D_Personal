@@ -14,7 +14,7 @@ BEGIN(Client)
 class CPartObject abstract : public CGameObject
 {
 public:
-	typedef struct : public CGameObject::GAMEOBJECT_DESC
+	typedef struct PARTOBJ_DESC : public CGameObject::GAMEOBJECT_DESC
 	{
 		const _float4x4* pParentMatrix;
 		const PLAYERSTATE* pState;

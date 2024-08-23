@@ -8,7 +8,7 @@ BEGIN(Client)
 class CLandObject abstract : public CGameObject
 {
 public:
-	typedef struct : public CGameObject::GAMEOBJECT_DESC
+	typedef struct LANDOBJ_DESC : public CGameObject::GAMEOBJECT_DESC
 	{
 
 	}LANDOBJ_DESC;

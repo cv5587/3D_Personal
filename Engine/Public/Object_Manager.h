@@ -42,11 +42,11 @@ public:
 	vector< const _float4x4*>* Get_ObPos(_uint iLevelIndex, const wstring& strLayerTag);
 	//파츠 오브젝트용
 	class CGameObject* Clone_Object(const wstring& strPrototypeTag, void* pArg);
-
 //콜라이더용
 public:
 	_bool Intersect(_uint iLevelIndex, const wstring& strLayerTag, class CCollider* pTargetCollider);
 	CGameObject* IntersectRay(_uint iLevelIndex, const wstring& strLayerTag, _vector* pRayArray, _float* fDist);
+	_bool RayCollInfo(_uint iLevelIndex, const wstring& strLayerTag, _vector* pRayArray, CGameObject** pGameObject);
 	//ui용
 public:
 	class CUIBase* FindUIID_CloneObject(_uint iLevelIndex, const wstring& strLayerTag, _int UIID);

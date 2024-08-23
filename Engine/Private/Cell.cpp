@@ -15,11 +15,11 @@ HRESULT CCell::Initialize(const _float3 * pPoints, _int iIndex)
 
 	memcpy(m_vPoints, pPoints, sizeof(_float3) * POINT_END);
 
-#ifdef _DEBUG
+
 	m_pVIBuffer = CVIBuffer_Cell::Create(m_pDevice, m_pContext, m_vPoints);
 	if (nullptr == m_pVIBuffer)
 		return E_FAIL;
-#endif
+
 
 	return S_OK;
 }
@@ -31,11 +31,11 @@ HRESULT CCell::Initialize_Data(const _float3* pPoints, _int iIndex, _int* Neighb
 	memcpy(m_iNeighborIndices, Neighbor, sizeof(_int) * LINE_END);
 	memcpy(m_vPoints, pPoints, sizeof(_float3) * POINT_END);
 
-#ifdef _DEBUG
+
 	m_pVIBuffer = CVIBuffer_Cell::Create(m_pDevice, m_pContext, m_vPoints);
 	if (nullptr == m_pVIBuffer)
 		return E_FAIL;
-#endif
+
 
 	return S_OK;
 }
@@ -198,7 +198,7 @@ void CCell::Free()
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);
 
-#ifdef _DEBUG
+
 	Safe_Release(m_pVIBuffer);
-#endif
+
 }

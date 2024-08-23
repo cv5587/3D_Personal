@@ -53,21 +53,22 @@ HRESULT CItem::Render()
 
 _bool CItem::Intersect(CCollider* pTargetCollider)	
 {
-	if (!m_bThrow)
-		return false;
+	//if (!m_bThrow)
+	//	return false;
 
-	if (m_pColliderCom->Intersect(pTargetCollider))
-	{
-		m_pNavigationCom->Set_OnNavigation(m_pTransformCom);
-		m_bThrow = false;
-		m_iCellIndex = -1;
-		m_pNavigationCom->Reset_CellIndex();
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	//if (m_pColliderCom->Intersect(pTargetCollider))
+	//{
+	//	m_pNavigationCom->Set_OnNavigation(m_pTransformCom);
+	//	m_bThrow = false;
+	//	m_iCellIndex = -1;
+	//	m_pNavigationCom->Reset_CellIndex();
+	//	return true;
+	//}
+	//else
+	//{
+	//	return false;
+	//}
+	return false;
 }
 
 _bool CItem::IntersectRay(_vector* pRayArray)

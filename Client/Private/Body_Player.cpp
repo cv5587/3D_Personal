@@ -4,6 +4,7 @@
 #include "GameInstance.h"
 #include "Player.h"
 #include "StateMachine.h"
+#include "Particle_Rect.h"
 
 CBody_Player::CBody_Player(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CPartObject{ pDevice, pContext }
@@ -24,6 +25,7 @@ HRESULT CBody_Player::Initialize(void* pArg)
 {
 	BODY_DESC* pDesc = (BODY_DESC*)pArg;
 	m_pBulletsLeft = pDesc->pBulletsLeft;
+	m_pLit = pDesc->pLit;
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
@@ -42,7 +44,7 @@ void CBody_Player::Priority_Tick(_float fTimeDelta)
 
 void CBody_Player::Tick(_float fTimeDelta)
 {
-
+	m_fCurrentTime += fTimeDelta;
 	Set_AnimationState();
 
 	m_pModelCom->Play_Animation(fTimeDelta);
@@ -51,6 +53,11 @@ void CBody_Player::Tick(_float fTimeDelta)
 		if (m_pModelCom->Get_AnimFinished())
 			*m_pAnimFinished = true;
 
+	if (m_fCurrentTime > 3.f)
+	{
+		m_fCurrentTime = 0.f;
+		Add_Particle();
+	}
 	
 	
 
@@ -124,6 +131,15 @@ void CBody_Player::Set_AnimationState()
 		switch (*m_pState)
 		{
 		case Client::PLAYER_IDLE:
+		case Client::PLAYER_INVENTORY:
+		case Client::PLAYER_PICKUP:
+		case Client::PLAYER_ENTER:
+		case Client::PLAYER_QUEST:
+		case Client::PLAYER_HARVEST:
+		case Client::PLAYER_BURN:
+		case Client::PLAYER_BUILD:
+		case Client::PLAYER_SLEEP:
+		case Client::PLAYER_FADEOUT:
 			AnimDesc.iAnimIndex = 115;
 			AnimDesc.isLoop = true;
 			break;
@@ -135,12 +151,37 @@ void CBody_Player::Set_AnimationState()
 			AnimDesc.iAnimIndex = 375;
 			AnimDesc.isLoop = true;
 			break;
+		case Client::PLAYER_STRUGGLE:	//intro
+			AnimDesc.iAnimIndex = 354;
+			AnimDesc.isLoop = false;
+			break;
+		case Client::PLAYER_STRUGGLEBARE:
+			AnimDesc.iAnimIndex = 350;
+			AnimDesc.isLoop = false;
+			break;
+		case Client::PLAYER_STRUGGLEKNIFE:
+			AnimDesc.iAnimIndex = 355;
+			AnimDesc.isLoop = false;
+			break;
+		case Client::PLAYER_GETUP:
+			AnimDesc.iAnimIndex = 89;
+			AnimDesc.isLoop = false;
+			break;
 		}
 		break;
 	case EQUIP_STONE:
 		switch (*m_pState)
 		{
 		case Client::PLAYER_IDLE:
+		case Client::PLAYER_INVENTORY:
+		case Client::PLAYER_PICKUP:
+		case Client::PLAYER_ENTER:
+		case Client::PLAYER_QUEST:
+		case Client::PLAYER_BURN:
+		case Client::PLAYER_HARVEST:
+		case Client::PLAYER_BUILD:
+		case Client::PLAYER_SLEEP:
+		case Client::PLAYER_FADEOUT:
 			AnimDesc.iAnimIndex = 332;
 			AnimDesc.isLoop = true;
 			break;
@@ -209,6 +250,18 @@ void CBody_Player::Set_AnimationState()
 			AnimDesc.iAnimIndex = 338;
 			AnimDesc.isLoop = false;
 			break;
+		case Client::PLAYER_STRUGGLE:	//intro
+			AnimDesc.iAnimIndex = 354;
+			AnimDesc.isLoop = false;
+			break;
+		case Client::PLAYER_STRUGGLEBARE:
+			AnimDesc.iAnimIndex = 350;
+			AnimDesc.isLoop = false;
+			break;
+		case Client::PLAYER_STRUGGLEKNIFE:
+			AnimDesc.iAnimIndex = 355;
+			AnimDesc.isLoop = false;
+			break;
 		default:
 			break;
 		}
@@ -217,6 +270,15 @@ void CBody_Player::Set_AnimationState()
 		switch (*m_pState)
 		{
 		case Client::PLAYER_IDLE:
+		case Client::PLAYER_INVENTORY:
+		case Client::PLAYER_PICKUP:
+		case Client::PLAYER_ENTER:
+		case Client::PLAYER_QUEST:
+		case Client::PLAYER_BURN:
+		case Client::PLAYER_HARVEST:
+		case Client::PLAYER_BUILD:
+		case Client::PLAYER_SLEEP:
+		case Client::PLAYER_FADEOUT:
 			AnimDesc.iAnimIndex = 302;
 			AnimDesc.isLoop = true;
 			break;
@@ -280,6 +342,18 @@ void CBody_Player::Set_AnimationState()
 			AnimDesc.iAnimIndex = 304;
 			AnimDesc.isLoop = false;
 			break;
+		case Client::PLAYER_STRUGGLE:	//intro
+			AnimDesc.iAnimIndex = 354;
+			AnimDesc.isLoop = false;
+			break;
+		case Client::PLAYER_STRUGGLEBARE:
+			AnimDesc.iAnimIndex = 350;
+			AnimDesc.isLoop = false;
+			break;
+		case Client::PLAYER_STRUGGLEKNIFE:
+			AnimDesc.iAnimIndex = 355;
+			AnimDesc.isLoop = false;
+			break;
 		case Client::PLAYER_END:
 			break;
 		default:
@@ -308,6 +382,137 @@ void CBody_Player::Set_AnimationState()
 			break;
 		}
 		break;
+
+	case EQUIP_MATCH:
+		switch (*m_pState)
+		{
+			case Client::PLAYER_IDLE:
+			{
+				if (true == (*m_pLit))
+				{
+					AnimDesc.iAnimIndex = 223;
+				}
+				else
+				{
+					AnimDesc.iAnimIndex = 239;
+				}
+				AnimDesc.isLoop = true;
+				break;
+			}
+			case Client::PLAYER_EQUIP:
+				AnimDesc.iAnimIndex = 217;
+				AnimDesc.isLoop = false;
+				break;
+			case Client::PLAYER_BURNOUT:
+				AnimDesc.iAnimIndex = 216;
+				AnimDesc.isLoop = false;
+				break;
+			case Client::PLAYER_UNEQUIP:
+				AnimDesc.iAnimIndex = 228;
+				AnimDesc.isLoop = false;
+				break;
+			case Client::PLAYER_JOG:
+			{
+				if (true == (*m_pLit))
+				{
+					AnimDesc.iAnimIndex = 230;
+				}
+				else
+				{
+					AnimDesc.iAnimIndex = 224;
+				}
+				AnimDesc.isLoop = true;
+				break;
+			}
+			case Client::PLAYER_MATCHPRE:
+				AnimDesc.iAnimIndex = 220;
+				AnimDesc.isLoop = false;
+				break;
+			case Client::PLAYER_MATSUCCESS:
+				AnimDesc.iAnimIndex = 221;
+				AnimDesc.isLoop = false;
+				break;
+			case Client::PLAYER_STRUGGLE:	//intro
+				AnimDesc.iAnimIndex = 354;
+				AnimDesc.isLoop = false;
+				break;
+			case Client::PLAYER_STRUGGLEBARE:
+				AnimDesc.iAnimIndex = 350;
+				AnimDesc.isLoop = false;
+				break;
+			case Client::PLAYER_STRUGGLEKNIFE:
+				AnimDesc.iAnimIndex = 355;
+				AnimDesc.isLoop = false;
+				break;
+		}
+		break;
+	case EQUIP_KNIFE:
+	{
+		switch (*m_pState)
+		{
+
+		case Client::PLAYER_FADEOUT:
+			AnimDesc.iAnimIndex = 115;
+			AnimDesc.isLoop = true;
+			break;
+		case Client::PLAYER_STRUGGLE:	//intro
+			AnimDesc.iAnimIndex = 354;
+			AnimDesc.isLoop = false;
+			break;
+		case Client::PLAYER_STRUGGLEBARE:
+			AnimDesc.iAnimIndex = 350;
+			AnimDesc.isLoop = false;
+			break;
+		case Client::PLAYER_STRUGGLEKNIFE:
+			AnimDesc.iAnimIndex = 355;
+			AnimDesc.isLoop = false;
+			break;
+		}
+	}
+		break;
+
+	case EQUIP_FLARE:
+		switch (*m_pState)
+		{
+		case Client::PLAYER_IDLE:
+		case Client::PLAYER_INVENTORY:
+		case Client::PLAYER_PICKUP:
+		case Client::PLAYER_ENTER:
+		case Client::PLAYER_QUEST:
+		case Client::PLAYER_BURN:
+		case Client::PLAYER_HARVEST:
+		case Client::PLAYER_BUILD:
+		case Client::PLAYER_SLEEP:
+		case Client::PLAYER_FADEOUT:
+		{
+			AnimDesc.iAnimIndex = 144;
+			AnimDesc.isLoop = true;
+			break;
+		}
+		case Client::PLAYER_EQUIP:
+			AnimDesc.iAnimIndex = 161;
+			AnimDesc.isLoop = false;
+			break;
+		case Client::PLAYER_UNEQUIP:
+			AnimDesc.iAnimIndex = 142;
+			AnimDesc.isLoop = false;
+			break;
+		case Client::PLAYER_JOG:
+		{
+			AnimDesc.iAnimIndex = 145;
+			AnimDesc.isLoop = true;
+			break;
+		}
+		case Client::PLAYER_FLAREPRE:
+			AnimDesc.iAnimIndex = 123;
+			AnimDesc.isLoop = false;
+			break;
+		case Client::PLAYER_FLARESUCCESS:
+			AnimDesc.iAnimIndex = 124;
+			AnimDesc.isLoop = false;
+			break;
+		}
+		break;
 	case EQUIP_PIPE:
 		break;
 	default:
@@ -323,8 +528,12 @@ void CBody_Player::Set_AnimationState()
 	//{
 
 		*m_pAnimFinished = AnimDesc.isLoop;
-		m_pModelCom->Set_AnimationIndex(AnimDesc);
+		if(354 == AnimDesc.iAnimIndex || 350 == AnimDesc.iAnimIndex || 355 == AnimDesc.iAnimIndex)
+			m_pModelCom->Set_NoShiftAnimationIndex(AnimDesc);//이 애니메이션 끝난뒤에 보간애님 진행 안됨. 바로 시전.
+		else
+			m_pModelCom->Set_AnimationIndex(AnimDesc);
 
+		
 	
 }
 
@@ -362,6 +571,49 @@ HRESULT CBody_Player::Add_Components()
 	return S_OK;
 }
 
+HRESULT CBody_Player::Add_Particle()
+{
+
+	CParticle_Rect::PARTICLE_DESC RectDesc{};
+
+	//_vector Pos = XMLoadFloat4x4(m_pGameInstance->Get_Transform_float4x4_Inverse(CPipeLine::TS_VIEW)).r[3];
+	//_vector Look = XMLoadFloat4x4(m_pGameInstance->Get_Transform_float4x4_Inverse(CPipeLine::TS_VIEW)).r[2];
+	//_vector Length = XMVector3Normalize(Look);
+	//_vector Position =Pos + Length * 0.3f;
+
+	//XMStoreFloat4(&RectDesc.vStartPos, Position);
+	//RectDesc.BufferInstance.iNumInstance = 3;
+	//RectDesc.BufferInstance.vOffsetPos = _float3(0.0f, -10.f, 0.0f);
+	//RectDesc.BufferInstance.vPivotPos = _float3(0.0f, -2.0f, 0.0f);
+	//RectDesc.BufferInstance.vRange = _float3(0.1f, 0.1f, 0.1f);
+	//RectDesc.BufferInstance.vSize = _float2(0.5f, 0.8f);
+	//RectDesc.BufferInstance.vSpeed = _float2(0.5f, 1.2f);
+	//RectDesc.BufferInstance.vLifeTime = _float2(1.f, 3.f);
+	//RectDesc.BufferInstance.fScaleSize = 2.0f;
+	//RectDesc.BufferInstance.isLoop = false;
+	//RectDesc.iTYPE = CParticle_Rect::TYPE_BREATH;
+	//if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, TEXT("Layer_Breath"), TEXT("Prototype_GameObject_Particle_Rect"), &RectDesc)))
+	//	return E_FAIL;
+	_float m_fX = g_iWinSizeX >> 1;
+	_float m_fY = g_iWinSizeY >> 1;
+
+	XMStoreFloat4(&RectDesc.vStartPos, XMVectorSet(m_fX * 0.f, m_fY * -1.f, 0.f, 1.f));
+	RectDesc.BufferInstance.iNumInstance = 3;
+	RectDesc.BufferInstance.vOffsetPos = _float3(0.0f, -500.f, 0.0f);
+	RectDesc.BufferInstance.vPivotPos = _float3(0.0f, 0.0f, 0.0f);
+	RectDesc.BufferInstance.vRange = _float3(500.f, 50.f, 0.f);
+	RectDesc.BufferInstance.vSize = _float2(1024.f, 1024.f);
+	RectDesc.BufferInstance.vSpeed = _float2(100.f, 150.f);
+	RectDesc.BufferInstance.vLifeTime = _float2(1.f, 2.f);
+	RectDesc.BufferInstance.fScaleSize = 100.0f;
+	RectDesc.BufferInstance.isLoop = false;
+	RectDesc.iTYPE = CParticle_Rect::TYPE_BREATH;
+//	if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, TEXT("Layer_Breath"), TEXT("Prototype_GameObject_Particle_Rect"), &RectDesc)))
+//		return E_FAIL;
+
+	return S_OK;
+}
+
 HRESULT CBody_Player::Bind_ShaderResources()
 {
 	//if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
@@ -372,8 +624,8 @@ HRESULT CBody_Player::Bind_ShaderResources()
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_float4x4(CPipeLine::TS_PROJ))))
 		return E_FAIL;
-	if (FAILED(m_pShaderCom->Bind_ID("g_ID", m_iRenderID)))
-		return E_FAIL;
+	//if (FAILED(m_pShaderCom->Bind_ID("g_ID", m_iRenderID)))
+	//	return E_FAIL;
 
 	return S_OK;
 }

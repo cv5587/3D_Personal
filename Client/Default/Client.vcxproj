@@ -113,7 +113,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Engine.lib;DirectXTKd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Engine.lib;DirectXTKd.lib;fmod_vc.lib;fmodL_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>../../EngineSDK/Lib/</AdditionalLibraryDirectories>
     </Link>
     <FxCompile>
@@ -171,50 +171,83 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\BackGround.h" />
+    <ClInclude Include="..\Public\BedRoll.h" />
     <ClInclude Include="..\Public\Body_Player.h" />
+    <ClInclude Include="..\Public\BoxProp.h" />
     <ClInclude Include="..\Public\Bullet.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\CLTH.h" />
     <ClInclude Include="..\Public\Data_Manager.h" />
     <ClInclude Include="..\Public\EnvironmentObject.h" />
+    <ClInclude Include="..\Public\Explosion.h" />
+    <ClInclude Include="..\Public\Flare.h" />
     <ClInclude Include="..\Public\FreeCamera.h" />
     <ClInclude Include="..\Public\GEAR.h" />
+    <ClInclude Include="..\Public\Harvest.h" />
     <ClInclude Include="..\Public\InteractiveObject.h" />
     <ClInclude Include="..\Public\LandObject.h" />
+    <ClInclude Include="..\Public\LensFlare.h" />
     <ClInclude Include="..\Public\Level_GamePlay.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
     <ClInclude Include="..\public\Level_Logo.h" />
     <ClInclude Include="..\public\Loader.h" />
     <ClInclude Include="..\Public\LoadingBar.h" />
     <ClInclude Include="..\public\MainApp.h" />
+    <ClInclude Include="..\Public\Match.h" />
+    <ClInclude Include="..\Public\Meat.h" />
     <ClInclude Include="..\Public\Monster.h" />
+    <ClInclude Include="..\Public\Mother.h" />
+    <ClInclude Include="..\Public\Particle_Point.h" />
+    <ClInclude Include="..\Public\Particle_Rect.h" />
     <ClInclude Include="..\Public\PartObject.h" />
     <ClInclude Include="..\Public\PickRabbit.h" />
     <ClInclude Include="..\Public\PickUpSelector.h" />
     <ClInclude Include="..\Public\Player.h" />
     <ClInclude Include="..\Public\Player_Camera.h" />
     <ClInclude Include="..\Public\Portal.h" />
+    <ClInclude Include="..\Public\QuestData.h" />
+    <ClInclude Include="..\Public\NPCManager.h" />
+    <ClInclude Include="..\Public\QuestManager.h" />
+    <ClInclude Include="..\Public\Rabbit.h" />
     <ClInclude Include="..\Public\Revolver.h" />
+    <ClInclude Include="..\Public\RevolverFire.h" />
+    <ClInclude Include="..\Public\Rifle.h" />
+    <ClInclude Include="..\Public\Sky.h" />
     <ClInclude Include="..\Public\State.h" />
     <ClInclude Include="..\Public\StateMachine.h" />
     <ClInclude Include="..\Public\State_Aim.h" />
     <ClInclude Include="..\Public\State_Aim_E.h" />
     <ClInclude Include="..\Public\State_Attack.h" />
+    <ClInclude Include="..\Public\State_Build.h" />
+    <ClInclude Include="..\Public\State_Burn.h" />
+    <ClInclude Include="..\Public\State_Burnout.h" />
     <ClInclude Include="..\Public\State_Equip.h" />
     <ClInclude Include="..\Public\State_Exhausted.h" />
+    <ClInclude Include="..\Public\State_Fadeout.h" />
     <ClInclude Include="..\Public\State_Fire.h" />
+    <ClInclude Include="..\Public\State_FlarePre.h" />
+    <ClInclude Include="..\Public\State_FlareSuccess.h" />
+    <ClInclude Include="..\Public\State_Getup.h" />
+    <ClInclude Include="..\Public\State_Harvest.h" />
     <ClInclude Include="..\Public\State_Hipfire.h" />
     <ClInclude Include="..\Public\State_Idle.h" />
     <ClInclude Include="..\Public\State_Inventory.h" />
     <ClInclude Include="..\Public\State_Jog.h" />
     <ClInclude Include="..\Public\State_Kill.h" />
+    <ClInclude Include="..\Public\State_Matchpre.h" />
+    <ClInclude Include="..\Public\State_Matchsuccess.h" />
     <ClInclude Include="..\Public\State_PickUp.h" />
+    <ClInclude Include="..\Public\State_Quest.h" />
     <ClInclude Include="..\Public\State_Release.h" />
     <ClInclude Include="..\Public\State_Reload.h" />
     <ClInclude Include="..\Public\State_Enter.h" />
     <ClInclude Include="..\Public\State_Reload_E.h" />
     <ClInclude Include="..\Public\State_Reload_S.h" />
     <ClInclude Include="..\Public\State_Run.h" />
+    <ClInclude Include="..\Public\State_Sleep.h" />
+    <ClInclude Include="..\Public\State_Struggle.h" />
+    <ClInclude Include="..\Public\State_StruggleBare.h" />
+    <ClInclude Include="..\Public\State_StruggleKnife.h" />
     <ClInclude Include="..\Public\State_Throw.h" />
     <ClInclude Include="..\Public\State_UnEquip.h" />
     <ClInclude Include="..\Public\State_Aim_S.h" />
@@ -225,9 +258,16 @@
     <ClInclude Include="..\Public\State_Walk_R.h" />
     <ClInclude Include="..\Public\State_Walk_RE.h" />
     <ClInclude Include="..\Public\State_Walk_S.h" />
+    <ClInclude Include="..\Public\Stove.h" />
+    <ClInclude Include="..\Public\TalkManager.h" />
     <ClInclude Include="..\Public\Terrain.h" />
     <ClInclude Include="..\Public\TerrainManager.h" />
+    <ClInclude Include="..\Public\Trail_Effect.h" />
+    <ClInclude Include="..\Public\UIActiveButton.h" />
     <ClInclude Include="..\Public\UIBack.h" />
+    <ClInclude Include="..\Public\UIBlood.h" />
+    <ClInclude Include="..\Public\UIBluePrintToggle.h" />
+    <ClInclude Include="..\Public\UIBurn.h" />
     <ClInclude Include="..\Public\UIButton.h" />
     <ClInclude Include="..\Public\UIClothToggle.h" />
     <ClInclude Include="..\Public\UIColor.h" />
@@ -236,14 +276,21 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\UILoadingBar.h" />
+    <ClInclude Include="..\Public\UILoadingStruggle.h" />
+    <ClInclude Include="..\Public\UIPlayerState.h" />
+    <ClInclude Include="..\Public\UISleep.h" />
     <ClInclude Include="..\Public\UIStateCloth.h" />
     <ClInclude Include="..\Public\UIItemToggle.h" />
     <ClInclude Include="..\Public\UImanager.h" />
     <ClInclude Include="..\Public\UIObject.h" />
     <ClInclude Include="..\Public\UISortToggle.h" />
+    <ClInclude Include="..\Public\UIStoveIcon.h" />
+    <ClInclude Include="..\Public\UIStoveItem.h" />
+    <ClInclude Include="..\Public\UIStruggleIntro.h" />
     <ClInclude Include="..\Public\UITEXT.h" />
     <ClInclude Include="..\Public\UIToggleID.h" />
     <ClInclude Include="..\Public\Weapon.h" />
+    <ClInclude Include="..\Public\Wolf.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -251,12 +298,49 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\BackGround.cpp" />
+    <ClCompile Include="..\Private\BedRoll.cpp" />
     <ClCompile Include="..\Private\Body_Player.cpp" />
+    <ClCompile Include="..\Private\BoxProp.cpp" />
     <ClCompile Include="..\Private\Bullet.cpp" />
     <ClCompile Include="..\Private\CLTH.cpp" />
+    <ClCompile Include="..\Private\Trail_Effect.cpp" />
+    <ClCompile Include="..\Private\Explosion.cpp" />
+    <ClCompile Include="..\Private\Flare.cpp" />
+    <ClCompile Include="..\Private\Harvest.cpp" />
+    <ClCompile Include="..\Private\LensFlare.cpp" />
+    <ClCompile Include="..\Private\Meat.cpp" />
+    <ClCompile Include="..\Private\Particle_Point.cpp" />
+    <ClCompile Include="..\Private\Particle_Rect.cpp" />
+    <ClCompile Include="..\Private\Rabbit.cpp" />
+    <ClCompile Include="..\Private\RevolverFire.cpp" />
+    <ClCompile Include="..\Private\Sky.cpp" />
+    <ClCompile Include="..\Private\State_Build.cpp" />
+    <ClCompile Include="..\Private\State_Fadeout.cpp" />
+    <ClCompile Include="..\Private\State_FlarePre.cpp" />
+    <ClCompile Include="..\Private\State_FlareSuccess.cpp" />
+    <ClCompile Include="..\Private\State_Getup.cpp" />
+    <ClCompile Include="..\Private\State_Harvest.cpp" />
+    <ClCompile Include="..\Private\State_Sleep.cpp" />
+    <ClCompile Include="..\Private\State_Struggle.cpp" />
+    <ClCompile Include="..\Private\State_StruggleBare.cpp" />
+    <ClCompile Include="..\Private\State_StruggleKnife.cpp" />
+    <ClCompile Include="..\Private\UIBlood.cpp" />
+    <ClCompile Include="..\Private\UIBluePrintToggle.cpp" />
+    <ClCompile Include="..\Private\UILoadingStruggle.cpp" />
+    <ClCompile Include="..\Private\UIPlayerState.cpp" />
+    <ClCompile Include="..\Private\UISleep.cpp" />
+    <ClCompile Include="..\Private\UIStoveItem.cpp" />
     <ClCompile Include="..\Private\InteractiveObject.cpp" />
     <ClCompile Include="..\Private\LoadingBar.cpp" />
+    <ClCompile Include="..\Private\Match.cpp" />
+    <ClCompile Include="..\Private\Mother.cpp" />
     <ClCompile Include="..\Private\Portal.cpp" />
+    <ClCompile Include="..\Private\QuestData.cpp" />
+    <ClCompile Include="..\Private\NPCManager.cpp" />
+    <ClCompile Include="..\Private\QuestManager.cpp" />
+    <ClCompile Include="..\Private\Rifle.cpp" />
+    <ClCompile Include="..\Private\State_Burn.cpp" />
+    <ClCompile Include="..\Private\State_Burnout.cpp" />
     <ClCompile Include="..\Private\State_Kill.cpp" />
     <ClCompile Include="..\Private\Data_Manager.cpp" />
     <ClCompile Include="..\Private\EnvironmentObject.cpp" />
@@ -287,7 +371,10 @@
     <ClCompile Include="..\Private\State_Idle.cpp" />
     <ClCompile Include="..\Private\State_Inventory.cpp" />
     <ClCompile Include="..\Private\State_Jog.cpp" />
+    <ClCompile Include="..\Private\State_Matchpre.cpp" />
+    <ClCompile Include="..\Private\State_Matchsuccess.cpp" />
     <ClCompile Include="..\Private\State_PickUp.cpp" />
+    <ClCompile Include="..\Private\State_Quest.cpp" />
     <ClCompile Include="..\Private\State_Release.cpp" />
     <ClCompile Include="..\Private\State_Reload.cpp" />
     <ClCompile Include="..\Private\State_Enter.cpp" />
@@ -304,9 +391,13 @@
     <ClCompile Include="..\Private\State_Walk_R.cpp" />
     <ClCompile Include="..\Private\State_Walk_RE.cpp" />
     <ClCompile Include="..\Private\State_Walk_S.cpp" />
+    <ClCompile Include="..\Private\Stove.cpp" />
+    <ClCompile Include="..\Private\TalkManager.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
     <ClCompile Include="..\Private\TerrainManager.cpp" />
+    <ClCompile Include="..\Private\UIActiveButton.cpp" />
     <ClCompile Include="..\Private\UIBack.cpp" />
+    <ClCompile Include="..\Private\UIBurn.cpp" />
     <ClCompile Include="..\Private\UIButton.cpp" />
     <ClCompile Include="..\Private\UIClothToggle.cpp" />
     <ClCompile Include="..\Private\UIColor.cpp" />
@@ -320,9 +411,12 @@
     <ClCompile Include="..\Private\UImanager.cpp" />
     <ClCompile Include="..\Private\UIObject.cpp" />
     <ClCompile Include="..\Private\UISortToggle.cpp" />
+    <ClCompile Include="..\Private\UIStoveIcon.cpp" />
+    <ClCompile Include="..\Private\UIStruggleIntro.cpp" />
     <ClCompile Include="..\Private\UITEXT.cpp" />
     <ClCompile Include="..\Private\UIToggleID.cpp" />
     <ClCompile Include="..\Private\Weapon.cpp" />
+    <ClCompile Include="..\Private\Wolf.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -339,9 +433,13 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCube.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_LoadingBar.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_LoadingStruggle.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimMesh.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimMeshMonster.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxInstance_Point.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxInstance_Rect.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMesh.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMeshID.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl" />

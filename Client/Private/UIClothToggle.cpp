@@ -264,7 +264,7 @@ HRESULT CUIClothToggle::Add_PartUI()
 
     //m_IconGroup******************************************************************************
     //기본 인벤토리 아이콘
-    CUIItemIcon::UI_ITEMICON_DESC UIIconDesc{};
+    CUIItemIcon::UI_ITEMICON_DESC UIIconDesc={};
     UIIconDesc.TextureTag = TEXT("");
     UIIconDesc.Icon_ID = 0;
     UIIconDesc.UIID = -1;
@@ -301,7 +301,7 @@ HRESULT CUIClothToggle::Add_PartUI()
 
     //m_TextGroup******************************************************************************
 
-    CUITEXT::UI_DESC UITextDesc{};
+    CUITEXT::UI_DESC UITextDesc={};
 
 
 
@@ -316,7 +316,7 @@ HRESULT CUIClothToggle::Add_PartUI()
     if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, TEXT("Layer_ToggleUIDetail"), TEXT("Prototype_GameObject_UIItemIcon"), &m_InfoGroup[0], &UIIconDesc)))
         return E_FAIL;
 
-    CUIBack::UI_BACK_DESC UIBackDesc{};
+    CUIBack::UI_BACK_DESC UIBackDesc={};
 
     //Durability
     UIBackDesc.TextureTag = TEXT("Prototype_Component_Texture_BASESelectorIcon");
@@ -358,7 +358,7 @@ HRESULT CUIClothToggle::Add_PartUI()
     //이름
     UITextDesc.Font = TEXT("Font_Bold18");
     UITextDesc.TextTag = TEXT("");
-    UITextDesc.TextPosition = { m_fX +m_fX*0.5f, m_fY -m_fY*0.7f };
+    UITextDesc.TextPosition = { m_fX*0.5f, m_fY*0.7f };
     UITextDesc.Color = { 1.f, 1.f, 1.f, 1.f };
 
     if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, TEXT("Layer_ToggleUIDetail"), TEXT("Prototype_GameObject_UIText"), &m_InfoGroup[4], &UITextDesc)))
@@ -366,7 +366,7 @@ HRESULT CUIClothToggle::Add_PartUI()
     //설명
     UITextDesc.Font = TEXT("Font_Normal14");
     UITextDesc.TextTag = TEXT("");
-    UITextDesc.TextPosition = { m_fX + m_fX * 0.25f, m_fY - m_fY * 0.6f };
+    UITextDesc.TextPosition = {  m_fX * 0.25f,  m_fY * 0.6f };
     UITextDesc.Color = { 0.8f, 0.8f, 0.8f, 1.f };
 
     if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, TEXT("Layer_ToggleUIDetail"), TEXT("Prototype_GameObject_UIText"), &m_InfoGroup[5], &UITextDesc)))
@@ -374,7 +374,7 @@ HRESULT CUIClothToggle::Add_PartUI()
     //내구도
     UITextDesc.Font = TEXT("Font_Bold12");
     UITextDesc.TextTag = TEXT("");
-    UITextDesc.TextPosition = { m_fX + m_fX * 0.425f, m_fY - m_fY * -0.525f };
+    UITextDesc.TextPosition = {  m_fX * 0.47f,  m_fY * -0.55f };
     UITextDesc.Color = { 1.f, 1.f, 1.f, 1.f };
 
     if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, TEXT("Layer_ToggleUIDetail"), TEXT("Prototype_GameObject_UIText"), &m_InfoGroup[6], &UITextDesc)))
@@ -382,7 +382,7 @@ HRESULT CUIClothToggle::Add_PartUI()
     //무게
     UITextDesc.Font = TEXT("Font_Bold12");
     UITextDesc.TextTag = TEXT("");
-    UITextDesc.TextPosition = { m_fX + m_fX * 0.625f, m_fY - m_fY * -0.525f };
+    UITextDesc.TextPosition = {  m_fX * 0.67f,  m_fY * -0.55f };
     UITextDesc.Color = { 1.f, 1.f, 1.f, 1.f };
 
     if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, TEXT("Layer_ToggleUIDetail"), TEXT("Prototype_GameObject_UIText"), &m_InfoGroup[7], &UITextDesc)))
@@ -393,7 +393,7 @@ HRESULT CUIClothToggle::Add_PartUI()
         //사용하기
     UITextDesc.Font = TEXT("Font_Normal14");
     UITextDesc.TextTag = TEXT("사용하기");
-    UITextDesc.TextPosition = { m_fX + m_fX * 0.175f, m_fY + m_fY * 0.675f };
+    UITextDesc.TextPosition = {  m_fX * 0.25f,  m_fY * -0.7f };
     UITextDesc.Color = { 0.6f, 0.6f, 0.6f, 1.f };
     if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, TEXT("Layer_ToggleUIDetail"), TEXT("Prototype_GameObject_UIText"), &m_InfoGroup[8], &UITextDesc)))
         return E_FAIL;
@@ -401,7 +401,7 @@ HRESULT CUIClothToggle::Add_PartUI()
     //액션
     UITextDesc.Font = TEXT("Font_Normal14");
     UITextDesc.TextTag = TEXT("액션");
-    UITextDesc.TextPosition = { m_fX + m_fX * 0.47f, m_fY + m_fY * 0.675f };
+    UITextDesc.TextPosition = {  m_fX * 0.5f,  m_fY *- 0.7f };
     UITextDesc.Color = { 0.6f, 0.6f, 0.6f, 1.f };
     if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, TEXT("Layer_ToggleUIDetail"), TEXT("Prototype_GameObject_UIText"), &m_InfoGroup[9], &UITextDesc)))
         return E_FAIL;
@@ -409,7 +409,7 @@ HRESULT CUIClothToggle::Add_PartUI()
     //내려놓기
     UITextDesc.Font = TEXT("Font_Normal14");
     UITextDesc.TextTag = TEXT("내려놓기");
-    UITextDesc.TextPosition = { m_fX + m_fX * 0.69f, m_fY + m_fY * 0.675f };
+    UITextDesc.TextPosition = {  m_fX * 0.74f,  m_fY * -0.7f };
     UITextDesc.Color = { 0.6f, 0.6f, 0.6f, 1.f };
     if (FAILED(m_pGameInstance->Add_CloneObject(LEVEL_GAMEPLAY, TEXT("Layer_ToggleUIDetail"), TEXT("Prototype_GameObject_UIText"), &m_InfoGroup[10], &UITextDesc)))
         return E_FAIL;
@@ -419,7 +419,7 @@ HRESULT CUIClothToggle::Add_PartUI()
     // use , INVENBUTTON_ACTION , INVENBUTTON_DROP  1 2 
     wstring LayerName = TEXT("Layer_InfoButton");
 
-    CUIButton::UI_BUTTON_DESC ButtonDesc{};
+    CUIButton::UI_BUTTON_DESC ButtonDesc={};
     //사용
     ButtonDesc.TextureTag = TEXT("Prototype_Component_Texture_Inventorybutton");
     ButtonDesc.Icon_ID = (_uint)1;

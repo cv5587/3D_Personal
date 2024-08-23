@@ -13,7 +13,7 @@ BEGIN(Client)
 class CPickRabbit final : public CPartObject
 {
 public:
-		typedef struct : public CPartObject::PARTOBJ_DESC
+		typedef struct PICKRABBIT_DESC : public CPartObject::PARTOBJ_DESC
 		{
 			const _float4x4* pCombinedTransformationMatrix;
 		}PICKRABBIT_DESC;

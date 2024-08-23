@@ -13,7 +13,7 @@ class CUIBack final :
 	public CUIBase
 {
 public:
-	typedef struct :public CUIBase::UI_BASE_DESC {
+	typedef struct UI_BACK_DESC :public CUIBase::UI_BASE_DESC {
 		_float4 vColor;
 		wstring ShaderTag;
 	}UI_BACK_DESC;

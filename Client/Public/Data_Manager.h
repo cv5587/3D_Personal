@@ -23,6 +23,7 @@ private:
 	_uint m_CurrentLevel = { 3 };
 public:
 	HRESULT Load_Data(_uint iLevelIndex);
+	HRESULT Quest_Load(_uint iLevelIndex);
 public:
 	HRESULT Initialize();
 	static CData_Manager* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

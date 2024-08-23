@@ -58,6 +58,15 @@ public:
 		m_Animations[m_AnimDesc.iAnimIndex]->Reset();
 		m_Animations[m_AnimDesc.iAnimIndex]->Shift_Reset();
 	}
+	void Set_NoShiftAnimationIndex(const ANIMATION_DESC& AnimDesc) {
+		if (m_AnimDesc.iAnimIndex == AnimDesc.iAnimIndex)
+			return;
+		m_PreAnimDesc = m_AnimDesc;
+		m_AnimDesc = AnimDesc;
+		m_Animations[m_AnimDesc.iAnimIndex]->Reset();
+		m_Animations[m_AnimDesc.iAnimIndex]->Shift_Reset();
+	}
+
 	void Set_RepeatAnimationIndex() {
 		m_Animations[m_AnimDesc.iAnimIndex]->Reset();
 		m_Animations[m_AnimDesc.iAnimIndex]->Shift_Reset();

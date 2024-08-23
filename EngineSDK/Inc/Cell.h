@@ -53,10 +53,10 @@ public:
 	_float Set_OnCell(_float3 vLocalPos);
 #ifdef _DEBUG
 
+#endif
 private:
 	class CVIBuffer_Cell*		m_pVIBuffer = { nullptr };
 
-#endif
 	
 public:
 	static CCell* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _float3* pPoints, _int iIndex);
